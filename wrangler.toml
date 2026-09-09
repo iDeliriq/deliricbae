@@ -1,5 +1,9 @@
 name = "deliricbae"
+main = "worker.js"
 compatibility_date = "2024-11-01"
 
+# Fisierele site-ului stau in public/ si sunt servite prin bindingul ASSETS.
+# Worker-ul (worker.js) verifica parola inainte sa dea /api/reports.
 [assets]
-directory = "./"
+directory = "./public"
+binding = "ASSETS"
