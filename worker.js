@@ -1,28 +1,22 @@
 // Worker deliricbae: servește site-ul static (ASSETS) și protejează /api/reports
 // cu o parolă verificată PE SERVER. Parola se ține ca secret in Cloudflare
 // (SITE_PASSWORD) — nu apare niciodata in cod sau in pagina.
+//
+// Datele raportului stau in Cloudflare KV (binding REPORTS, cheia "latest").
+// Publisher-ul de pe PC le trimite prin POST /api/publish, autentificat cu
+// acelasi SITE_PASSWORD (header X-Publish-Key). /api/reports (GET) le citeste,
+// dupa ce verifica sesiunea (cookie semnat HMAC).
 
 const COOKIE = "dbsess";
 const MAX_AGE = 7 * 24 * 3600;           // 7 zile
 const enc = new TextEncoder();
 
-// --- date raport (deocamdata demo; maine le inlocuim cu sessions.json real) ---
-const REPORTS = {
-  daily: [{d:"31.08",k:640},{d:"01.09",k:912},{d:"02.09",k:0},{d:"03.09",k:1180},
-    {d:"04.09",k:1044},{d:"05.09",k:760},{d:"06.09",k:1320},{d:"07.09",k:1190},
-    {d:"08.09",k:1190},{d:"09.09",k:903}],
-  allTime: 41316,
-  days: [
-    {date:"09.09.2026",wd:"Marți",sessions:[
-      {t:"20:41",dur:78,L:150,R:111,types:[150,80,24,7],aura:3,berserk:2,mg:[12,0,1]},
-      {t:"22:10",dur:205,L:360,R:282,types:[360,190,70,22],aura:8,berserk:6,mg:[33,1,2]}]},
-    {date:"08.09.2026",wd:"Luni",sessions:[
-      {t:"19:02",dur:320,L:520,R:460,types:[520,300,120,40],aura:12,berserk:10,mg:[40,2,1]},
-      {t:"23:48",dur:70,L:118,R:92,types:[118,66,20,6],aura:2,berserk:2,mg:[9,0,1]}]},
-    {date:"07.09.2026",wd:"Duminică",sessions:[
-      {t:"18:15",dur:410,L:640,R:540,types:[640,360,140,50],aura:15,berserk:13,mg:[52,3,2]},
-      {t:"01:20",dur:95,L:150,R:110,types:[150,72,30,8],aura:3,berserk:3,mg:[11,1,0]}]},
-  ]};
+// fallback afisat DOAR pana la prima publicare reala (KV gol)
+const DEMO = {
+  generated_at: 0, player: "",
+  totals: { sessions: 0, yang: 0, kills: 0, seconds: 0, loot_value: 0 },
+  daily: [], top_loot: [], days: [], empty: true,
+};
 
 function json(obj, status = 200, headers = {}) {
   return new Response(JSON.stringify(obj), {
@@ -39,7 +33,7 @@ async function hmacHex(key, msg) {
 
 // comparatie in timp constant (nu scurge lungimea potrivirii)
 function safeEq(a, b) {
-  if (a.length !== b.length) return false;
+  if (typeof a !== "string" || typeof b !== "string" || a.length !== b.length) return false;
   let r = 0;
   for (let i = 0; i < a.length; i++) r |= a.charCodeAt(i) ^ b.charCodeAt(i);
   return r === 0;
@@ -97,10 +91,28 @@ export default {
       return json({ ok: true }, 200, { "Set-Cookie": setCookie("", 0) });
     }
 
+    // ---- publicare date din publisher-ul de pe PC ----
+    if (url.pathname === "/api/publish" && request.method === "POST") {
+      if (!secret) return json({ ok: false, error: "unconfigured" }, 500);
+      const key = request.headers.get("X-Publish-Key") || "";
+      if (!safeEq(key, secret)) return json({ ok: false, error: "bad key" }, 401);
+      let text = "";
+      try { text = await request.text(); } catch (e) { text = ""; }
+      if (!text || text.length > 5_000_000) return json({ ok: false, error: "bad body" }, 400);
+      try { JSON.parse(text); } catch (e) { return json({ ok: false, error: "not json" }, 400); }
+      if (!env.REPORTS) return json({ ok: false, error: "no kv" }, 500);
+      await env.REPORTS.put("latest", text);
+      return json({ ok: true, saved: text.length });
+    }
+
     if (url.pathname === "/api/reports") {
       const ok = await validToken(getCookie(request, COOKIE), secret);
       if (!ok) return json({ error: "unauthorized" }, 401);
-      return json(REPORTS);
+      if (env.REPORTS) {
+        const raw = await env.REPORTS.get("latest");
+        if (raw) return new Response(raw, { headers: { "Content-Type": "application/json" } });
+      }
+      return json(DEMO);
     }
 
     // orice altceva -> fisierele statice (shell-ul, fonturile locale etc.)

@@ -4,27 +4,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#0c110e; --bg2:#0f1712;
-  --panel:#131e18; --panel2:#182720; --panel3:#1e3229;
-  --line:#233529; --line2:#31493c;
-  --ink:#e9f2ec; --mut:#8ca79b; --dim:#607a6e;
-  --acc:#5ad1a0; --acc2:#7ee6bb; --accd:#2f8f6a;
-  --cal:#ef6360; --wra:#f0b23e; --glo:#a88cff; --emb:#ff9a4d;
-  --ok:#57d69a; --warn:#e6b24c; --bad:#e2665f;
+  /* aceeasi paleta ca la Unelte (temă spatiu/auriu) */
+  --bg:#080b16; --bg2:#0b1020;
+  --panel:#111a30; --panel2:#152037; --panel3:#1b2947;
+  --line:#243256; --line2:#33456f;
+  --ink:#eaeefb; --mut:#9aa6c8; --dim:#5f6c93;
+  --gold:#e7b954; --gold2:#f6d488; --goldd:#a9812c;
+  /* aliasuri: componentele vechi folosesc --acc; le legam la auriu */
+  --acc:var(--gold); --acc2:var(--gold2); --accd:var(--goldd);
+  --ok:#5fd39a; --warn:#e7b954; --bad:#e2685f;
   --sbw:240px;
-  --shadow:0 1px 0 rgba(255,255,255,.03), 0 12px 30px -18px rgba(0,0,0,.7);
+  --shadow:0 1px 0 rgba(255,255,255,.03), 0 14px 34px -20px rgba(0,0,0,.8);
 }
 *{box-sizing:border-box}
 html,body{margin:0}
 body{
-  background:var(--bg); color:var(--ink);
-  font-family:"Manrope",system-ui,sans-serif; line-height:1.5;
+  color:var(--ink);
+  font-family:"Poppins",system-ui,sans-serif; line-height:1.5;
   -webkit-font-smoothing:antialiased;
+  background:
+    radial-gradient(1200px 600px at 78% -10%, rgba(231,185,84,.10), transparent 60%),
+    radial-gradient(900px 500px at 8% 6%, rgba(90,120,255,.08), transparent 55%),
+    var(--bg);
 }
-a{color:var(--acc);text-decoration:none}
+/* camp de stele desenat in cod (fara imagini externe) */
+.stars{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 70%, #cdd6ff, transparent),
+    radial-gradient(1px 1px at 80% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 80%, #e7d6a0, transparent),
+    radial-gradient(1px 1px at 90% 55%, #fff, transparent),
+    radial-gradient(1px 1px at 12% 62%, #b9c4ff, transparent),
+    radial-gradient(2px 2px at 48% 18%, #fff, transparent);
+  background-repeat:repeat;background-size:520px 520px;}
+a{color:var(--gold2);text-decoration:none}
 
 /* ---------- shell ---------- */
 .sidebar{
@@ -34,9 +51,11 @@ a{color:var(--acc);text-decoration:none}
   display:flex; flex-direction:column; gap:6px; transition:transform .22s ease;
 }
 .sbrand{display:flex; align-items:center; gap:11px; padding:4px 6px 16px}
-.sbrand h1{font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:22px;
-  margin:0;letter-spacing:.4px;line-height:1}
-.sbrand h1 b{color:var(--acc)}
+.sbrand h1{font-family:"Cinzel",serif;font-weight:700;font-size:21px;
+  margin:0;letter-spacing:1px;line-height:1;
+  background:linear-gradient(180deg,var(--gold2),var(--goldd));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.sbrand h1 b{color:inherit}
 .sbrand .sub{color:var(--dim);font-size:10.5px;letter-spacing:.4px;margin-top:3px}
 .navlbl{color:var(--dim);font-size:10px;letter-spacing:1px;text-transform:uppercase;
   padding:10px 8px 4px}
@@ -65,7 +84,7 @@ a{color:var(--acc);text-decoration:none}
 .burger{display:none;width:38px;height:38px;border:1px solid var(--line);border-radius:9px;
   background:var(--panel2);color:var(--ink);cursor:pointer;align-items:center;justify-content:center}
 .burger svg{width:18px;height:18px}
-.topbar .ttl{font-family:"Chakra Petch",sans-serif;font-weight:600;font-size:16px;letter-spacing:.4px}
+.topbar .ttl{font-family:"Cinzel",serif;font-weight:600;font-size:16px;letter-spacing:.4px}
 .topbar .right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .badge{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.5px;
   text-transform:uppercase;color:var(--warn);
@@ -79,7 +98,7 @@ a{color:var(--acc);text-decoration:none}
 .login{max-width:360px;margin:8vh auto 0;background:var(--panel);
   border:1px solid var(--line);border-radius:16px;padding:26px 24px;box-shadow:var(--shadow)}
 .login .gem{display:block;margin:0 auto 14px}
-.login h2{font-family:"Chakra Petch",sans-serif;font-weight:600;text-align:center;
+.login h2{font-family:"Cinzel",serif;font-weight:600;text-align:center;
   margin:0 0 4px;font-size:18px}
 .login p{color:var(--mut);text-align:center;font-size:13px;margin:0 0 18px}
 .login label{display:block;font-size:12px;color:var(--dim);margin:0 0 6px;letter-spacing:.3px}
@@ -88,9 +107,9 @@ a{color:var(--acc);text-decoration:none}
 .login input:focus{outline:2px solid color-mix(in srgb,var(--acc) 55%,transparent);
   outline-offset:1px;border-color:var(--acc)}
 .login button{width:100%;margin-top:14px;padding:11px;border-radius:10px;border:0;
-  background:var(--acc);color:#06130d;font-weight:700;font-size:14px;cursor:pointer;
-  font-family:"Chakra Petch",sans-serif;letter-spacing:.3px}
-.login button:hover{background:var(--acc2)}
+  background:linear-gradient(180deg,var(--gold),var(--goldd));color:#1a1204;font-weight:700;font-size:14px;cursor:pointer;
+  font-family:"Cinzel",serif;letter-spacing:.5px}
+.login button:hover{background:linear-gradient(180deg,var(--gold2),var(--gold))}
 .login button:disabled{opacity:.6;cursor:default}
 .login .err{color:var(--bad);font-size:12.5px;text-align:center;margin-top:12px;min-height:16px}
 
@@ -100,14 +119,14 @@ a{color:var(--acc);text-decoration:none}
 .kpi{background:linear-gradient(180deg,var(--panel2),var(--panel));
   border:1px solid var(--line);border-radius:14px;padding:15px 16px;box-shadow:var(--shadow)}
 .kpi .lbl{font-size:11px;letter-spacing:.6px;text-transform:uppercase;color:var(--dim)}
-.kpi .val{font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:26px;
+.kpi .val{font-family:"Cinzel",serif;font-weight:700;font-size:26px;
   line-height:1.15;margin-top:6px;font-variant-numeric:tabular-nums}
 .kpi .val.acc{color:var(--acc)}
 .kpi .foot{font-size:11.5px;color:var(--mut);margin-top:3px;font-variant-numeric:tabular-nums}
 .grid2{display:grid;grid-template-columns:1.55fr 1fr;gap:16px;margin-bottom:16px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;
   padding:18px 18px 14px;box-shadow:var(--shadow)}
-.panel h3{font-family:"Chakra Petch",sans-serif;font-weight:600;font-size:14px;
+.panel h3{font-family:"Cinzel",serif;font-weight:600;font-size:14px;
   letter-spacing:.5px;margin:0 0 2px;text-transform:uppercase}
 .panel .note{color:var(--dim);font-size:12px;margin:0 0 12px}
 .chartwrap{overflow-x:auto}
@@ -122,10 +141,10 @@ svg{display:block}
 .legrow .n{margin-left:auto;font-family:"JetBrains Mono",monospace;font-variant-numeric:tabular-nums}
 .legrow .pct{color:var(--dim);font-size:11.5px;width:42px;text-align:right;font-family:"JetBrains Mono",monospace}
 .dayhead{display:flex;align-items:baseline;gap:12px;margin:26px 2px 12px}
-.dayhead .d{font-family:"Chakra Petch",sans-serif;font-weight:600;font-size:17px}
+.dayhead .d{font-family:"Cinzel",serif;font-weight:600;font-size:17px}
 .dayhead .wd{color:var(--dim);font-size:12.5px;text-transform:uppercase;letter-spacing:.5px}
 .dayhead .tot{margin-left:auto;display:flex;gap:16px;align-items:baseline}
-.dayhead .tot b{font-family:"Chakra Petch",sans-serif;color:var(--acc);font-size:17px;font-variant-numeric:tabular-nums}
+.dayhead .tot b{font-family:"Cinzel",serif;color:var(--acc);font-size:17px;font-variant-numeric:tabular-nums}
 .dayhead .tot span{color:var(--mut);font-size:12px}
 .hr{height:1px;background:linear-gradient(90deg,var(--line2),transparent);margin:0 2px}
 .sessions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
@@ -135,7 +154,7 @@ svg{display:block}
 .ses .shead{display:flex;align-items:center;gap:10px;margin-bottom:10px}
 .ses .time{font-family:"JetBrains Mono",monospace;font-size:13px}
 .ses .dur{color:var(--mut);font-size:12px}
-.ses .big{margin-left:auto;font-family:"Chakra Petch",sans-serif;font-weight:700;font-size:22px;
+.ses .big{margin-left:auto;font-family:"Cinzel",serif;font-weight:700;font-size:22px;
   color:var(--acc);font-variant-numeric:tabular-nums}
 .ses .lr{display:flex;gap:14px;font-size:12px;color:var(--mut);margin-bottom:10px;font-variant-numeric:tabular-nums}
 .ses .lr b{color:var(--ink);font-family:"JetBrains Mono",monospace}
@@ -150,7 +169,7 @@ svg{display:block}
 .chip.rate{color:var(--acc2);border-color:color-mix(in srgb,var(--acc) 30%,transparent)}
 .placeholder{color:var(--mut);max-width:520px;line-height:1.7;margin-top:8vh;
   text-align:center;margin-left:auto;margin-right:auto}
-.placeholder .big{font-family:"Chakra Petch",sans-serif;font-size:20px;color:var(--ink);margin-bottom:8px}
+.placeholder .big{font-family:"Cinzel",serif;font-size:20px;color:var(--ink);margin-bottom:8px}
 
 @media (max-width:900px){
   .sidebar{transform:translateX(-100%)}
@@ -164,15 +183,16 @@ svg{display:block}
 }
 </style>
 
+<div class="stars"></div>
 <aside class="sidebar" id="sidebar">
   <div class="sbrand">
     <svg width="30" height="30" viewBox="0 0 34 34" aria-hidden="true">
-      <polygon points="17,2 32,17 17,32 2,17" fill="#1a2a23"/>
-      <polygon points="17,2 32,17 17,17" fill="#7ee6bb"/>
-      <polygon points="2,17 17,32 17,17" fill="#2f8f6a"/>
-      <polygon points="17,2 17,17 2,17" fill="#5ad1a0"/>
-      <polygon points="17,17 32,17 17,32" fill="#43b98a"/>
-      <polygon points="17,2 32,17 17,32 2,17" fill="none" stroke="#0c110e" stroke-width="1.4"/>
+      <polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/>
+      <polygon points="17,2 32,17 17,17" fill="#f6d488"/>
+      <polygon points="2,17 17,32 17,17" fill="#a9812c"/>
+      <polygon points="17,2 17,17 2,17" fill="#e7b954"/>
+      <polygon points="17,17 32,17 17,32" fill="#c99a3a"/>
+      <polygon points="17,2 32,17 17,32 2,17" fill="none" stroke="#080b16" stroke-width="1.4"/>
     </svg>
     <div><h1>deliric<b>bae</b></h1><div class="sub">Baerim · panou</div></div>
   </div>
@@ -218,27 +238,45 @@ const MENU=[
 const PREVIEW = !(location.hostname==="deliricbae.ro" || location.hostname==="www.deliricbae.ro"
                   || location.hostname.endsWith("workers.dev"));
 
-const TYPES=[["Calamity","var(--cal)"],["Wrath","var(--wra)"],["Gloom","var(--glo)"],["Ember","var(--emb)"]];
+// date demo (doar pe preview) — aceeasi forma ca datele reale din /api/reports
 const DEMO={
-  daily:[{d:"31.08",k:640},{d:"01.09",k:912},{d:"02.09",k:0},{d:"03.09",k:1180},
-    {d:"04.09",k:1044},{d:"05.09",k:760},{d:"06.09",k:1320},{d:"07.09",k:1190},
-    {d:"08.09",k:1190},{d:"09.09",k:903}],
-  allTime:41316,
+  generated_at:Math.floor(Date.now()/1000), player:"~Deliric~",
+  totals:{sessions:6, yang:512000000, kills:5120, seconds:6*3600+1500, loot_value:1840000000},
+  daily:[
+    {d:"04.09",yang:64000000,kills:640,loot:210000000},
+    {d:"05.09",yang:0,kills:0,loot:0},
+    {d:"06.09",yang:132000000,kills:1320,loot:480000000},
+    {d:"07.09",yang:119000000,kills:1190,loot:410000000},
+    {d:"08.09",yang:114000000,kills:1140,loot:420000000},
+    {d:"09.09",yang:83000000,kills:830,loot:320000000}],
+  top_loot:[
+    {vnum:40817,name:"#40817",count:19,value:144400000},
+    {vnum:71084,name:"#71084",count:580,value:71380020},
+    {vnum:40514,name:"#40514",count:467,value:46700000},
+    {vnum:40515,name:"#40515",count:303,value:36360000},
+    {vnum:40822,name:"#40822",count:44,value:22052844}],
   days:[
-    {date:"09.09.2026",wd:"Marți",sessions:[
-      {t:"20:41",dur:78,L:150,R:111,types:[150,80,24,7],aura:3,berserk:2,mg:[12,0,1]},
-      {t:"22:10",dur:205,L:360,R:282,types:[360,190,70,22],aura:8,berserk:6,mg:[33,1,2]}]},
-    {date:"08.09.2026",wd:"Luni",sessions:[
-      {t:"19:02",dur:320,L:520,R:460,types:[520,300,120,40],aura:12,berserk:10,mg:[40,2,1]},
-      {t:"23:48",dur:70,L:118,R:92,types:[118,66,20,6],aura:2,berserk:2,mg:[9,0,1]}]},
-    {date:"07.09.2026",wd:"Duminică",sessions:[
-      {t:"18:15",dur:410,L:640,R:540,types:[640,360,140,50],aura:15,berserk:13,mg:[52,3,2]},
-      {t:"01:20",dur:95,L:150,R:110,types:[150,72,30,8],aura:3,berserk:3,mg:[11,1,0]}]},
+    {date:"09.09.2026",wd:"Miercuri",yang:83000000,kills:830,seconds:2173,loot_value:320000000,sessions:[
+      {t:"18:10",dur:36,yang:83000000,kills:830,loot_value:320000000,
+       sources:[{vnum:8054,name:"#8054",kills:420,yang:42000000},{vnum:8059,name:"#8059",kills:410,yang:41000000}],
+       loot:[{vnum:40817,name:"#40817",count:19,value:144400000},{vnum:71084,name:"#71084",count:580,value:71380020}]}]},
+    {date:"08.09.2026",wd:"Marți",yang:114000000,kills:1140,seconds:13200,loot_value:420000000,sessions:[
+      {t:"19:02",dur:150,yang:80000000,kills:800,loot_value:300000000,
+       sources:[{vnum:8054,name:"#8054",kills:500,yang:50000000}],loot:[{vnum:40514,name:"#40514",count:200,value:20000000}]},
+      {t:"23:40",dur:70,yang:34000000,kills:340,loot_value:120000000,
+       sources:[{vnum:8059,name:"#8059",kills:340,yang:34000000}],loot:[{vnum:40515,name:"#40515",count:100,value:12000000}]}]},
   ]};
 
 const sum=a=>a.reduce((x,y)=>x+y,0);
 const fmt=n=>Number(n).toLocaleString("ro-RO");
-const hm=m=>`${Math.floor(m/60)}h ${String(m%60).padStart(2,"0")}m`;
+// notatie metin2: k = mie, kk = milion, kkk = miliard
+const kk=n=>{n=Number(n)||0;const s=n<0?"-":"";n=Math.abs(n);
+  const f=(v,d)=>{let x=v.toFixed(d);if(x.indexOf(".")>=0)x=x.replace(/0+$/,"").replace(/\.$/,"");return x;};
+  if(n>=1e9)return s+f(n/1e9,2)+" kkk";
+  if(n>=1e6)return s+f(n/1e6,2)+" kk";
+  if(n>=1e3)return s+Math.round(n/1e3)+" k";
+  return s+Math.round(n);};
+const hm=m=>`${Math.floor(m/60)}h ${String(Math.round(m%60)).padStart(2,"0")}m`;
 const $=s=>document.querySelector(s);
 
 // ============ meniu render + rutare ============
@@ -291,11 +329,11 @@ function showLogin(box){
   box.innerHTML=`
     <div class="login">
       <svg class="gem" width="40" height="40" viewBox="0 0 34 34">
-        <polygon points="17,2 32,17 17,32 2,17" fill="#1a2a23"/>
-        <polygon points="17,2 32,17 17,17" fill="#7ee6bb"/>
-        <polygon points="2,17 17,32 17,17" fill="#2f8f6a"/>
-        <polygon points="17,2 17,17 2,17" fill="#5ad1a0"/>
-        <polygon points="17,17 32,17 17,32" fill="#43b98a"/></svg>
+        <polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/>
+        <polygon points="17,2 32,17 17,17" fill="#f6d488"/>
+        <polygon points="2,17 17,32 17,17" fill="#a9812c"/>
+        <polygon points="17,2 17,17 2,17" fill="#e7b954"/>
+        <polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>
       <h2>Rapoarte private</h2>
       <p>Introdu parola ca să vezi statisticile.</p>
       <label for="pw">Parolă</label>
@@ -329,73 +367,81 @@ $("#logout").onclick=async()=>{
 
 // ============ desenarea raportului ============
 function renderReports(box, D){
+  const T=D.totals||{};
+  if(!D.days || !D.days.length){
+    box.innerHTML=`<div class="placeholder"><div class="big">Încă nu sunt date</div>
+      Raportul se completează singur după ce farmul rulează măcar o dată.
+      Se actualizează automat în fiecare oră.</div>`;
+    return;
+  }
   box.innerHTML=`<div class="wrapR">
     <section class="kpis" id="kpis"></section>
     <section class="grid2">
-      <div class="panel"><h3>Metine pe zi</h3><p class="note">ultimele 10 zile · azi evidențiat</p>
+      <div class="panel"><h3>Yang pe zi</h3><p class="note">ultimele zile · azi evidențiat</p>
         <div class="chartwrap"><svg id="daychart" width="640" height="200"></svg></div></div>
-      <div class="panel"><h3>Pe tip de metin</h3><p class="note">total, toate sesiunile</p>
-        <div class="typebar" id="typebar"></div><div class="legend" id="typelegend"></div></div>
+      <div class="panel"><h3>Top loot</h3><p class="note">cele mai valoroase iteme, tot timpul</p>
+        <div class="legend" id="toploot"></div></div>
     </section>
-    <section id="days"></section></div>`;
+    <section id="days"></section>
+    <div style="color:var(--dim);font-size:11px;margin-top:14px" id="genat"></div></div>`;
 
-  let allK=0,allM=0,sc=0,mgOk=0,mgTot=0;
-  D.days.forEach(d=>d.sessions.forEach(s=>{allK+=s.L+s.R;allM+=s.dur;sc++;mgOk+=s.mg[0];mgTot+=s.mg[0]+s.mg[1]+s.mg[2];}));
-  const rate=allM?Math.round(allK/(allM/60)):0;
-  const succ=mgTot?Math.round(mgOk/mgTot*100):0;
+  const hrs=(T.seconds||0)/3600, rate=hrs?(T.yang||0)/hrs:0;
   const kpis=[
-    {lbl:"Total dintotdeauna",val:fmt(D.allTime),acc:1,foot:"metine sparte"},
-    {lbl:"Ore farmate",val:(allM/60).toFixed(1)+"h",foot:`${sc} sesiuni`},
-    {lbl:"Ritm mediu",val:fmt(rate),foot:"metine / oră"},
-    {lbl:"Mini-game",val:succ+"%",acc:1,foot:`${mgOk}/${mgTot} rezolvate`},
-    {lbl:"Ultimele zile",val:fmt(allK),foot:"metine"},
+    {lbl:"Yang total",val:kk(T.yang),acc:1,foot:"din farm"},
+    {lbl:"Loot iteme",val:kk(T.loot_value),acc:1,foot:"valoare estimată"},
+    {lbl:"Kills",val:fmt(T.kills||0),foot:"metine + mobi"},
+    {lbl:"Ore farmate",val:hrs.toFixed(1)+"h",foot:`${T.sessions||0} sesiuni`},
+    {lbl:"Yang / oră",val:kk(rate),foot:"medie"},
   ];
   $("#kpis").innerHTML=kpis.map(k=>`<div class="kpi"><div class="lbl">${k.lbl}</div>
     <div class="val ${k.acc?"acc":""}">${k.val}</div><div class="foot">${k.foot}</div></div>`).join("");
 
-  // bar chart
+  // bar chart — yang pe zi
   (function(){
-    const W=640,H=200,pT=16,pB=26,pL=34,pR=8;
-    const mx=Math.max(...D.daily.map(d=>d.k),1), nm=Math.ceil(mx/200)*200||200;
-    const iw=W-pL-pR, ih=H-pT-pB, n=D.daily.length, gap=iw/n, bw=gap*0.62;
+    const W=640,H=200,pT=16,pB=26,pL=44,pR=8;
+    const vals=D.daily.map(d=>d.yang||0), mx=Math.max(...vals,1);
+    const step=Math.pow(10,Math.floor(Math.log10(mx))), nm=Math.ceil(mx/step)*step||step;
+    const iw=W-pL-pR, ih=H-pT-pB, n=D.daily.length||1, gap=iw/n, bw=Math.min(gap*0.62,46);
     let g=`<line x1="${pL}" y1="${pT+ih}" x2="${W-pR}" y2="${pT+ih}" stroke="var(--line2)"/>`;
     [0,.5,1].forEach(f=>{const y=pT+ih-ih*f;
       g+=`<line x1="${pL}" y1="${y}" x2="${W-pR}" y2="${y}" stroke="var(--line)" stroke-dasharray="2 4"/>`;
-      g+=`<text class="axislbl" x="${pL-7}" y="${y+3}" text-anchor="end">${Math.round(nm*f)}</text>`;});
-    D.daily.forEach((d,i)=>{const x=pL+gap*i+(gap-bw)/2,h=d.k/nm*ih,y=pT+ih-h,today=i===D.daily.length-1;
-      if(d.k>0) g+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${today?'var(--acc)':'var(--accd)'}"/>`;
+      g+=`<text class="axislbl" x="${pL-7}" y="${y+3}" text-anchor="end">${kk(nm*f)}</text>`;});
+    D.daily.forEach((d,i)=>{const v=d.yang||0,x=pL+gap*i+(gap-bw)/2,h=v/nm*ih,y=pT+ih-h,today=i===D.daily.length-1;
+      if(v>0) g+=`<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="3" fill="${today?'var(--acc)':'var(--accd)'}"><title>${d.d}: ${fmt(v)} yang</title></rect>`;
       g+=`<text class="axislbl" x="${(x+bw/2).toFixed(1)}" y="${H-9}" text-anchor="middle" ${today?'fill="var(--acc)"':''}>${d.d}</text>`;});
     $("#daychart").innerHTML=g;
   })();
 
-  // type breakdown
+  // top loot
   (function(){
-    const tot=[0,0,0,0]; D.days.forEach(d=>d.sessions.forEach(s=>s.types.forEach((v,i)=>tot[i]+=v)));
-    const T=sum(tot)||1;
-    $("#typebar").innerHTML=tot.map((v,i)=>`<span style="width:${v/T*100}%;background:${TYPES[i][1]}"></span>`).join("");
-    $("#typelegend").innerHTML=TYPES.map((t,i)=>`<div class="legrow"><span class="sw" style="background:${t[1]}"></span>
-      <span class="nm">${t[0]}</span><span class="n">${fmt(tot[i])}</span><span class="pct">${Math.round(tot[i]/T*100)}%</span></div>`).join("");
+    const L=(D.top_loot||[]).slice(0,10), Tv=sum(L.map(x=>x.value))||1;
+    $("#toploot").innerHTML=L.length? L.map(x=>`<div class="legrow">
+      <span class="nm">${x.name||("#"+x.vnum)} <span style="color:var(--dim)">×${fmt(x.count)}</span></span>
+      <span class="n">${kk(x.value)}</span><span class="pct">${Math.round(x.value/Tv*100)}%</span></div>`).join("")
+      : `<div style="color:var(--dim);font-size:13px">Fără loot înregistrat încă.</div>`;
   })();
 
   // days + sessions
   $("#days").innerHTML=D.days.map(d=>{
-    const dk=sum(d.sessions.map(s=>s.L+s.R)), dm=sum(d.sessions.map(s=>s.dur));
+    const dhrs=(d.seconds||0)/3600;
     const cards=d.sessions.map(s=>{
-      const tot=s.L+s.R,T=sum(s.types)||1;
-      const mini=s.types.map((v,i)=>`<span style="width:${v/T*100}%;background:${TYPES[i][1]}"></span>`).join("");
-      const r=Math.round(tot/(s.dur/60)), mgt=s.mg[0]+s.mg[1]+s.mg[2];
+      const shrs=(s.dur||0)/60, r=shrs?(s.yang||0)/shrs:0;
+      const srcChips=(s.sources||[]).map(x=>`<span class="chip">${x.name||("#"+x.vnum)} <b>${fmt(x.kills)}</b></span>`).join("");
+      const lootChips=(s.loot||[]).map(x=>`<span class="chip ok">${x.name||("#"+x.vnum)} <b>×${fmt(x.count)}</b> · ${kk(x.value)}</span>`).join("");
       return `<div class="ses"><div class="shead"><span class="time">${s.t}</span><span class="dur">· ${hm(s.dur)}</span>
-        <span class="big">${fmt(tot)}</span></div>
-        <div class="lr"><span>Stânga <b>${s.L}</b></span><span>Dreapta <b>${s.R}</b></span></div>
-        <div class="mini">${mini}</div>
-        <div class="chips"><span class="chip rate">${r} <b>/h</b></span>
-          <span class="chip">Aura <b>${s.aura}</b></span><span class="chip">Berserk <b>${s.berserk}</b></span>
-          <span class="chip ok">MG <b>${s.mg[0]}/${mgt}</b></span></div></div>`;
+        <span class="big">${kk(s.yang)}</span></div>
+        <div class="lr"><span>Kills <b>${fmt(s.kills)}</b></span><span>Loot <b>${kk(s.loot_value)}</b></span><span class="chip rate" style="padding:1px 6px">${kk(r)} <b>/h</b></span></div>
+        <div class="chips">${srcChips}${lootChips}</div></div>`;
     }).join("");
     return `<div class="dayhead"><span class="d">${d.date}</span><span class="wd">${d.wd}</span>
-      <span class="tot"><span>${d.sessions.length} sesiuni · ${hm(dm)}</span><b>${fmt(dk)}</b></span></div>
+      <span class="tot"><span>${d.sessions.length} ${d.sessions.length===1?'sesiune':'sesiuni'} · ${hm(dhrs*60)} · ${fmt(d.kills)} kills</span><b>${kk(d.yang)}</b></span></div>
       <div class="hr"></div><div class="sessions">${cards}</div>`;
   }).join("");
+
+  if(D.generated_at){
+    const dt=new Date(D.generated_at*1000);
+    $("#genat").textContent="Actualizat: "+dt.toLocaleString("ro-RO");
+  }
 }
 
 buildNav(); go("rapoarte");
