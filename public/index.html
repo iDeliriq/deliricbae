@@ -390,7 +390,7 @@ function renderReports(box, D){
     {lbl:"Yang total",val:kk(T.yang),acc:1,foot:"din farm"},
     {lbl:"Loot iteme",val:kk(T.loot_value),acc:1,foot:"valoare estimată"},
     {lbl:"Kills",val:fmt(T.kills||0),foot:"metine + mobi"},
-    {lbl:"Ore farmate",val:hrs.toFixed(1)+"h",foot:`${T.sessions||0} sesiuni`},
+    {lbl:"Ore farmate",val:hrs.toFixed(1)+"h",foot:`${T.sessions||0} ${(T.sessions||0)===1?'sesiune':'sesiuni'}`},
     {lbl:"Yang / oră",val:kk(rate),foot:"medie"},
   ];
   $("#kpis").innerHTML=kpis.map(k=>`<div class="kpi"><div class="lbl">${k.lbl}</div>
