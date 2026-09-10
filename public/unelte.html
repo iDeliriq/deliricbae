@@ -137,7 +137,21 @@ input,select,textarea{font-family:inherit}
 .erow{display:grid;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:8px}
 .erow.sec{grid-template-columns:1fr 90px 40px}
 .erow.cat{grid-template-columns:1fr 150px 90px 40px}
-.erow.mat{grid-template-columns:1fr 90px 130px 40px}
+.erow.mat{grid-template-columns:38px 1fr 150px 110px 36px}
+/* icon picker */
+.imodal{position:fixed;inset:0;z-index:80;background:rgba(4,6,14,.72);display:none;align-items:flex-start;justify-content:center;padding:6vh 16px}
+.imodal.on{display:flex}
+.ibox{background:var(--panel);border:1px solid var(--line2);border-radius:16px;width:min(720px,100%);max-height:82vh;display:flex;flex-direction:column;box-shadow:var(--shadow)}
+.ihd{display:flex;gap:10px;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
+.ihd h3{font-family:"Cinzel",serif;margin:0;font-size:15px;color:var(--gold2);flex:none}
+.ihd input{flex:1}
+.igrid{overflow:auto;padding:12px;display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:8px}
+.igrid .ic{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 4px;border:1px solid var(--line);border-radius:9px;background:var(--bg2);cursor:pointer;text-align:center}
+.igrid .ic:hover{border-color:var(--gold);background:var(--panel2)}
+.igrid .ic img{width:36px;height:36px}
+.igrid .ic .nm{font-size:9.5px;color:var(--mut);line-height:1.15;max-height:24px;overflow:hidden}
+.igrid .ic .vn{font-size:9px;color:var(--dim);font-family:"JetBrains Mono",monospace}
+.ifoot{padding:8px 14px;border-top:1px solid var(--line);color:var(--dim);font-size:11.5px;display:flex;justify-content:space-between;align-items:center}
 .itemcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:10px;overflow:hidden}
 .itemhd{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);cursor:pointer}
 .itemhd .nm{font-weight:600}
@@ -173,6 +187,11 @@ input,select,textarea{font-family:inherit}
 </style>
 
 <div class="stars"></div>
+<div class="imodal" id="iconModal"><div class="ibox">
+  <div class="ihd"><h3>Alege iconiță</h3><input class="inp" id="iconSearch" placeholder="Caută după nume sau vnum…" autocomplete="off"><button class="btn ghost sm" onclick="closeIconModal()">Închide</button></div>
+  <div class="igrid" id="iconGrid"></div>
+  <div class="ifoot"><span id="iconCount"></span><span>bază m2icondb (~4250 iconițe)</span></div>
+</div></div>
 <aside class="sidebar" id="sidebar">
   <div class="brand">
     <svg width="26" height="26" viewBox="0 0 34 34"><polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/>
@@ -212,32 +231,7 @@ const iconURL=v=>v?`https://img.m2icondb.com/${String(v).padStart(5,"0")}.png`:"
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 // ===== catalog de start (import din admin). Fapte de joc; fara imaginile lui BaerimTools. =====
-const CATALOG={ v:2,
-  sections:[{id:"s_ch1",name:"Chapter 1",order:10},{id:"s_ch2",name:"Chapter 2",order:20},{id:"s_pvp",name:"PVP",order:30}],
-  cats:[
-    {id:"c_weapons",name:"Weapons",order:10,sec:"s_ch1"},{id:"c_armor",name:"Armor",order:20,sec:"s_ch1"},
-    {id:"c_helmets",name:"Helmets",order:30,sec:"s_ch1"},{id:"c_shields",name:"Shields",order:40,sec:"s_ch1"},
-    {id:"c_earrings",name:"Earrings",order:50,sec:"s_ch1"},{id:"c_bracelets",name:"Bracelets",order:60,sec:"s_ch1"},
-    {id:"c_necklaces",name:"Necklaces",order:70,sec:"s_ch1"},{id:"c_shoes",name:"Shoes",order:80,sec:"s_ch1"},
-    {id:"c_belts",name:"Belts",order:90,sec:"s_ch1"},{id:"c_fishmine",name:"Fishing / Mining",order:100,sec:"s_ch1"}],
-  mats:[
-    {id:"m_finger",name:"Finger Bones",vnum:0,price:0},{id:"m_shadowpearl",name:"Shadow Pearl",vnum:0,price:0},
-    {id:"m_water",name:"Water Crystal",vnum:0,price:100000},{id:"m_snake",name:"Snake Tail",vnum:0,price:0},
-    {id:"m_spider",name:"Spider Legs",vnum:0,price:0},{id:"m_bluecry",name:"Blue Crystal",vnum:0,price:300000},
-    {id:"m_whitepearl",name:"White Pearl",vnum:0,price:0},{id:"m_bluepearl",name:"Blue Pearl",vnum:0,price:0},
-    {id:"m_redpearl",name:"Red Pearl",vnum:0,price:0}],
-  items:[{ id:"i_75weapon",cat:"c_weapons",name:"75lvl weapon",icon:0,
-    desc:"Armă nivel 75. Materiale + taxe pe fiecare treaptă (date de pe Baerim).",kind:"upgrade",
-    recipe:[{m:"m_finger",q:3},{m:"m_shadowpearl",q:1}],
-    levels:[
-      {to:1,tax:750000,mats:[]},{to:2,tax:775000,mats:[]},{to:3,tax:790000,mats:[]},
-      {to:4,tax:800000,mats:[{m:"m_water",q:1},{m:"m_snake",q:1}]},
-      {to:5,tax:850000,mats:[{m:"m_water",q:2},{m:"m_snake",q:2}]},
-      {to:6,tax:900000,mats:[{m:"m_water",q:3},{m:"m_snake",q:3}]},
-      {to:7,tax:910000,mats:[{m:"m_spider",q:1},{m:"m_bluecry",q:2},{m:"m_whitepearl",q:1}]},
-      {to:8,tax:1200000,mats:[{m:"m_finger",q:2},{m:"m_bluepearl",q:2},{m:"m_snake",q:2}]},
-      {to:9,tax:1500000,mats:[{m:"m_spider",q:3},{m:"m_finger",q:3},{m:"m_redpearl",q:3}]}]}]
-};
+const CATALOG={"v":2,"sections":[{"id":"s_ch1","name":"Chapter 1","order":10},{"id":"s_ch2","name":"Chapter 2","order":20},{"id":"s_pvp","name":"PVP","order":30},{"id":"s_sys","name":"Sisteme","order":40}],"cats":[{"id":"c_weapons","name":"Weapons","order":10,"sec":"s_ch1"},{"id":"c_armor","name":"Armor","order":20,"sec":"s_ch1"},{"id":"c_helmets","name":"Helmets","order":30,"sec":"s_ch1"},{"id":"c_shields","name":"Shields","order":40,"sec":"s_ch1"},{"id":"c_earrings","name":"Earrings","order":50,"sec":"s_ch1"},{"id":"c_bracelets","name":"Bracelets","order":60,"sec":"s_ch1"},{"id":"c_necklaces","name":"Necklaces","order":70,"sec":"s_ch1"},{"id":"c_shoes","name":"Shoes","order":80,"sec":"s_ch1"},{"id":"c_belts","name":"Belts","order":90,"sec":"s_ch1"},{"id":"c_fishmine","name":"Fishing / Mining","order":100,"sec":"s_ch1"},{"id":"c_sys","name":"Sisteme","order":10,"sec":"s_sys"}],"mats":[{"id":"m_finger","name":"Finger Bones","vnum":30193,"price":0},{"id":"m_shadowpearl","name":"Shadow Pearl","vnum":0,"price":0},{"id":"m_water","name":"Water Crystal","vnum":30198,"price":100000},{"id":"m_snake","name":"Snake Tail","vnum":30022,"price":0},{"id":"m_spider","name":"Spider Legs","vnum":30059,"price":0},{"id":"m_bluecry","name":"Blue Crystal","vnum":30199,"price":300000},{"id":"m_whitepearl","name":"White Pearl","vnum":27992,"price":0},{"id":"m_bluepearl","name":"Blue Pearl","vnum":27993,"price":0},{"id":"m_redpearl","name":"Red Pearl","vnum":27994,"price":0}],"items":[{"id":"i_001","cat":"c_weapons","name":"75lvl weapon","icon":0,"desc":"","kind":"upgrade","recipe":[{"m":"m_finger","q":3},{"m":"m_shadowpearl","q":1}],"levels":[{"to":1,"tax":750000,"mats":[]},{"to":2,"tax":775000,"mats":[]},{"to":3,"tax":790000,"mats":[]},{"to":4,"tax":800000,"mats":[{"m":"m_water","q":1},{"m":"m_snake","q":1}]},{"to":5,"tax":850000,"mats":[{"m":"m_water","q":2},{"m":"m_snake","q":2}]},{"to":6,"tax":900000,"mats":[{"m":"m_water","q":3},{"m":"m_snake","q":3}]},{"to":7,"tax":910000,"mats":[{"m":"m_spider","q":1},{"m":"m_bluecry","q":2},{"m":"m_whitepearl","q":1}]},{"to":8,"tax":1200000,"mats":[{"m":"m_finger","q":2},{"m":"m_bluepearl","q":2},{"m":"m_snake","q":2}]},{"to":9,"tax":1500000,"mats":[{"m":"m_spider","q":3},{"m":"m_finger","q":3},{"m":"m_redpearl","q":3}]}]},{"id":"i_002","cat":"c_armor","name":"90-105 Armor","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_003","cat":"c_armor","name":"80-90 Armor","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_004","cat":"c_armor","name":"66-70 Armor","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_005","cat":"c_helmets","name":"100lvl Helmet","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_006","cat":"c_helmets","name":"60lvl Helmet","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_007","cat":"c_shields","name":"Three Emperors Shield","icon":13160,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_008","cat":"c_shields","name":"Titan Shield","icon":13140,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_009","cat":"c_earrings","name":"Soul Crystal Earrings","icon":17220,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_010","cat":"c_earrings","name":"46-54 Earrings","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_011","cat":"c_bracelets","name":"Soul Crystal Bracelet","icon":14220,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_012","cat":"c_bracelets","name":"46-54 Bracelets","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_013","cat":"c_necklaces","name":"Soul Crystal Necklace","icon":16220,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_014","cat":"c_necklaces","name":"46-54 Necklaces","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_015","cat":"c_necklaces","name":"Elemental Necklace","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_016","cat":"c_shoes","name":"75lvl Shoes","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_017","cat":"c_shoes","name":"51-59 Shoes","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_018","cat":"c_shoes","name":"Elemental Shoes","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_019","cat":"c_belts","name":"105lvl Belts","icon":0,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_020","cat":"c_belts","name":"Belt of Wisdom","icon":18030,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_021","cat":"c_belts","name":"Linen Belt","icon":18000,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_022","cat":"c_fishmine","name":"Pickaxe","icon":29101,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_023","cat":"c_fishmine","name":"Fishing Pole","icon":27400,"desc":"","kind":"upgrade","recipe":[],"levels":[]},{"id":"i_024","cat":"c_sys","name":"Harta interactivă Mokoko","icon":0,"desc":"Sistem — în lucru.","kind":"info","recipe":[],"levels":[]},{"id":"i_025","cat":"c_sys","name":"Calculator Metin","icon":0,"desc":"Sistem — în lucru.","kind":"info","recipe":[],"levels":[]},{"id":"i_026","cat":"c_sys","name":"Sistem de culori","icon":0,"desc":"Sistem — în lucru.","kind":"info","recipe":[],"levels":[]},{"id":"i_027","cat":"c_sys","name":"Bonusuri","icon":0,"desc":"Sistem — în lucru.","kind":"info","recipe":[],"levels":[]},{"id":"i_028","cat":"c_sys","name":"Alchimie","icon":0,"desc":"Sistem — în lucru.","kind":"info","recipe":[],"levels":[]},{"id":"i_029","cat":"c_sys","name":"Explorare","icon":0,"desc":"Sistem — în lucru.","kind":"info","recipe":[],"levels":[]}]};
 
 let DB=null, isAdmin=false, view={type:"home"}, atab="sec";
 
@@ -445,12 +439,13 @@ function delCat(id){ if(itemsOf(id).length && !confirm("Categoria are iteme. Șt
 // -- materiale --
 function edMats(){
   const list=(DB.mats||[]).map(m=>`<div class="erow mat">
+    <span class="iconprev" id="mpv_${m.id}">${m.vnum?`<img src="${iconURL(m.vnum)}" onerror="this.style.display='none'">`:"·"}</span>
     <input class="inp" value="${esc(m.name)}" oninput="setField('mat','${m.id}','name',this.value)" placeholder="nume">
-    <input class="inp num" type="number" value="${m.vnum||""}" oninput="setField('mat','${m.id}','vnum',this.value)" placeholder="vnum">
+    <div class="row" style="gap:4px"><input class="inp num" style="flex:1;min-width:0" type="number" value="${m.vnum||""}" oninput="setField('mat','${m.id}','vnum',this.value);updMatPrev('${m.id}',this.value)" placeholder="vnum"><button class="btn ghost sm" type="button" onclick="pickIcon('mat','${m.id}')">🔍</button></div>
     <input class="inp num" type="number" value="${m.price||0}" oninput="setField('mat','${m.id}','price',this.value)" placeholder="preț bază">
     <button class="btn danger sm" onclick="delMat('${m.id}')">✕</button></div>`).join("");
   $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Baza de prețuri. „vnum" = id-ul itemului pentru iconiță (m2icondb). Prețul de aici e citit de toate calculatoarele.</div>
-    <div class="erow mat" style="background:transparent;border:0;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px"><span>Nume</span><span>vnum</span><span>Preț bază</span><span></span></div>
+    <div class="erow mat" style="background:transparent;border:0;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px"><span></span><span>Nume</span><span>vnum</span><span>Preț bază</span><span></span></div>
     ${list}<button class="btn ghost sm" onclick="addMat()">+ Material</button>`;
 }
 function addMat(){ DB.mats=DB.mats||[]; DB.mats.push({id:uid("m"),name:"Material nou",vnum:0,price:0}); dirty(); edMats(); }
@@ -471,7 +466,7 @@ function edItems(focusId){
         <div class="grid2f">
           <div class="field"><label>Nume</label><input class="inp" value="${esc(it.name)}" oninput="setField('item','${it.id}','name',this.value);document.querySelector('#ic_${it.id} .nm').textContent=this.value"></div>
           <div class="field"><label>Categorie</label><select class="inp" onchange="setField('item','${it.id}','cat',this.value);buildNav()">${opts.replace(`value="${it.cat}"`,`value="${it.cat}" selected`)}</select></div>
-          <div class="field"><label>Iconiță (vnum m2icondb)</label><input class="inp num" type="number" value="${it.icon||""}" placeholder="ex. 40817" oninput="setField('item','${it.id}','icon',this.value);updIconPrev('${it.id}',this.value)"></div>
+          <div class="field"><label>Iconiță (vnum m2icondb)</label><div class="row"><input class="inp num" style="flex:1" type="number" value="${it.icon||""}" placeholder="ex. 40817" oninput="setField('item','${it.id}','icon',this.value);updIconPrev('${it.id}',this.value)"><button class="btn ghost sm" type="button" onclick="pickIcon('item','${it.id}')">🔍 Alege</button></div></div>
           <div class="field"><label>Tip</label><select class="inp" onchange="setField('item','${it.id}','kind',this.value);renderAdmin('${it.id}')">
             <option value="upgrade"${it.kind==="upgrade"?" selected":""}>Upgrade (cu matrice)</option>
             <option value="info"${it.kind==="info"?" selected":""}>Info (doar text)</option></select></div>
@@ -532,6 +527,33 @@ async function saveDB(){
   }catch(e){ mark("Eroare de rețea."); }
 }
 window.addEventListener("beforeunload",e=>{ if(dirtyFlag){ e.preventDefault(); e.returnValue=""; } });
+
+// ===== icon picker (baza interna m2icondb, /icons.json) =====
+let ICONS=null, iconTarget=null;
+async function loadIcons(){ if(ICONS)return ICONS; try{ICONS=await fetch('/icons.json').then(r=>r.json());}catch(e){ICONS=[];} return ICONS; }
+async function pickIcon(kind,id){
+  iconTarget={kind,id}; $("#iconModal").classList.add("on");
+  const s=$("#iconSearch"); s.value=""; $("#iconGrid").innerHTML='<div class="dim" style="padding:20px">Se încarcă…</div>';
+  await loadIcons(); renderIconGrid(""); s.focus();
+}
+function closeIconModal(){ $("#iconModal").classList.remove("on"); iconTarget=null; }
+function renderIconGrid(q){
+  q=(q||"").trim().toLowerCase(); let list=ICONS||[];
+  if(q){ const num=/^\d+$/.test(q); list=list.filter(e=> e.n.toLowerCase().includes(q) || (num&&String(e.i).includes(q)) ); }
+  const shown=list.slice(0,300);
+  $("#iconGrid").innerHTML=shown.map(e=>`<div class="ic" onclick="chooseIcon(${e.c})" title="${esc(e.n)} · ${e.i}">
+    <img src="${iconURL(e.c)}" loading="lazy" onerror="this.style.visibility='hidden'"><span class="nm">${esc(e.n)}</span><span class="vn">${e.i}</span></div>`).join("")
+    || '<div class="dim" style="padding:20px">Nimic găsit.</div>';
+  const s=$("#iconCount"); if(s)s.textContent=`${list.length} rezultate`+(list.length>300?" (arăt 300)":"");
+}
+function chooseIcon(vnum){
+  if(!iconTarget)return; const {kind,id}=iconTarget; closeIconModal();
+  if(kind==="item"){ setField('item',id,'icon',vnum); renderAdmin(id); }
+  else { setField('mat',id,'vnum',vnum); renderAdmin(); }
+}
+function updMatPrev(id,v){ const el=document.getElementById("mpv_"+id); if(el)el.innerHTML=v?`<img src="${iconURL(v)}" onerror="this.style.display='none'">`:"·"; }
+$("#iconSearch").addEventListener("input",e=>renderIconGrid(e.target.value));
+$("#iconModal").addEventListener("click",e=>{ if(e.target.id==="iconModal")closeIconModal(); });
 
 boot();
 </script>
