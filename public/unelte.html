@@ -206,6 +206,8 @@ input,select,textarea{font-family:inherit}
 .mktip{position:absolute;transform:translate(-50%,-150%);background:#0b1020;border:1px solid var(--gold);
   color:var(--gold2);font-family:"JetBrains Mono",monospace;font-size:12px;padding:3px 8px;border-radius:6px;
   white-space:nowrap;pointer-events:none;z-index:6}
+.sblang{padding:0 14px 8px}.sblang select{width:100%;padding:8px 10px;border-radius:8px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-size:13px;font-family:inherit}
+.sblang select:focus{outline:2px solid rgba(231,185,84,.4);border-color:var(--gold)}
 </style>
 
 <div class="stars"></div>
@@ -221,10 +223,11 @@ input,select,textarea{font-family:inherit}
       <polygon points="17,2 17,17 2,17" fill="#e7b954"/><polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>
     <div><h1>deliricbae</h1><div class="sub">Unelte Baerim</div></div>
   </div>
+  <div class="sblang"><select id="langSel" onchange="setLang(this.value)" aria-label="Language"><option value="ro">Română</option><option value="en">English</option><option value="de">Deutsch</option><option value="pl">Polski</option><option value="tr">Türkçe</option><option value="fr">Français</option><option value="es">Español</option></select></div>
   <div class="sbsearch"><input id="search" placeholder="Caută item…" autocomplete="off"></div>
   <nav class="nav" id="nav"></nav>
   <div class="sbfoot">
-    <div class="navitem" onclick="location.href='/'"><span class="dot"></span> ← Înapoi la site</div>
+    <div class="navitem" id="backLink" onclick="location.href='/'"><span class="dot"></span> ← Înapoi la site</div>
     <div class="navitem adm" id="adminNav"><span class="dot" style="background:var(--gold)"></span> Admin</div>
   </div>
 </aside>
@@ -257,6 +260,17 @@ const CATALOG={"v":2,"sections":[{"id":"s_ch1","name":"Chapter 1","order":10},{"
 const MOKOKO=[{"id":"a1","name":"Joan","kingdom":"Shinsoo","img":"/maps/a1.webp","w":1024,"h":1280,"sx":1.0,"sy":1.0,"n":34,"coords":[{"x":652,"y":349},{"x":619,"y":401},{"x":614,"y":459},{"x":730,"y":107},{"x":623,"y":614},{"x":399,"y":1079},{"x":321,"y":893},{"x":332,"y":227},{"x":647,"y":464},{"x":733,"y":512},{"x":551,"y":534},{"x":525,"y":631},{"x":713,"y":621},{"x":872,"y":499},{"x":940,"y":298},{"x":847,"y":183},{"x":844,"y":85},{"x":109,"y":311},{"x":124,"y":339},{"x":74,"y":603},{"x":117,"y":817},{"x":111,"y":1070},{"x":271,"y":1149},{"x":252,"y":962},{"x":445,"y":709},{"x":475,"y":543},{"x":488,"y":563},{"x":192,"y":449},{"x":170,"y":902},{"x":78,"y":1077},{"x":976,"y":214},{"x":333,"y":1116},{"x":245,"y":1038},{"x":638,"y":374}]},{"id":"a2","name":"Jayang","kingdom":"Shinsoo","img":"/maps/a2.webp","w":1536,"h":1536,"sx":1.0,"sy":1.0,"n":35,"coords":[{"x":560,"y":413},{"x":492,"y":467},{"x":338,"y":890},{"x":503,"y":1239},{"x":361,"y":462},{"x":669,"y":867},{"x":435,"y":1179},{"x":761,"y":1236},{"x":896,"y":1305},{"x":1025,"y":474},{"x":964,"y":438},{"x":888,"y":305},{"x":243,"y":464},{"x":102,"y":300},{"x":101,"y":169},{"x":180,"y":137},{"x":261,"y":164},{"x":385,"y":147},{"x":535,"y":202},{"x":518,"y":146},{"x":445,"y":865},{"x":383,"y":1061},{"x":869,"y":557},{"x":769,"y":562},{"x":488,"y":1077},{"x":716,"y":563},{"x":570,"y":739},{"x":631,"y":825},{"x":453,"y":312},{"x":500,"y":339},{"x":684,"y":923},{"x":609,"y":569},{"x":210,"y":224},{"x":675,"y":634},{"x":805,"y":926}]},{"id":"a3","name":"Songkyung","kingdom":"Shinsoo","img":"/maps/a3.webp","w":1024,"h":1024,"sx":1.0,"sy":1.0,"n":35,"coords":[{"x":706,"y":675},{"x":694,"y":595},{"x":677,"y":519},{"x":811,"y":364},{"x":919,"y":193},{"x":357,"y":222},{"x":794,"y":276},{"x":137,"y":700},{"x":121,"y":352},{"x":177,"y":623},{"x":39,"y":446},{"x":79,"y":527},{"x":163,"y":847},{"x":668,"y":536},{"x":387,"y":935},{"x":205,"y":244},{"x":437,"y":23},{"x":122,"y":85},{"x":477,"y":948},{"x":597,"y":164},{"x":773,"y":87},{"x":733,"y":61},{"x":758,"y":807},{"x":437,"y":556},{"x":527,"y":555},{"x":868,"y":880},{"x":412,"y":622},{"x":403,"y":655},{"x":459,"y":556},{"x":941,"y":426},{"x":1004,"y":554},{"x":496,"y":629},{"x":342,"y":816},{"x":242,"y":877},{"x":637,"y":43}]},{"id":"b1","name":"Pyungmoo","kingdom":"Chunjo","img":"/maps/b1.webp","w":1024,"h":1280,"sx":1.0,"sy":1.0,"n":41,"coords":[{"x":621,"y":679},{"x":546,"y":599},{"x":540,"y":481},{"x":523,"y":358},{"x":382,"y":493},{"x":536,"y":406},{"x":411,"y":940},{"x":733,"y":350},{"x":483,"y":366},{"x":574,"y":768},{"x":546,"y":801},{"x":513,"y":745},{"x":711,"y":312},{"x":459,"y":849},{"x":592,"y":1175},{"x":743,"y":598},{"x":774,"y":613},{"x":483,"y":705},{"x":452,"y":984},{"x":892,"y":832},{"x":911,"y":567},{"x":826,"y":412},{"x":920,"y":528},{"x":777,"y":546},{"x":432,"y":857},{"x":898,"y":797},{"x":712,"y":1070},{"x":833,"y":906},{"x":221,"y":763},{"x":935,"y":1014},{"x":203,"y":551},{"x":304,"y":431},{"x":670,"y":1167},{"x":476,"y":923},{"x":388,"y":854},{"x":482,"y":974},{"x":346,"y":832},{"x":243,"y":418},{"x":473,"y":378},{"x":596,"y":387},{"x":529,"y":564}]},{"id":"b3","name":"Bokjung","kingdom":"Chunjo","img":"/maps/b3.webp","w":1024,"h":1024,"sx":1.0,"sy":1.0,"n":26,"coords":[{"x":429,"y":381},{"x":466,"y":269},{"x":365,"y":80},{"x":295,"y":144},{"x":502,"y":162},{"x":775,"y":902},{"x":885,"y":195},{"x":465,"y":727},{"x":866,"y":525},{"x":904,"y":485},{"x":432,"y":832},{"x":434,"y":407},{"x":885,"y":579},{"x":905,"y":418},{"x":832,"y":147},{"x":226,"y":850},{"x":152,"y":522},{"x":143,"y":636},{"x":892,"y":853},{"x":202,"y":894},{"x":851,"y":895},{"x":726,"y":812},{"x":896,"y":719},{"x":793,"y":139},{"x":632,"y":122},{"x":452,"y":399}]},{"id":"c1","name":"Yongan","kingdom":"Jinno","img":"/maps/c1.webp","w":1024,"h":1280,"sx":1.0,"sy":1.0,"n":37,"coords":[{"x":380,"y":754},{"x":106,"y":1088},{"x":343,"y":759},{"x":358,"y":745},{"x":427,"y":479},{"x":812,"y":367},{"x":456,"y":674},{"x":334,"y":849},{"x":272,"y":813},{"x":720,"y":115},{"x":298,"y":804},{"x":256,"y":628},{"x":479,"y":569},{"x":231,"y":1012},{"x":428,"y":671},{"x":542,"y":505},{"x":777,"y":484},{"x":536,"y":359},{"x":837,"y":270},{"x":817,"y":291},{"x":775,"y":216},{"x":720,"y":123},{"x":589,"y":109},{"x":419,"y":141},{"x":437,"y":109},{"x":282,"y":226},{"x":140,"y":99},{"x":47,"y":337},{"x":96,"y":388},{"x":290,"y":471},{"x":166,"y":530},{"x":195,"y":566},{"x":196,"y":584},{"x":79,"y":833},{"x":106,"y":967},{"x":193,"y":733},{"x":127,"y":1143}]},{"id":"c3","name":"Bakra","kingdom":"Jinno","img":"/maps/c3.webp","w":1024,"h":1024,"sx":1.0,"sy":1.0,"n":35,"coords":[{"x":480,"y":363},{"x":349,"y":219},{"x":711,"y":102},{"x":907,"y":146},{"x":528,"y":51},{"x":617,"y":178},{"x":924,"y":189},{"x":912,"y":636},{"x":304,"y":511},{"x":816,"y":240},{"x":394,"y":855},{"x":233,"y":660},{"x":378,"y":438},{"x":468,"y":493},{"x":413,"y":584},{"x":917,"y":805},{"x":401,"y":319},{"x":376,"y":391},{"x":141,"y":525},{"x":390,"y":510},{"x":355,"y":449},{"x":172,"y":772},{"x":389,"y":524},{"x":667,"y":757},{"x":530,"y":574},{"x":261,"y":784},{"x":414,"y":937},{"x":852,"y":399},{"x":921,"y":913},{"x":866,"y":461},{"x":138,"y":846},{"x":570,"y":791},{"x":275,"y":77},{"x":827,"y":897},{"x":394,"y":293}]},{"id":"milgyo","name":"Seungryong Valley","kingdom":"Neutral","img":"/maps/milgyo.webp","w":1024,"h":1024,"sx":1.0,"sy":1.0,"n":20,"coords":[{"x":83,"y":921},{"x":92,"y":852},{"x":234,"y":692},{"x":118,"y":292},{"x":224,"y":230},{"x":192,"y":61},{"x":531,"y":116},{"x":684,"y":196},{"x":714,"y":86},{"x":863,"y":65},{"x":917,"y":236},{"x":963,"y":202},{"x":952,"y":398},{"x":796,"y":827},{"x":562,"y":803},{"x":581,"y":866},{"x":512,"y":572},{"x":548,"y":482},{"x":363,"y":533},{"x":84,"y":893}]},{"id":"desert","name":"Yongbi Desert","kingdom":"Neutral","img":"/maps/desert.webp","w":1536,"h":1536,"sx":1.0,"sy":1.0,"n":34,"coords":[{"x":947,"y":567},{"x":112,"y":1385},{"x":842,"y":590},{"x":907,"y":502},{"x":1425,"y":766},{"x":288,"y":1351},{"x":1064,"y":341},{"x":990,"y":267},{"x":318,"y":1085},{"x":153,"y":910},{"x":979,"y":465},{"x":591,"y":1107},{"x":945,"y":580},{"x":963,"y":321},{"x":213,"y":1093},{"x":900,"y":317},{"x":779,"y":384},{"x":817,"y":374},{"x":742,"y":355},{"x":677,"y":581},{"x":149,"y":1445},{"x":1408,"y":1424},{"x":1437,"y":1410},{"x":1470,"y":1351},{"x":1419,"y":1342},{"x":806,"y":953},{"x":1198,"y":1229},{"x":433,"y":1047},{"x":400,"y":1218},{"x":164,"y":980},{"x":434,"y":720},{"x":696,"y":370},{"x":685,"y":548},{"x":1182,"y":1145}]},{"id":"flame","name":"Land of Fire","kingdom":"Neutral","img":"/maps/flame.webp","w":1536,"h":1536,"sx":1.0,"sy":1.0,"n":27,"coords":[{"x":1482,"y":1346},{"x":1121,"y":1206},{"x":1365,"y":1277},{"x":1433,"y":1183},{"x":138,"y":349},{"x":187,"y":218},{"x":661,"y":278},{"x":1486,"y":1100},{"x":123,"y":651},{"x":1349,"y":207},{"x":1014,"y":944},{"x":834,"y":1147},{"x":1199,"y":1375},{"x":823,"y":1224},{"x":715,"y":1036},{"x":389,"y":1047},{"x":417,"y":1211},{"x":64,"y":1186},{"x":226,"y":1060},{"x":260,"y":913},{"x":40,"y":760},{"x":1482,"y":92},{"x":1050,"y":290},{"x":748,"y":249},{"x":679,"y":135},{"x":588,"y":52},{"x":119,"y":289}]},{"id":"sohan","name":"Mount Sohan","kingdom":"Neutral","img":"/maps/sohan.webp","w":1254,"h":1254,"sx":0.82,"sy":0.82,"n":32,"coords":[{"x":612,"y":529},{"x":621,"y":650},{"x":655,"y":470},{"x":417,"y":350},{"x":835,"y":767},{"x":773,"y":804},{"x":641,"y":776},{"x":722,"y":879},{"x":689,"y":889},{"x":578,"y":886},{"x":268,"y":823},{"x":207,"y":880},{"x":148,"y":933},{"x":248,"y":1139},{"x":268,"y":1380},{"x":680,"y":879},{"x":1010,"y":660},{"x":1272,"y":774},{"x":1322,"y":756},{"x":1441,"y":1132},{"x":1235,"y":1367},{"x":1224,"y":1231},{"x":1291,"y":981},{"x":1429,"y":1415},{"x":1315,"y":788},{"x":808,"y":637},{"x":704,"y":576},{"x":364,"y":544},{"x":281,"y":560},{"x":503,"y":1447},{"x":716,"y":1357},{"x":823,"y":1346}]},{"id":"trent","name":"Red Wood","kingdom":"Neutral","img":"/maps/trent.webp","w":768,"h":768,"sx":1.0,"sy":1.0,"n":26,"coords":[{"x":648,"y":721},{"x":687,"y":675},{"x":142,"y":725},{"x":440,"y":448},{"x":295,"y":705},{"x":415,"y":234},{"x":120,"y":388},{"x":67,"y":715},{"x":122,"y":248},{"x":732,"y":632},{"x":427,"y":676},{"x":456,"y":713},{"x":319,"y":624},{"x":185,"y":613},{"x":80,"y":731},{"x":25,"y":301},{"x":696,"y":455},{"x":574,"y":380},{"x":448,"y":390},{"x":542,"y":302},{"x":428,"y":316},{"x":369,"y":355},{"x":294,"y":61},{"x":620,"y":299},{"x":722,"y":36},{"x":725,"y":115}]},{"id":"grotto","name":"Grotto of Exile","kingdom":"Neutral","img":"/maps/grotto.webp","w":1254,"h":1254,"sx":0.81,"sy":0.81,"n":16,"coords":[{"x":186,"y":71},{"x":153,"y":92},{"x":88,"y":156},{"x":342,"y":615},{"x":302,"y":484},{"x":327,"y":114},{"x":308,"y":168},{"x":232,"y":192},{"x":162,"y":167},{"x":488,"y":768},{"x":517,"y":1049},{"x":1348,"y":152},{"x":716,"y":994},{"x":676,"y":1423},{"x":1329,"y":721},{"x":1322,"y":1369}]},{"id":"dragoncape","name":"Dragon Flame Cape","kingdom":"Neutral","img":"/maps/dragoncape.webp","w":1254,"h":1254,"sx":0.61,"sy":0.61,"n":41,"coords":[{"x":1558,"y":1874},{"x":1480,"y":1833},{"x":210,"y":629},{"x":708,"y":1834},{"x":1169,"y":1919},{"x":1192,"y":1712},{"x":1380,"y":1952},{"x":337,"y":1133},{"x":623,"y":1798},{"x":168,"y":290},{"x":228,"y":442},{"x":197,"y":1997},{"x":338,"y":113},{"x":78,"y":763},{"x":234,"y":107},{"x":84,"y":919},{"x":1744,"y":571},{"x":119,"y":280},{"x":1208,"y":1566},{"x":1924,"y":229},{"x":680,"y":280},{"x":234,"y":692},{"x":1955,"y":955},{"x":292,"y":138},{"x":1865,"y":665},{"x":1689,"y":99},{"x":1867,"y":1045},{"x":1651,"y":592},{"x":1706,"y":713},{"x":291,"y":1228},{"x":1214,"y":1023},{"x":1221,"y":1535},{"x":295,"y":1994},{"x":383,"y":1894},{"x":615,"y":1984},{"x":956,"y":1676},{"x":1199,"y":1907},{"x":1264,"y":1715},{"x":1249,"y":1942},{"x":1160,"y":1788},{"x":1454,"y":1883}]},{"id":"spidercave","name":"Hwang Temple","kingdom":"Neutral","img":"/maps/spidercave.webp","w":405,"h":387,"sx":0.69,"sy":0.69,"n":8,"coords":[{"x":112,"y":224},{"x":159,"y":163},{"x":209,"y":206},{"x":316,"y":164},{"x":201,"y":404},{"x":304,"y":421},{"x":274,"y":336},{"x":420,"y":400}]}];
 
 let DB=null, isAdmin=false, view={type:"home"}, atab="sec";
+const LANG={"ro": {"search": "Caută item…", "back": "Înapoi la site", "tools_sub": "Unelte Baerim", "tools": "Unelte", "home_desc": "Alege un item din stânga (Chapter → categorie → item) pentru calculatorul de upgrade cu materiale. Prețurile le setezi în „Materiale\" și rămân salvate pentru tine.", "sections": "Secțiuni", "categories": "categorii", "home_empty": "Nimic încă. Intră în Admin → Importă catalog, sau adaugă manual.", "upgrade": "Îmbunătățire", "material": "Material", "price": "Preț", "chance": "Șansă", "total_tm": "Total (taxe + materiale)", "craft": "Rețetă craft", "price_hint": "Prețurile materialelor se setează în {L} și rămân salvate pentru tine.", "materials": "Materiale", "no_upgrade": "Fără tabel de upgrade.", "edit": "Editează", "edit_base": "Editează baza", "mat_title": "Materiale & prețuri", "mat_desc": "Prețul „de bază\" e setat de admin. Poți pune prețul tău (dreapta) — se salvează doar pentru tine.", "col_base": "Preț bază", "col_mine": "Prețul meu", "ph_mine": "al meu…", "no_mats": "Niciun material încă.", "mokoko_title": "Harta interactivă Mokoko", "mokoko_crumb": "Harta Mokoko", "systems": "Sisteme", "mokoko_desc": "Alege harta din stânga. Treci cu mouse-ul peste un punct ca să vezi coordonatele; clic = bifat (se salvează pentru tine).", "collected": "colectate", "reset": "Reset", "hide_done": "Ascunde bifate", "empty": "(gol)"}, "en": {"search": "Search item…", "back": "Back to site", "tools_sub": "Baerim Tools", "tools": "Tools", "home_desc": "Choose an item on the left (Chapter → category → item) for the upgrade calculator with materials. Set prices in \"Materials\" — they stay saved for you.", "sections": "Sections", "categories": "categories", "home_empty": "Nothing yet. Go to Admin → Import catalog, or add manually.", "upgrade": "Upgrade", "material": "Material", "price": "Price", "chance": "Chance", "total_tm": "Total (tax + materials)", "craft": "Craft recipe", "price_hint": "Material prices are set in {L} and stay saved for you.", "materials": "Materials", "no_upgrade": "No upgrade table.", "edit": "Edit", "edit_base": "Edit base", "mat_title": "Materials & prices", "mat_desc": "The \"base\" price is set by the admin. You can set your own price (right) — saved only for you.", "col_base": "Base price", "col_mine": "My price", "ph_mine": "mine…", "no_mats": "No materials yet.", "mokoko_title": "Interactive Mokoko Map", "mokoko_crumb": "Mokoko Map", "systems": "Systems", "mokoko_desc": "Choose a map on the left. Hover a point to see its coordinates; click = collected (saved for you).", "collected": "collected", "reset": "Reset", "hide_done": "Hide collected", "empty": "(empty)"}, "de": {"search": "Item suchen…", "back": "Zurück zur Seite", "tools_sub": "Baerim Werkzeuge", "tools": "Werkzeuge", "home_desc": "Wähle links ein Item (Chapter → Kategorie → Item) für den Aufwertungsrechner mit Materialien. Preise stellst du unter „Materialien\" ein – sie werden für dich gespeichert.", "sections": "Bereiche", "categories": "Kategorien", "home_empty": "Noch nichts. Gehe zu Admin → Katalog importieren, oder füge manuell hinzu.", "upgrade": "Aufwertung", "material": "Material", "price": "Preis", "chance": "Chance", "total_tm": "Gesamt (Steuer + Materialien)", "craft": "Herstellungsrezept", "price_hint": "Materialpreise werden unter {L} eingestellt und für dich gespeichert.", "materials": "Materialien", "no_upgrade": "Keine Aufwertungstabelle.", "edit": "Bearbeiten", "edit_base": "Basis bearbeiten", "mat_title": "Materialien & Preise", "mat_desc": "Der „Basis\"-Preis wird vom Admin festgelegt. Du kannst deinen eigenen Preis (rechts) setzen – nur für dich gespeichert.", "col_base": "Basispreis", "col_mine": "Mein Preis", "ph_mine": "meiner…", "no_mats": "Noch keine Materialien.", "mokoko_title": "Interaktive Mokoko-Karte", "mokoko_crumb": "Mokoko-Karte", "systems": "Systeme", "mokoko_desc": "Wähle links eine Karte. Fahre über einen Punkt für die Koordinaten; Klick = gesammelt (für dich gespeichert).", "collected": "gesammelt", "reset": "Zurücksetzen", "hide_done": "Gesammelte ausblenden", "empty": "(leer)"}, "pl": {"search": "Szukaj przedmiotu…", "back": "Powrót do strony", "tools_sub": "Narzędzia Baerim", "tools": "Narzędzia", "home_desc": "Wybierz przedmiot po lewej (Chapter → kategoria → przedmiot), aby użyć kalkulatora ulepszeń z materiałami. Ceny ustawiasz w „Materiały\" – są zapisywane dla Ciebie.", "sections": "Sekcje", "categories": "kategorie", "home_empty": "Jeszcze nic. Wejdź w Admin → Importuj katalog, lub dodaj ręcznie.", "upgrade": "Ulepszenie", "material": "Materiał", "price": "Cena", "chance": "Szansa", "total_tm": "Razem (opłata + materiały)", "craft": "Receptura", "price_hint": "Ceny materiałów ustawiasz w {L} i są zapisywane dla Ciebie.", "materials": "Materiały", "no_upgrade": "Brak tabeli ulepszeń.", "edit": "Edytuj", "edit_base": "Edytuj bazę", "mat_title": "Materiały i ceny", "mat_desc": "Cena „bazowa\" jest ustawiana przez admina. Możesz ustawić własną cenę (po prawej) – zapisywana tylko dla Ciebie.", "col_base": "Cena bazowa", "col_mine": "Moja cena", "ph_mine": "moja…", "no_mats": "Brak materiałów.", "mokoko_title": "Interaktywna mapa Mokoko", "mokoko_crumb": "Mapa Mokoko", "systems": "Systemy", "mokoko_desc": "Wybierz mapę po lewej. Najedź na punkt, aby zobaczyć współrzędne; kliknięcie = zebrane (zapisywane dla Ciebie).", "collected": "zebrane", "reset": "Resetuj", "hide_done": "Ukryj zebrane", "empty": "(pusto)"}, "tr": {"search": "Eşya ara…", "back": "Siteye dön", "tools_sub": "Baerim Araçları", "tools": "Araçlar", "home_desc": "Soldan bir eşya seç (Chapter → kategori → eşya) ve malzemeli yükseltme hesaplayıcısını kullan. Fiyatları „Malzemeler\"de ayarlarsın – sana özel kaydedilir.", "sections": "Bölümler", "categories": "kategori", "home_empty": "Henüz yok. Admin → Kataloğu içe aktar'a gir veya elle ekle.", "upgrade": "Yükseltme", "material": "Malzeme", "price": "Fiyat", "chance": "Şans", "total_tm": "Toplam (vergi + malzeme)", "craft": "Üretim tarifi", "price_hint": "Malzeme fiyatları {L} bölümünde ayarlanır ve sana özel kaydedilir.", "materials": "Malzemeler", "no_upgrade": "Yükseltme tablosu yok.", "edit": "Düzenle", "edit_base": "Tabanı düzenle", "mat_title": "Malzemeler ve fiyatlar", "mat_desc": "„Temel\" fiyat admin tarafından ayarlanır. Kendi fiyatını (sağda) girebilirsin – sadece sana özel kaydedilir.", "col_base": "Temel fiyat", "col_mine": "Fiyatım", "ph_mine": "benim…", "no_mats": "Henüz malzeme yok.", "mokoko_title": "Etkileşimli Mokoko Haritası", "mokoko_crumb": "Mokoko Haritası", "systems": "Sistemler", "mokoko_desc": "Soldan bir harita seç. Koordinatları görmek için bir noktanın üzerine gel; tıkla = toplandı (sana özel kaydedilir).", "collected": "toplandı", "reset": "Sıfırla", "hide_done": "Toplananları gizle", "empty": "(boş)"}, "fr": {"search": "Rechercher…", "back": "Retour au site", "tools_sub": "Outils Baerim", "tools": "Outils", "home_desc": "Choisis un objet à gauche (Chapter → catégorie → objet) pour le calculateur d'amélioration avec matériaux. Règle les prix dans « Matériaux » — ils sont enregistrés pour toi.", "sections": "Sections", "categories": "catégories", "home_empty": "Rien pour l'instant. Va dans Admin → Importer le catalogue, ou ajoute manuellement.", "upgrade": "Amélioration", "material": "Matériau", "price": "Prix", "chance": "Chance", "total_tm": "Total (taxe + matériaux)", "craft": "Recette d'artisanat", "price_hint": "Les prix des matériaux se règlent dans {L} et sont enregistrés pour toi.", "materials": "Matériaux", "no_upgrade": "Pas de table d'amélioration.", "edit": "Modifier", "edit_base": "Modifier la base", "mat_title": "Matériaux et prix", "mat_desc": "Le prix « de base » est défini par l'admin. Tu peux mettre ton propre prix (à droite) — enregistré seulement pour toi.", "col_base": "Prix de base", "col_mine": "Mon prix", "ph_mine": "le mien…", "no_mats": "Aucun matériau.", "mokoko_title": "Carte Mokoko interactive", "mokoko_crumb": "Carte Mokoko", "systems": "Systèmes", "mokoko_desc": "Choisis une carte à gauche. Survole un point pour voir ses coordonnées ; clic = collecté (enregistré pour toi).", "collected": "collectés", "reset": "Réinitialiser", "hide_done": "Masquer les collectés", "empty": "(vide)"}, "es": {"search": "Buscar objeto…", "back": "Volver al sitio", "tools_sub": "Herramientas Baerim", "tools": "Herramientas", "home_desc": "Elige un objeto a la izquierda (Chapter → categoría → objeto) para la calculadora de mejora con materiales. Ajusta los precios en «Materiales»: se guardan para ti.", "sections": "Secciones", "categories": "categorías", "home_empty": "Nada aún. Ve a Admin → Importar catálogo, o añade manualmente.", "upgrade": "Mejora", "material": "Material", "price": "Precio", "chance": "Probabilidad", "total_tm": "Total (tasa + materiales)", "craft": "Receta de fabricación", "price_hint": "Los precios de materiales se ajustan en {L} y se guardan para ti.", "materials": "Materiales", "no_upgrade": "Sin tabla de mejora.", "edit": "Editar", "edit_base": "Editar base", "mat_title": "Materiales y precios", "mat_desc": "El precio «base» lo fija el admin. Puedes poner tu propio precio (derecha): se guarda solo para ti.", "col_base": "Precio base", "col_mine": "Mi precio", "ph_mine": "el mío…", "no_mats": "Aún no hay materiales.", "mokoko_title": "Mapa interactivo de Mokoko", "mokoko_crumb": "Mapa Mokoko", "systems": "Sistemas", "mokoko_desc": "Elige un mapa a la izquierda. Pasa el ratón por un punto para ver sus coordenadas; clic = recogido (se guarda para ti).", "collected": "recogidos", "reset": "Reiniciar", "hide_done": "Ocultar recogidos", "empty": "(vacío)"}};
+let curLang=(function(){try{var s=localStorage.getItem('db_lang');if(s&&LANG[s])return s;}catch(e){}var n=(navigator.language||'ro').slice(0,2).toLowerCase();return LANG[n]?n:'ro';})();
+function t(k){return (LANG[curLang]&&LANG[curLang][k])||LANG.en[k]||k;}
+function mkPriceHint(){return t('price_hint').replace('{L}',"<a href='#' onclick='routeMateriale();return false'>"+t('materials')+"</a>");}
+function applyStatic(){var s=document.getElementById('search');if(s)s.placeholder=t('search');
+  var b=document.getElementById('backLink');if(b)b.innerHTML='<span class="dot"></span> ← '+t('back');
+  var sub=document.querySelector('.brand .sub');if(sub)sub.textContent=t('tools_sub');
+  var l=document.getElementById('langSel');if(l)l.value=curLang;}
+function reRoute(){var v=view||{};if(v.type==='item')routeItem(v.id);else if(v.type==='mat')routeMateriale();else if(v.type==='mokoko')renderMokoko();else if(v.type==='admin')renderAdmin();else routeHome();}
+function setLang(l){if(!LANG[l])l='en';curLang=l;try{localStorage.setItem('db_lang',l)}catch(e){}applyStatic();buildNav($("#search")?$("#search").value:"");reRoute();}
+
 
 // ---- preturi ----
 function userPrices(){try{return JSON.parse(localStorage.getItem(PKEY)||"{}")}catch(e){return {}}}
@@ -299,7 +313,7 @@ function buildNav(filter){
       hd.innerHTML=`<span>${esc(c.name)}</span><span class="chev">▶</span>`;
       hd.onclick=(e)=>{e.stopPropagation();grp.classList.toggle("open");};
       const body=document.createElement("div"); body.className="grpbody";
-      if(!items.length){ const e2=document.createElement("div"); e2.className="navitem empty"; e2.textContent="(gol)"; body.appendChild(e2); }
+      if(!items.length){ const e2=document.createElement("div"); e2.className="navitem empty"; e2.textContent=t('empty'); body.appendChild(e2); }
       items.forEach(it=>{
         const el=document.createElement("div"); el.className="navitem"+(view.type==="item"&&view.id===it.id?" active":"");
         el.innerHTML=(it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.visibility='hidden'">`:`<span class="dot"></span>`)+`<span>${esc(it.name)}</span>`;
@@ -322,23 +336,23 @@ $("#adminNav").onclick=()=>{ routeAdmin(); closeNav(); };
 
 // ---- rutare ----
 function setCrumbs(h){$("#crumbs").innerHTML=h;}
-function routeHome(){ view={type:"home"}; buildNav($("#search").value); setCrumbs("Unelte");
+function routeHome(){ view={type:"home"}; buildNav($("#search").value); setCrumbs(t('tools'));
   const secList=sections().map(s=>{const n=catsOfSec(s.id).length;
     return `<div style="margin-bottom:6px"><b style="color:var(--gold2);font-family:Cinzel,serif">${esc(s.name)}</b>
-      <span class="dim">· ${n} categorii</span></div>`;}).join("");
-  $("#content").innerHTML=`<div class="ihead"><div class="ic">🛠️</div><div><h2>Unelte Baerim</h2>
-    <div class="desc">Alege un item din stânga (Chapter → categorie → item) pentru calculatorul de upgrade cu materiale. Prețurile le setezi în „Materiale" și rămân salvate pentru tine.</div></div></div>
-    <div class="sect">Secțiuni</div><div class="card">${secList||'<div class="muted">Nimic încă. Intră în Admin → Importă catalog, sau adaugă manual.</div>'}</div>`;
+      <span class="dim">· ${n} ${t('categories')}</span></div>`;}).join("");
+  $("#content").innerHTML=`<div class="ihead"><div class="ic">🛠️</div><div><h2>${t('tools_sub')}</h2>
+    <div class="desc">${t('home_desc')}</div></div></div>
+    <div class="sect">${t('sections')}</div><div class="card">${secList||('<div class="muted">'+t('home_empty')+'</div>')}</div>`;
 }
 function routeItem(id){
   const it=(DB.items||[]).find(x=>x.id===id); if(!it)return routeHome();
   if(it.kind==="mokoko"){ view={type:"mokoko"}; buildNav($("#search").value); renderMokoko(); return; }
   const c=(DB.cats||[]).find(x=>x.id===it.cat), s=c&&(DB.sections||[]).find(x=>x.id===c.sec);
   view={type:"item",id,cat:it.cat,sec:c?c.sec:null}; buildNav($("#search").value);
-  setCrumbs(`Unelte › ${s?esc(s.name)+" › ":""}${esc(c?c.name:"")} › <b>${esc(it.name)}</b>`);
+  setCrumbs(`${t('tools')} › ${s?esc(s.name)+" › ":""}${esc(c?c.name:"")} › <b>${esc(it.name)}</b>`);
   $("#content").innerHTML=renderItem(it);
 }
-function routeMateriale(){ view={type:"mat"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Materiale</b>"); $("#content").innerHTML=renderMateriale(); }
+function routeMateriale(){ view={type:"mat"}; buildNav($("#search").value); setCrumbs(t('tools')+" › <b>"+t('materials')+"</b>"); $("#content").innerHTML=renderMateriale(); }
 
 // ---- item: matrice vizuala ----
 function stageCost(lv){ let m=0; (lv.mats||[]).forEach(mm=>m+=priceOf(mm.m)*(mm.q||0)); return (lv.tax||0)+m; }
@@ -350,26 +364,26 @@ function matCell(mm){
 function renderItem(it){
   const ic=it.icon?`<img src="${iconURL(it.icon)}" onerror="this.replaceWith(document.createTextNode('🗡️'))">`:"🗡️";
   let html=`<div class="ihead"><div class="ic">${ic}</div><div><h2>${esc(it.name)}</h2>${it.desc?`<div class="desc">${esc(it.desc)}</div>`:""}</div>
-    ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('item','${it.id}')">✎ Editează</button>`:""}</div>`;
+    ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('item','${it.id}')">✎ ${t('edit')}</button>`:""}</div>`;
   const lv=it.levels||[];
-  if(it.kind!=="upgrade"||!lv.length){ html+=`<div class="card muted">Fără tabel de upgrade. ${isAdmin?'Adaugă pași în Admin.':''}</div>`; return html; }
+  if(it.kind!=="upgrade"||!lv.length){ html+=`<div class="card muted">${t('no_upgrade')} ${isAdmin?'Adaugă pași în Admin.':''}</div>`; return html; }
   const maxSlots=Math.max(1,...lv.map(l=>(l.mats||[]).length));
   const hasChance=lv.some(l=>l.chance!=null&&l.chance!=="");
   let total=0; lv.forEach(l=>total+=stageCost(l));
-  let head=`<tr><th class="mlbl">Material</th>`+lv.map(l=>`<th>+${l.to}</th>`).join("")+`</tr>`;
+  let head=`<tr><th class="mlbl">${t('material')}</th>`+lv.map(l=>`<th>+${l.to}</th>`).join("")+`</tr>`;
   let rows="";
   for(let s=0;s<maxSlots;s++){
     rows+=`<tr><td class="mlbl"></td>`+lv.map(l=>{const mm=(l.mats||[])[s];return `<td>${mm?matCell(mm):'<span class="dash">–</span>'}</td>`;}).join("")+`</tr>`;
   }
-  if(hasChance) rows+=`<tr class="chance"><td class="mlbl">Șansă</td>`+lv.map(l=>`<td>${(l.chance!=null&&l.chance!=="")?l.chance+"%":"–"}</td>`).join("")+`</tr>`;
-  rows+=`<tr class="pret"><td class="mlbl">Preț</td>`+lv.map(l=>`<td>${kk(l.tax||0)}</td>`).join("")+`</tr>`;
-  html+=`<div class="sect">Îmbunătățire</div><div class="matrixwrap"><table class="matrix">${head}${rows}</table></div>
-    <div class="total">Total (taxe + materiale): <b>${kk(total)}</b></div>`;
+  if(hasChance) rows+=`<tr class="chance"><td class="mlbl">${t('chance')}</td>`+lv.map(l=>`<td>${(l.chance!=null&&l.chance!=="")?l.chance+"%":"–"}</td>`).join("")+`</tr>`;
+  rows+=`<tr class="pret"><td class="mlbl">${t('price')}</td>`+lv.map(l=>`<td>${kk(l.tax||0)}</td>`).join("")+`</tr>`;
+  html+=`<div class="sect">${t('upgrade')}</div><div class="matrixwrap"><table class="matrix">${head}${rows}</table></div>
+    <div class="total">${t('total_tm')}: <b>${kk(total)}</b></div>`;
   if((it.recipe||[]).length){
     const chips=it.recipe.map(mm=>{const m=matById(mm.m);return `<span class="matchip"><span class="q">${mm.q}×</span> ${esc(m?m.name:"?")}</span>`;}).join("");
-    html+=`<div class="sect">Rețetă craft</div><div class="card">${chips}</div>`;
+    html+=`<div class="sect">${t('craft')}</div><div class="card">${chips}</div>`;
   }
-  html+=`<div class="dim" style="margin-top:14px;font-size:12px">Prețurile materialelor se setează în <a href="#" onclick="routeMateriale();return false">Materiale</a> și rămân salvate pentru tine.</div>`;
+  html+=`<div class="dim" style="margin-top:14px;font-size:12px">${mkPriceHint()}</div>`;
   return html;
 }
 
@@ -379,19 +393,19 @@ function renderMateriale(){
     const uv=(m.id in up)?up[m.id]:"";
     return `<tr><td class="lbl">${m.vnum?`<img src="${iconURL(m.vnum)}" style="width:20px;height:20px;vertical-align:middle;margin-right:6px" onerror="this.style.display='none'">`:""}${esc(m.name)}</td>
       <td class="num dim">${m.vnum||"—"}</td><td class="num">${fmt(m.price||0)}</td>
-      <td><input class="inp num" style="width:130px" type="number" min="0" placeholder="al meu…" value="${uv}" oninput="setUserPrice('${m.id}',this.value)"></td></tr>`;
+      <td><input class="inp num" style="width:130px" type="number" min="0" placeholder="${t('ph_mine')}" value="${uv}" oninput="setUserPrice('${m.id}',this.value)"></td></tr>`;
   }).join("");
-  return `<div class="ihead"><div class="ic">💰</div><div><h2>Materiale &amp; prețuri</h2>
-    <div class="desc">Prețul „de bază" e setat de admin. Poți pune prețul tău (dreapta) — se salvează doar pentru tine.</div></div>
-    ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('mat')">✎ Editează baza</button>`:""}</div>
-    <div class="tblwrap"><table class="simple"><tr><th class="lbl">Material</th><th>vnum</th><th>Preț bază</th><th>Prețul meu</th></tr>${rows||'<tr><td class="muted" colspan="4">Niciun material încă.</td></tr>'}</table></div>`;
+  return `<div class="ihead"><div class="ic">💰</div><div><h2>${t('mat_title')}</h2>
+    <div class="desc">${t('mat_desc')}</div></div>
+    ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('mat')">✎ ${t('edit_base')}</button>`:""}</div>
+    <div class="tblwrap"><table class="simple"><tr><th class="lbl">${t('material')}</th><th>vnum</th><th>${t('col_base')}</th><th>${t('col_mine')}</th></tr>${rows||('<tr><td class="muted" colspan="4">'+t('no_mats')+'</td></tr>')}</table></div>`;
 }
 
 // ================= ADMIN =================
 async function routeAdmin(tab,focusId){
   try{ isAdmin=(await fetch("/api/admin/me").then(r=>r.json())).admin; }catch(e){}
   if(PREVIEW&&window.__prevAdmin) isAdmin=true;
-  view={type:"admin"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Admin</b>");
+  view={type:"admin"}; buildNav($("#search").value); setCrumbs(t('tools')+" › <b>Admin</b>");
   if(!isAdmin) return renderAdminLogin();
   if(tab)atab=tab; renderAdmin(focusId);
 }
@@ -561,7 +575,7 @@ function mkSetDone(id,set){try{localStorage.setItem(mkKey(id),JSON.stringify([..
 let mkCur=null, mkHide=false;
 function renderMokoko(){
   if(!mkCur||!MOKOKO.some(m=>m.id===mkCur)) mkCur=MOKOKO[0]&&MOKOKO[0].id;
-  setCrumbs("Unelte › Sisteme › <b>Harta Mokoko</b>");
+  setCrumbs(t('tools')+" › "+t('systems')+" › <b>"+t('mokoko_crumb')+"</b>");
   const groups={}; MOKOKO.forEach(m=>{(groups[m.kingdom]=groups[m.kingdom]||[]).push(m);});
   let list="";
   MK_ORDER.forEach(k=>{ if(!groups[k])return;
@@ -572,8 +586,8 @@ function renderMokoko(){
   Object.keys(groups).filter(k=>!MK_ORDER.includes(k)).forEach(k=>{
     list+=`<div class="mkgrp">${esc(k)}</div>`+groups[k].map(m=>`<div class="mkmap ${m.id===mkCur?"on":""}" onclick="mkCur='${m.id}';renderMokoko()">${esc(m.name)}<span class="c">${mkGetDone(m.id).size}/${m.n}</span></div>`).join("");
   });
-  $("#content").innerHTML=`<div class="ihead"><div class="ic">🗺️</div><div><h2>Harta interactivă Mokoko</h2>
-    <div class="desc">Alege harta din stânga. Treci cu mouse-ul peste un punct ca să vezi coordonatele; clic = bifat (se salvează pentru tine).</div></div></div>
+  $("#content").innerHTML=`<div class="ihead"><div class="ic">🗺️</div><div><h2>${t('mokoko_title')}</h2>
+    <div class="desc">${t('mokoko_desc')}</div></div></div>
     <div class="mkwrap"><div class="mklist">${list}</div><div class="mkright" id="mkright"></div></div>`;
   mkBoard();
 }
@@ -585,9 +599,9 @@ function mkBoard(){
     const l=(p.x*(m.sx||1)/m.w*100), t=(p.y*(m.sy||1)/m.h*100);
     return `<div class="mkpt ${done.has(i)?"done":""}" style="left:${l.toFixed(2)}%;top:${t.toFixed(2)}%" data-xy="X: ${p.x} · Y: ${p.y}" onclick="mkToggle(${i})" onmouseenter="mkTip(this)" onmouseleave="mkUntip()"></div>`;
   }).join("");
-  $("#mkright").innerHTML=`<div class="mkbar"><span class="cnt">${done.size}/${m.n} colectate</span>
-    <button class="btn ghost sm" onclick="mkReset()">Reset</button>
-    <label><input type="checkbox" ${mkHide?"checked":""} onchange="mkHide=this.checked;mkBoard()"> Ascunde bifate</label></div>
+  $("#mkright").innerHTML=`<div class="mkbar"><span class="cnt">${done.size}/${m.n} ${t('collected')}</span>
+    <button class="btn ghost sm" onclick="mkReset()">${t('reset')}</button>
+    <label><input type="checkbox" ${mkHide?"checked":""} onchange="mkHide=this.checked;mkBoard()"> ${t('hide_done')}</label></div>
     <div class="mkboard" id="mkboard"><img src="${m.img}" alt="${esc(m.name)}" loading="lazy">${pts}</div>`;
 }
 function mkToggle(i){const m=MOKOKO.find(x=>x.id===mkCur);const d=mkGetDone(m.id);d.has(i)?d.delete(i):d.add(i);mkSetDone(m.id,d);mkBoard();
@@ -623,5 +637,6 @@ function updMatPrev(id,v){ const el=document.getElementById("mpv_"+id); if(el)el
 $("#iconSearch").addEventListener("input",e=>renderIconGrid(e.target.value));
 $("#iconModal").addEventListener("click",e=>{ if(e.target.id==="iconModal")closeIconModal(); });
 
+try{applyStatic();}catch(e){}
 boot();
 </script>
