@@ -38,19 +38,27 @@ a{color:var(--gold2);text-decoration:none}
 .sbsearch input{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-size:13px;font-family:inherit}
 .sbsearch input:focus{outline:2px solid rgba(231,185,84,.4);border-color:var(--gold)}
 .nav{flex:1;overflow:auto;padding:4px 8px 10px}
-.grp{margin-bottom:2px}
-.grphead{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:9px;cursor:pointer;
-  color:var(--mut);font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;user-select:none}
+.secgrp{margin-bottom:3px}
+.secgrphead{display:flex;align-items:center;gap:9px;padding:10px 10px;border-radius:9px;cursor:pointer;
+  color:var(--gold2);font-family:"Cinzel",serif;font-size:12.5px;letter-spacing:.6px;user-select:none}
+.secgrphead:hover{background:var(--panel2)}
+.secgrphead .chev{margin-left:auto;transition:transform .18s;font-size:10px;color:var(--dim)}
+.secgrp.open>.secgrphead .chev{transform:rotate(90deg)}
+.secgrpbody{display:none;padding:2px 0 6px 6px}
+.secgrp.open>.secgrpbody{display:block}
+.grp{margin-bottom:1px}
+.grphead{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;cursor:pointer;
+  color:var(--mut);font-size:11.5px;font-weight:600;letter-spacing:.3px;text-transform:uppercase;user-select:none}
 .grphead:hover{background:var(--panel2);color:var(--ink)}
-.grphead .chev{margin-left:auto;transition:transform .18s;font-size:10px;color:var(--dim)}
-.grp.open .chev{transform:rotate(90deg)}
-.grpbody{display:none;padding:2px 0 6px 6px}
-.grp.open .grpbody{display:block}
-.navitem{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;color:var(--mut);font-size:13px;user-select:none}
+.grphead .chev{margin-left:auto;transition:transform .18s;font-size:9px;color:var(--dim)}
+.grp.open>.grphead .chev{transform:rotate(90deg)}
+.grpbody{display:none;padding:1px 0 4px 8px}
+.grp.open>.grpbody{display:block}
+.navitem{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;cursor:pointer;color:var(--mut);font-size:13px;user-select:none}
 .navitem:hover{background:var(--panel2);color:var(--ink)}
 .navitem.active{color:var(--gold2);background:rgba(231,185,84,.10)}
 .navitem img{width:18px;height:18px;flex:none;border-radius:4px;background:var(--bg2)}
-.navitem .dot{width:8px;height:8px;border-radius:2px;background:var(--line2);flex:none;transform:rotate(45deg)}
+.navitem .dot{width:7px;height:7px;border-radius:2px;background:var(--line2);flex:none;transform:rotate(45deg)}
 .navitem .empty{color:var(--dim);font-style:italic}
 .sbfoot{padding:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
 .sbfoot .navitem{font-size:12.5px}
@@ -68,34 +76,47 @@ a{color:var(--gold2);text-decoration:none}
 
 .ihead{display:flex;align-items:center;gap:16px;background:linear-gradient(180deg,var(--panel2),var(--panel));
   border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:var(--shadow)}
-.ihead .ic{width:56px;height:56px;flex:none;border-radius:12px;background:var(--bg2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ihead .ic{width:56px;height:56px;flex:none;border-radius:12px;background:var(--bg2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:26px}
 .ihead .ic img{width:48px;height:48px}
 .ihead h2{font-family:"Cinzel",serif;margin:0;font-size:22px;letter-spacing:.5px}
 .ihead .desc{color:var(--mut);font-size:13px;margin-top:2px}
 
 .sect{font-family:"Cinzel",serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);margin:22px 2px 10px}
-.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
-table{border-collapse:collapse;width:100%;min-width:520px}
-th,td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);font-size:12.5px}
-th{color:var(--gold2);font-family:"JetBrains Mono",monospace;font-weight:600;background:var(--panel2)}
-tr:last-child td{border-bottom:0}
-td.lbl,th.lbl{text-align:left;color:var(--mut);white-space:nowrap}
-.num{font-family:"JetBrains Mono",monospace}
-.matchip{display:inline-flex;align-items:center;gap:4px;background:var(--panel3);border:1px solid var(--line2);border-radius:7px;padding:2px 7px;margin:2px;font-size:11px;white-space:nowrap}
-.matchip .q{color:var(--gold2);font-family:"JetBrains Mono",monospace}
-.total{display:flex;align-items:baseline;gap:12px;justify-content:flex-end;margin-top:14px;
-  font-family:"Cinzel",serif;font-size:20px}
+
+/* matrice upgrade vizuala */
+.matrixwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+table.matrix{border-collapse:collapse;width:100%;min-width:640px}
+table.matrix th,table.matrix td{border:1px solid var(--line);padding:7px 5px;text-align:center;vertical-align:middle}
+table.matrix th{color:var(--gold2);font-family:"JetBrains Mono",monospace;background:var(--panel2);font-size:12px}
+table.matrix td.mlbl,table.matrix th.mlbl{text-align:left;color:var(--mut);font-family:"Cinzel",serif;font-size:10.5px;
+  letter-spacing:1px;text-transform:uppercase;background:var(--panel2);white-space:nowrap;position:sticky;left:0}
+.mcell{display:inline-flex;flex-direction:column;align-items:center;gap:2px}
+.micon{width:36px;height:36px;border-radius:7px;background:var(--bg2);border:1px solid var(--line2);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:12px;color:var(--dim)}
+.micon img{width:32px;height:32px}
+.mcell .q{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--gold2)}
+.matrix .dash{color:var(--dim)}
+tr.pret td{font-family:"JetBrains Mono",monospace;color:var(--gold2);font-weight:600;font-size:12px}
+tr.chance td{font-family:"JetBrains Mono",monospace;color:var(--ok);font-size:11px}
+.total{display:flex;align-items:baseline;gap:12px;justify-content:flex-end;margin-top:14px;font-family:"Cinzel",serif;font-size:20px}
 .total b{color:var(--gold2);font-family:"JetBrains Mono",monospace}
 
 .card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
-.muted{color:var(--mut)}
-.dim{color:var(--dim)}
+.muted{color:var(--mut)} .dim{color:var(--dim)}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+table.simple{border-collapse:collapse;width:100%;min-width:480px}
+table.simple th,table.simple td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);font-size:12.5px}
+table.simple th{color:var(--gold2);font-family:"JetBrains Mono",monospace;background:var(--panel2)}
+table.simple td.lbl,table.simple th.lbl{text-align:left;color:var(--mut)}
+.num{font-family:"JetBrains Mono",monospace}
+.matchip{display:inline-flex;align-items:center;gap:4px;background:var(--panel3);border:1px solid var(--line2);border-radius:7px;padding:2px 7px;margin:2px;font-size:11px}
+.matchip .q{color:var(--gold2);font-family:"JetBrains Mono",monospace}
+
 input,select,textarea{font-family:inherit}
 .inp{padding:8px 10px;border-radius:8px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-size:13px}
 .inp:focus{outline:2px solid rgba(231,185,84,.35);border-color:var(--gold)}
 .num.inp{font-family:"JetBrains Mono",monospace}
-.btn{border:0;border-radius:9px;padding:9px 14px;cursor:pointer;font-family:"Cinzel",serif;font-size:13px;letter-spacing:.4px;
-  background:linear-gradient(180deg,var(--gold),var(--goldd));color:#1a1204;font-weight:700}
+.btn{border:0;border-radius:9px;padding:9px 14px;cursor:pointer;font-family:"Cinzel",serif;font-size:13px;letter-spacing:.4px;background:linear-gradient(180deg,var(--gold),var(--goldd));color:#1a1204;font-weight:700}
 .btn:hover{background:linear-gradient(180deg,var(--gold2),var(--gold))}
 .btn.ghost{background:var(--panel2);color:var(--ink);border:1px solid var(--line2);font-weight:600}
 .btn.ghost:hover{border-color:var(--gold)}
@@ -105,18 +126,17 @@ input,select,textarea{font-family:inherit}
 .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .spread{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 
-/* login admin */
 .login{max-width:360px;margin:8vh auto 0}
 .login .card h2{font-family:"Cinzel",serif;text-align:center;margin:0 0 4px;font-size:18px}
 .login p{color:var(--mut);text-align:center;font-size:13px;margin:0 0 16px}
 .login .err{color:var(--bad);font-size:12.5px;text-align:center;margin-top:10px;min-height:16px}
 
-/* admin editor */
 .tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
 .tab{padding:8px 14px;border-radius:9px;border:1px solid var(--line2);background:var(--panel2);color:var(--mut);cursor:pointer;font-size:13px;font-weight:600}
 .tab.on{background:rgba(231,185,84,.12);color:var(--gold2);border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
 .erow{display:grid;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:8px}
-.erow.cat{grid-template-columns:1fr 90px 40px}
+.erow.sec{grid-template-columns:1fr 90px 40px}
+.erow.cat{grid-template-columns:1fr 150px 90px 40px}
 .erow.mat{grid-template-columns:1fr 90px 130px 40px}
 .itemcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:10px;overflow:hidden}
 .itemhd{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);cursor:pointer}
@@ -128,17 +148,17 @@ input,select,textarea{font-family:inherit}
 .field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
 .field label{font-size:11px;color:var(--dim);letter-spacing:.4px;text-transform:uppercase}
 .grid2f{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.lvrow{display:grid;grid-template-columns:60px 110px 80px 1fr 34px;gap:8px;align-items:start;padding:8px;border:1px solid var(--line);border-radius:9px;margin-bottom:7px;background:var(--bg2)}
+.lvrow{display:grid;grid-template-columns:56px 110px 70px 1fr 34px;gap:8px;align-items:start;padding:8px;border:1px solid var(--line);border-radius:9px;margin-bottom:7px;background:var(--bg2)}
 .lvrow .mats{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 .lvmat{display:flex;gap:4px;align-items:center;background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:3px 5px}
 .lvmat select{max-width:150px}
 .savebar{position:sticky;bottom:0;margin-top:16px;padding:12px;border-top:1px solid var(--line);
-  background:rgba(8,11,22,.92);backdrop-filter:blur(6px);display:flex;align-items:center;gap:12px;justify-content:flex-end;border-radius:0 0 14px 14px}
+  background:rgba(8,11,22,.92);backdrop-filter:blur(6px);display:flex;align-items:center;gap:10px;justify-content:flex-end;border-radius:0 0 14px 14px;flex-wrap:wrap}
 .savebar .st{margin-right:auto;font-size:12.5px;color:var(--mut)}
 .iconprev{width:34px;height:34px;border-radius:7px;background:var(--bg2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;overflow:hidden}
 .iconprev img{width:30px;height:30px}
 .editbtn{margin-left:auto}
-.placeholder{color:var(--mut);max-width:520px;line-height:1.7;margin:8vh auto 0;text-align:center}
+.placeholder{color:var(--mut);max-width:560px;line-height:1.7;margin:8vh auto 0;text-align:center}
 .placeholder .big{font-family:"Cinzel",serif;font-size:20px;color:var(--ink);margin-bottom:8px}
 
 @media (max-width:860px){
@@ -148,7 +168,7 @@ input,select,textarea{font-family:inherit}
   .main{margin-left:0}
   .iconbtn{display:inline-flex}
   .grid2f{grid-template-columns:1fr}
-  .lvrow{grid-template-columns:1fr 1fr;}
+  .lvrow{grid-template-columns:1fr 1fr}
 }
 </style>
 
@@ -180,9 +200,8 @@ input,select,textarea{font-family:inherit}
 <script>
 const $=s=>document.querySelector(s);
 const PREVIEW=!(location.hostname==="deliricbae.ro"||location.hostname==="www.deliricbae.ro"||location.hostname.endsWith("workers.dev"));
-const PKEY="db_prices_v1"; // suprascrieri de pret per-user (local)
+const PKEY="db_prices_v1";
 
-// notatie metin2
 const kk=n=>{n=Number(n)||0;const s=n<0?"-":"";n=Math.abs(n);
   const f=(v,d)=>{let x=v.toFixed(d);if(x.indexOf(".")>=0)x=x.replace(/0+$/,"").replace(/\.$/,"");return x;};
   if(n>=1e9)return s+f(n/1e9,2)+" kkk"; if(n>=1e6)return s+f(n/1e6,2)+" kk";
@@ -192,54 +211,90 @@ const uid=p=>p+"_"+Math.random().toString(36).slice(2,8);
 const iconURL=v=>v?`https://img.m2icondb.com/${String(v).padStart(5,"0")}.png`:"";
 const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
-let DB=null, isAdmin=false, view={type:"home"}, atab="cat";
+// ===== catalog de start (import din admin). Fapte de joc; fara imaginile lui BaerimTools. =====
+const CATALOG={ v:2,
+  sections:[{id:"s_ch1",name:"Chapter 1",order:10},{id:"s_ch2",name:"Chapter 2",order:20},{id:"s_pvp",name:"PVP",order:30}],
+  cats:[
+    {id:"c_weapons",name:"Weapons",order:10,sec:"s_ch1"},{id:"c_armor",name:"Armor",order:20,sec:"s_ch1"},
+    {id:"c_helmets",name:"Helmets",order:30,sec:"s_ch1"},{id:"c_shields",name:"Shields",order:40,sec:"s_ch1"},
+    {id:"c_earrings",name:"Earrings",order:50,sec:"s_ch1"},{id:"c_bracelets",name:"Bracelets",order:60,sec:"s_ch1"},
+    {id:"c_necklaces",name:"Necklaces",order:70,sec:"s_ch1"},{id:"c_shoes",name:"Shoes",order:80,sec:"s_ch1"},
+    {id:"c_belts",name:"Belts",order:90,sec:"s_ch1"},{id:"c_fishmine",name:"Fishing / Mining",order:100,sec:"s_ch1"}],
+  mats:[
+    {id:"m_finger",name:"Finger Bones",vnum:0,price:0},{id:"m_shadowpearl",name:"Shadow Pearl",vnum:0,price:0},
+    {id:"m_water",name:"Water Crystal",vnum:0,price:100000},{id:"m_snake",name:"Snake Tail",vnum:0,price:0},
+    {id:"m_spider",name:"Spider Legs",vnum:0,price:0},{id:"m_bluecry",name:"Blue Crystal",vnum:0,price:300000},
+    {id:"m_whitepearl",name:"White Pearl",vnum:0,price:0},{id:"m_bluepearl",name:"Blue Pearl",vnum:0,price:0},
+    {id:"m_redpearl",name:"Red Pearl",vnum:0,price:0}],
+  items:[{ id:"i_75weapon",cat:"c_weapons",name:"75lvl weapon",icon:0,
+    desc:"Armă nivel 75. Materiale + taxe pe fiecare treaptă (date de pe Baerim).",kind:"upgrade",
+    recipe:[{m:"m_finger",q:3},{m:"m_shadowpearl",q:1}],
+    levels:[
+      {to:1,tax:750000,mats:[]},{to:2,tax:775000,mats:[]},{to:3,tax:790000,mats:[]},
+      {to:4,tax:800000,mats:[{m:"m_water",q:1},{m:"m_snake",q:1}]},
+      {to:5,tax:850000,mats:[{m:"m_water",q:2},{m:"m_snake",q:2}]},
+      {to:6,tax:900000,mats:[{m:"m_water",q:3},{m:"m_snake",q:3}]},
+      {to:7,tax:910000,mats:[{m:"m_spider",q:1},{m:"m_bluecry",q:2},{m:"m_whitepearl",q:1}]},
+      {to:8,tax:1200000,mats:[{m:"m_finger",q:2},{m:"m_bluepearl",q:2},{m:"m_snake",q:2}]},
+      {to:9,tax:1500000,mats:[{m:"m_spider",q:3},{m:"m_finger",q:3},{m:"m_redpearl",q:3}]}]}]
+};
 
-// fallback local (preview/offline) — pe site datele vin din /api/tools
-const DEFAULT_TOOLS={v:1,cats:[{id:"c_arme",name:"Arme",order:10},{id:"c_armuri",name:"Armuri",order:20},
-  {id:"c_acc",name:"Accesorii",order:30},{id:"c_mat",name:"Materiale",order:90}],
-  mats:[{id:"m_sul",name:"Sul binecuvântat",vnum:25040,price:46000},{id:"m_piatra",name:"Piatră magică",vnum:25041,price:120000}],
-  items:[{id:"i_demo",cat:"c_arme",name:"Exemplu +9 (șterge-mă)",icon:0,desc:"Item exemplu — editează-l sau șterge-l din Admin.",kind:"upgrade",recipe:[],
-    levels:[{to:1,tax:20000,chance:100,mats:[{m:"m_sul",q:1}]},{to:2,tax:30000,chance:100,mats:[{m:"m_sul",q:1}]},
-      {to:3,tax:40000,chance:90,mats:[{m:"m_sul",q:2},{m:"m_piatra",q:1}]}]}]};
+let DB=null, isAdmin=false, view={type:"home"}, atab="sec";
 
 // ---- preturi ----
 function userPrices(){try{return JSON.parse(localStorage.getItem(PKEY)||"{}")}catch(e){return {}}}
-function setUserPrice(id,v){const o=userPrices(); if(v==null||v==="")delete o[id]; else o[id]=Number(v); try{localStorage.setItem(PKEY,JSON.stringify(o))}catch(e){}}
+function setUserPrice(id,v){const o=userPrices(); if(v==null||v===""){delete o[id];} else o[id]=Number(v); try{localStorage.setItem(PKEY,JSON.stringify(o))}catch(e){}}
 function matById(id){return (DB.mats||[]).find(m=>m.id===id);}
 function priceOf(id){const up=userPrices(); if(id in up)return up[id]; const m=matById(id); return m?Number(m.price||0):0;}
 
-// ---- incarcare ----
+// ---- structura ----
+function sections(){return (DB.sections||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));}
+function cats(){return (DB.cats||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));}
+function itemsOf(cid){return (DB.items||[]).filter(i=>i.cat===cid);}
+function catsOfSec(sid){return cats().filter(c=>c.sec===sid);}
+function orphanCats(){const ids=new Set((DB.sections||[]).map(s=>s.id));return cats().filter(c=>!c.sec||!ids.has(c.sec));}
+
 async function boot(){
   try{ DB=await fetch("/api/tools").then(r=>r.json()); }catch(e){ DB=null; }
-  if(!DB||!Array.isArray(DB.cats)){ DB=JSON.parse(JSON.stringify(DEFAULT_TOOLS)); }
+  if(!DB||!Array.isArray(DB.cats)){ DB=JSON.parse(JSON.stringify(CATALOG)); }
+  if(!Array.isArray(DB.sections)) DB.sections=[];
   try{ isAdmin=(await fetch("/api/admin/me").then(r=>r.json())).admin; }catch(e){ isAdmin=false; }
   buildNav(); routeHome();
 }
-function cats(){return (DB.cats||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));}
-function itemsOf(cid){return (DB.items||[]).filter(i=>i.cat===cid);}
 
-// ---- sidebar ----
+// ---- sidebar (Sectiune > Categorie > Item) ----
 function buildNav(filter){
   filter=(filter||"").toLowerCase();
   const nav=$("#nav"); nav.innerHTML="";
-  cats().forEach(c=>{
-    let items=itemsOf(c.id);
-    if(filter) items=items.filter(i=>i.name.toLowerCase().includes(filter));
-    if(filter && !items.length) return;
-    const grp=document.createElement("div"); grp.className="grp"+((filter||c.id===view.cat)?" open":"");
-    const hd=document.createElement("div"); hd.className="grphead";
-    hd.innerHTML=`<span>${esc(c.name)}</span><span class="chev">▶</span>`;
-    hd.onclick=()=>grp.classList.toggle("open");
-    const body=document.createElement("div"); body.className="grpbody";
-    if(!items.length){ const e=document.createElement("div"); e.className="navitem empty"; e.textContent="(gol)"; body.appendChild(e); }
-    items.forEach(it=>{
-      const el=document.createElement("div"); el.className="navitem"+(view.type==="item"&&view.id===it.id?" active":"");
-      el.innerHTML=(it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.visibility='hidden'">`:`<span class="dot"></span>`)+`<span>${esc(it.name)}</span>`;
-      el.onclick=()=>{ routeItem(it.id); closeNav(); };
-      body.appendChild(el);
+  const renderSec=(sec,catList)=>{
+    if(filter){ catList=catList.filter(c=>itemsOf(c.id).some(i=>i.name.toLowerCase().includes(filter))); if(!catList.length)return; }
+    if(!catList.length && !filter && sec.id==="__orphan")return;
+    const secEl=document.createElement("div"); secEl.className="secgrp"+((filter||view.sec===sec.id)?" open":"");
+    const sh=document.createElement("div"); sh.className="secgrphead";
+    sh.innerHTML=`<span>${esc(sec.name)}</span><span class="chev">▶</span>`;
+    sh.onclick=()=>secEl.classList.toggle("open");
+    const sb=document.createElement("div"); sb.className="secgrpbody";
+    catList.forEach(c=>{
+      let items=itemsOf(c.id);
+      if(filter) items=items.filter(i=>i.name.toLowerCase().includes(filter));
+      const grp=document.createElement("div"); grp.className="grp"+((filter||c.id===view.cat)?" open":"");
+      const hd=document.createElement("div"); hd.className="grphead";
+      hd.innerHTML=`<span>${esc(c.name)}</span><span class="chev">▶</span>`;
+      hd.onclick=(e)=>{e.stopPropagation();grp.classList.toggle("open");};
+      const body=document.createElement("div"); body.className="grpbody";
+      if(!items.length){ const e2=document.createElement("div"); e2.className="navitem empty"; e2.textContent="(gol)"; body.appendChild(e2); }
+      items.forEach(it=>{
+        const el=document.createElement("div"); el.className="navitem"+(view.type==="item"&&view.id===it.id?" active":"");
+        el.innerHTML=(it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.visibility='hidden'">`:`<span class="dot"></span>`)+`<span>${esc(it.name)}</span>`;
+        el.onclick=()=>{ routeItem(it.id); closeNav(); };
+        body.appendChild(el);
+      });
+      grp.appendChild(hd); grp.appendChild(body); sb.appendChild(grp);
     });
-    grp.appendChild(hd); grp.appendChild(body); nav.appendChild(grp);
-  });
+    secEl.appendChild(sh); secEl.appendChild(sb); nav.appendChild(secEl);
+  };
+  sections().forEach(sec=>renderSec(sec,catsOfSec(sec.id)));
+  const orph=orphanCats(); if(orph.length) renderSec({id:"__orphan",name:"Diverse"},orph);
   $("#adminNav").innerHTML=`<span class="dot" style="background:var(--gold)"></span> ${isAdmin?"Admin ✓":"Admin"}`;
 }
 $("#search").addEventListener("input",e=>buildNav(e.target.value));
@@ -250,76 +305,77 @@ $("#adminNav").onclick=()=>{ routeAdmin(); closeNav(); };
 
 // ---- rutare ----
 function setCrumbs(h){$("#crumbs").innerHTML=h;}
-function routeHome(){ view={type:"home"}; buildNav($("#search").value);
-  const list=cats().map(c=>{const n=itemsOf(c.id).length;return `<div class="navitem" style="justify-content:space-between" onclick="document.querySelectorAll('.grp')[${cats().indexOf(c)}]?.classList.add('open')">${esc(c.name)} <span class="dim">${n}</span></div>`;}).join("");
-  setCrumbs("Unelte");
+function routeHome(){ view={type:"home"}; buildNav($("#search").value); setCrumbs("Unelte");
+  const secList=sections().map(s=>{const n=catsOfSec(s.id).length;
+    return `<div style="margin-bottom:6px"><b style="color:var(--gold2);font-family:Cinzel,serif">${esc(s.name)}</b>
+      <span class="dim">· ${n} categorii</span></div>`;}).join("");
   $("#content").innerHTML=`<div class="ihead"><div class="ic">🛠️</div><div><h2>Unelte Baerim</h2>
-    <div class="desc">Alege un item din stânga pentru calculatorul de upgrade. Prețurile le setezi în „Materiale" și rămân salvate pentru tine.</div></div></div>
-    <div class="sect">Categorii</div><div class="card">${list||'<div class="muted">Nimic încă. Intră în Admin ca să adaugi.</div>'}</div>`;
+    <div class="desc">Alege un item din stânga (Chapter → categorie → item) pentru calculatorul de upgrade cu materiale. Prețurile le setezi în „Materiale" și rămân salvate pentru tine.</div></div></div>
+    <div class="sect">Secțiuni</div><div class="card">${secList||'<div class="muted">Nimic încă. Intră în Admin → Importă catalog, sau adaugă manual.</div>'}</div>`;
 }
 function routeItem(id){
   const it=(DB.items||[]).find(x=>x.id===id); if(!it)return routeHome();
-  view={type:"item",id,cat:it.cat}; buildNav($("#search").value);
-  const c=(DB.cats||[]).find(x=>x.id===it.cat);
-  setCrumbs(`Unelte › ${esc(c?c.name:"")} › <b>${esc(it.name)}</b>`);
+  const c=(DB.cats||[]).find(x=>x.id===it.cat), s=c&&(DB.sections||[]).find(x=>x.id===c.sec);
+  view={type:"item",id,cat:it.cat,sec:c?c.sec:null}; buildNav($("#search").value);
+  setCrumbs(`Unelte › ${s?esc(s.name)+" › ":""}${esc(c?c.name:"")} › <b>${esc(it.name)}</b>`);
   $("#content").innerHTML=renderItem(it);
 }
-function routeMateriale(){
-  view={type:"mat"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Materiale</b>");
-  $("#content").innerHTML=renderMateriale();
-}
+function routeMateriale(){ view={type:"mat"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Materiale</b>"); $("#content").innerHTML=renderMateriale(); }
 
-// ---- randare item (calculator upgrade) ----
-function stageCost(lv){ let mats=0; (lv.mats||[]).forEach(mm=>mats+=priceOf(mm.m)*(mm.q||0)); return (lv.tax||0)+mats; }
+// ---- item: matrice vizuala ----
+function stageCost(lv){ let m=0; (lv.mats||[]).forEach(mm=>m+=priceOf(mm.m)*(mm.q||0)); return (lv.tax||0)+m; }
+function matCell(mm){
+  const m=matById(mm.m), nm=m?m.name:"?";
+  const ic=(m&&m.vnum)?`<img src="${iconURL(m.vnum)}" onerror="this.parentNode.textContent='?'">`:"◆";
+  return `<span class="mcell" title="${esc(nm)}"><span class="micon">${ic}</span><span class="q">×${mm.q}</span></span>`;
+}
 function renderItem(it){
-  const ic=it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.display='none'">`:"🗡️";
+  const ic=it.icon?`<img src="${iconURL(it.icon)}" onerror="this.replaceWith(document.createTextNode('🗡️'))">`:"🗡️";
   let html=`<div class="ihead"><div class="ic">${ic}</div><div><h2>${esc(it.name)}</h2>${it.desc?`<div class="desc">${esc(it.desc)}</div>`:""}</div>
     ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('item','${it.id}')">✎ Editează</button>`:""}</div>`;
-  if(it.kind!=="upgrade"||!(it.levels||[]).length){
-    html+=`<div class="card muted">Fără tabel de upgrade. ${isAdmin?'Adaugă pași în Admin.':''}</div>`; return html;
+  const lv=it.levels||[];
+  if(it.kind!=="upgrade"||!lv.length){ html+=`<div class="card muted">Fără tabel de upgrade. ${isAdmin?'Adaugă pași în Admin.':''}</div>`; return html; }
+  const maxSlots=Math.max(1,...lv.map(l=>(l.mats||[]).length));
+  const hasChance=lv.some(l=>l.chance!=null&&l.chance!=="");
+  let total=0; lv.forEach(l=>total+=stageCost(l));
+  let head=`<tr><th class="mlbl">Material</th>`+lv.map(l=>`<th>+${l.to}</th>`).join("")+`</tr>`;
+  let rows="";
+  for(let s=0;s<maxSlots;s++){
+    rows+=`<tr><td class="mlbl"></td>`+lv.map(l=>{const mm=(l.mats||[])[s];return `<td>${mm?matCell(mm):'<span class="dash">–</span>'}</td>`;}).join("")+`</tr>`;
   }
-  let total=0;
-  const rows=(it.levels||[]).map(lv=>{
-    const cost=stageCost(lv); total+=cost;
-    const chips=(lv.mats||[]).map(mm=>{const m=matById(mm.m);return `<span class="matchip"><span class="q">${mm.q}×</span> ${esc(m?m.name:"?")}</span>`;}).join("")||'<span class="dim">—</span>';
-    return `<tr><td class="num" style="color:var(--gold2)">+${lv.to}</td>
-      <td class="num">${fmt(lv.tax||0)}</td><td class="num">${lv.chance!=null?lv.chance+"%":"—"}</td>
-      <td class="lbl">${chips}</td><td class="num">${kk(cost)}</td></tr>`;
-  }).join("");
-  html+=`<div class="sect">Cost upgrade</div><div class="tblwrap"><table>
-    <tr><th>Nivel</th><th>Taxă</th><th>Șansă</th><th class="lbl">Materiale</th><th>Cost/pas</th></tr>${rows}</table></div>
-    <div class="total">Total până la +${it.levels[it.levels.length-1].to}: <b>${kk(total)}</b></div>`;
+  if(hasChance) rows+=`<tr class="chance"><td class="mlbl">Șansă</td>`+lv.map(l=>`<td>${(l.chance!=null&&l.chance!=="")?l.chance+"%":"–"}</td>`).join("")+`</tr>`;
+  rows+=`<tr class="pret"><td class="mlbl">Preț</td>`+lv.map(l=>`<td>${kk(l.tax||0)}</td>`).join("")+`</tr>`;
+  html+=`<div class="sect">Îmbunătățire</div><div class="matrixwrap"><table class="matrix">${head}${rows}</table></div>
+    <div class="total">Total (taxe + materiale): <b>${kk(total)}</b></div>`;
   if((it.recipe||[]).length){
     const chips=it.recipe.map(mm=>{const m=matById(mm.m);return `<span class="matchip"><span class="q">${mm.q}×</span> ${esc(m?m.name:"?")}</span>`;}).join("");
     html+=`<div class="sect">Rețetă craft</div><div class="card">${chips}</div>`;
   }
-  html+=`<div class="dim" style="margin-top:14px;font-size:12px">Prețurile se modifică în <a href="#" onclick="routeMateriale();return false">Materiale</a> și rămân salvate pentru tine.</div>`;
+  html+=`<div class="dim" style="margin-top:14px;font-size:12px">Prețurile materialelor se setează în <a href="#" onclick="routeMateriale();return false">Materiale</a> și rămân salvate pentru tine.</div>`;
   return html;
 }
 
-// ---- Materiale ----
 function renderMateriale(){
   const up=userPrices();
   const rows=(DB.mats||[]).map(m=>{
     const uv=(m.id in up)?up[m.id]:"";
-    return `<tr><td class="lbl">${m.icon||m.vnum?`<img src="${iconURL(m.vnum)}" style="width:20px;height:20px;vertical-align:middle;margin-right:6px" onerror="this.style.display='none'">`:""}${esc(m.name)}</td>
-      <td class="num dim">${m.vnum||"—"}</td>
-      <td class="num">${fmt(m.price||0)}</td>
+    return `<tr><td class="lbl">${m.vnum?`<img src="${iconURL(m.vnum)}" style="width:20px;height:20px;vertical-align:middle;margin-right:6px" onerror="this.style.display='none'">`:""}${esc(m.name)}</td>
+      <td class="num dim">${m.vnum||"—"}</td><td class="num">${fmt(m.price||0)}</td>
       <td><input class="inp num" style="width:130px" type="number" min="0" placeholder="al meu…" value="${uv}" oninput="setUserPrice('${m.id}',this.value)"></td></tr>`;
   }).join("");
   return `<div class="ihead"><div class="ic">💰</div><div><h2>Materiale &amp; prețuri</h2>
-    <div class="desc">Prețul „de bază" e setat de admin. Poți pune prețul tău (coloana din dreapta) — se salvează doar pentru tine.</div></div>
+    <div class="desc">Prețul „de bază" e setat de admin. Poți pune prețul tău (dreapta) — se salvează doar pentru tine.</div></div>
     ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('mat')">✎ Editează baza</button>`:""}</div>
-    <div class="tblwrap"><table><tr><th class="lbl">Material</th><th>vnum</th><th>Preț bază</th><th>Prețul meu</th></tr>${rows||'<tr><td class="muted" colspan="4">Niciun material încă.</td></tr>'}</table></div>`;
+    <div class="tblwrap"><table class="simple"><tr><th class="lbl">Material</th><th>vnum</th><th>Preț bază</th><th>Prețul meu</th></tr>${rows||'<tr><td class="muted" colspan="4">Niciun material încă.</td></tr>'}</table></div>`;
 }
 
 // ================= ADMIN =================
 async function routeAdmin(tab,focusId){
-  isAdmin=(await fetch("/api/admin/me").then(r=>r.json()).catch(()=>({admin:false}))).admin || (PREVIEW&&isAdmin);
+  try{ isAdmin=(await fetch("/api/admin/me").then(r=>r.json())).admin; }catch(e){}
+  if(PREVIEW&&window.__prevAdmin) isAdmin=true;
   view={type:"admin"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Admin</b>");
-  if(!isAdmin){ return renderAdminLogin(); }
-  if(tab)atab=tab;
-  renderAdmin(focusId);
+  if(!isAdmin) return renderAdminLogin();
+  if(tab)atab=tab; renderAdmin(focusId);
 }
 function renderAdminLogin(){
   $("#content").innerHTML=`<div class="login"><div class="card">
@@ -329,7 +385,7 @@ function renderAdminLogin(){
     <div class="err" id="aerr">${PREVIEW?'<span class="dim">Previzualizare — orice parolă intră.</span>':''}</div></div></div>`;
   const go=async()=>{
     const pw=$("#apw").value, err=$("#aerr");
-    if(PREVIEW){ isAdmin=true; return renderAdmin(); }
+    if(PREVIEW){ window.__prevAdmin=true; isAdmin=true; buildNav(); renderAdmin(); return; }
     err.textContent="";
     try{
       const r=await fetch("/api/admin/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:pw})});
@@ -340,33 +396,51 @@ function renderAdminLogin(){
   };
   $("#alogin").onclick=go; $("#apw").addEventListener("keydown",e=>{if(e.key==="Enter")go();});
 }
-
 function renderAdmin(focusId){
-  const tabs=[["cat","Categorii"],["item","Iteme"],["mat","Materiale"]];
-  let h=`<div class="spread"><div class="tabs">`+
+  const tabs=[["sec","Secțiuni"],["cat","Categorii"],["item","Iteme"],["mat","Materiale"]];
+  $("#content").innerHTML=`<div class="spread"><div class="tabs">`+
     tabs.map(t=>`<div class="tab ${atab===t[0]?"on":""}" onclick="atab='${t[0]}';renderAdmin()">${t[1]}</div>`).join("")+
-    `</div><button class="btn ghost sm" onclick="adminLogout()">Ieși din admin</button></div><div id="ed"></div>
+    `</div><div class="row"><button class="btn ghost sm" onclick="importCatalog()">⭳ Importă catalog Baerim</button>
+      <button class="btn ghost sm" onclick="adminLogout()">Ieși</button></div></div><div id="ed"></div>
     <div class="savebar"><span class="st" id="savest"></span>
       <button class="btn ghost" onclick="reloadDB()">Reîncarcă</button>
       <button class="btn" onclick="saveDB()">💾 Salvează tot</button></div>`;
-  $("#content").innerHTML=h;
-  if(atab==="cat")edCats(); else if(atab==="mat")edMats(); else edItems(focusId);
+  if(atab==="sec")edSecs(); else if(atab==="cat")edCats(); else if(atab==="mat")edMats(); else edItems(focusId);
 }
-async function adminLogout(){ try{await fetch("/api/admin/logout",{method:"POST",credentials:"same-origin"})}catch(e){} isAdmin=false; buildNav(); routeHome(); }
-async function reloadDB(){ DB=await fetch("/api/tools").then(r=>r.json()); mark("Reîncărcat de pe server."); renderAdmin(); }
+async function adminLogout(){ try{await fetch("/api/admin/logout",{method:"POST",credentials:"same-origin"})}catch(e){} window.__prevAdmin=false; isAdmin=false; buildNav(); routeHome(); }
+async function reloadDB(){ try{DB=await fetch("/api/tools").then(r=>r.json()); if(!Array.isArray(DB.sections))DB.sections=[];}catch(e){} mark("Reîncărcat de pe server."); renderAdmin(); buildNav(); }
+function importCatalog(){
+  if(!confirm('Import: adauga Chapter 1/2/PVP, categoriile din Chapter 1 si itemul 75lvl weapon. Ce ai acum se inlocuieste. Continui?'))return;
+  DB=JSON.parse(JSON.stringify(CATALOG)); DB.updated_at=DB.updated_at||0; dirty(); buildNav(); renderAdmin("i_75weapon");
+  mark("Catalog incarcat. Verifica si apasa Salveaza tot.");
+}
+
+// -- sectiuni --
+function edSecs(){
+  const list=sections().map(s=>`<div class="erow sec">
+    <input class="inp" value="${esc(s.name)}" oninput="setField('sec','${s.id}','name',this.value)">
+    <input class="inp num" type="number" value="${s.order||0}" oninput="setField('sec','${s.id}','order',this.value)" title="ordine">
+    <button class="btn danger sm" onclick="delSec('${s.id}')">✕</button></div>`).join("");
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Secțiunile de sus (ex. Chapter 1, Chapter 2, PVP). Sub fiecare pui categorii (tab „Categorii").</div>
+    ${list}<button class="btn ghost sm" onclick="addSec()">+ Secțiune</button>`;
+}
+function addSec(){ DB.sections=DB.sections||[]; DB.sections.push({id:uid("s"),name:"Secțiune nouă",order:(Math.max(0,...DB.sections.map(s=>s.order||0))+10)}); dirty(); edSecs(); buildNav(); }
+function delSec(id){ if(catsOfSec(id).length && !confirm('Sectiunea are categorii. Stergi? (categoriile trec la Diverse)'))return; DB.sections=DB.sections.filter(s=>s.id!==id); dirty(); edSecs(); buildNav(); }
 
 // -- categorii --
 function edCats(){
+  const secOpts=sections().map(s=>`<option value="${s.id}">${esc(s.name)}</option>`).join("");
   const list=cats().map(c=>`<div class="erow cat">
     <input class="inp" value="${esc(c.name)}" oninput="setField('cat','${c.id}','name',this.value)">
+    <select class="inp" onchange="setField('cat','${c.id}','sec',this.value);buildNav()"><option value="">— fără secțiune —</option>${secOpts.replace(`value="${c.sec}"`,`value="${c.sec}" selected`)}</select>
     <input class="inp num" type="number" value="${c.order||0}" oninput="setField('cat','${c.id}','order',this.value)" title="ordine">
     <button class="btn danger sm" onclick="delCat('${c.id}')">✕</button></div>`).join("");
-  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Categoriile din bara stângă. „Ordine" = poziția (mai mic = mai sus).</div>
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Categoriile (sub-categorii) și secțiunea din care fac parte.</div>
+    <div class="erow cat" style="background:transparent;border:0;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px"><span>Nume</span><span>Secțiune</span><span>Ordine</span><span></span></div>
     ${list}<button class="btn ghost sm" onclick="addCat()">+ Categorie</button>`;
 }
-function addCat(){ DB.cats.push({id:uid("c"),name:"Categorie nouă",order:(Math.max(0,...DB.cats.map(c=>c.order||0))+10)}); dirty(); edCats(); buildNav(); }
-function delCat(id){ if(itemsOf(id).length && !confirm("Categoria are iteme. Ștergi oricum? (itemele rămân fără categorie)"))return;
-  DB.cats=DB.cats.filter(c=>c.id!==id); dirty(); edCats(); buildNav(); }
+function addCat(){ const s=sections()[0]; DB.cats=DB.cats||[]; DB.cats.push({id:uid("c"),name:"Categorie nouă",order:(Math.max(0,...DB.cats.map(c=>c.order||0))+10),sec:s?s.id:""}); dirty(); edCats(); buildNav(); }
+function delCat(id){ if(itemsOf(id).length && !confirm("Categoria are iteme. Ștergi oricum?"))return; DB.cats=DB.cats.filter(c=>c.id!==id); dirty(); edCats(); buildNav(); }
 
 // -- materiale --
 function edMats(){
@@ -375,7 +449,7 @@ function edMats(){
     <input class="inp num" type="number" value="${m.vnum||""}" oninput="setField('mat','${m.id}','vnum',this.value)" placeholder="vnum">
     <input class="inp num" type="number" value="${m.price||0}" oninput="setField('mat','${m.id}','price',this.value)" placeholder="preț bază">
     <button class="btn danger sm" onclick="delMat('${m.id}')">✕</button></div>`).join("");
-  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Baza de prețuri. „vnum" = id-ul itemului (pt. iconiță m2icondb). Prețul de aici e citit de toate calculatoarele.</div>
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Baza de prețuri. „vnum" = id-ul itemului pentru iconiță (m2icondb). Prețul de aici e citit de toate calculatoarele.</div>
     <div class="erow mat" style="background:transparent;border:0;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px"><span>Nume</span><span>vnum</span><span>Preț bază</span><span></span></div>
     ${list}<button class="btn ghost sm" onclick="addMat()">+ Material</button>`;
 }
@@ -389,7 +463,7 @@ function edItems(focusId){
     const open=it.id===focusId;
     return `<div class="itemcard${open?" open":""}" id="ic_${it.id}">
       <div class="itemhd" onclick="document.getElementById('ic_${it.id}').classList.toggle('open')">
-        <span class="iconprev">${it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.display='none'">`:"·"}</span>
+        <span class="iconprev" id="ipv_${it.id}">${it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.display='none'">`:"·"}</span>
         <span class="nm">${esc(it.name)||"(fără nume)"}</span>
         <span class="dim">${esc((cats().find(c=>c.id===it.cat)||{}).name||"fără categorie")}</span>
         <span class="chev">▶</span></div>
@@ -397,11 +471,9 @@ function edItems(focusId){
         <div class="grid2f">
           <div class="field"><label>Nume</label><input class="inp" value="${esc(it.name)}" oninput="setField('item','${it.id}','name',this.value);document.querySelector('#ic_${it.id} .nm').textContent=this.value"></div>
           <div class="field"><label>Categorie</label><select class="inp" onchange="setField('item','${it.id}','cat',this.value);buildNav()">${opts.replace(`value="${it.cat}"`,`value="${it.cat}" selected`)}</select></div>
-          <div class="field"><label>Iconiță (vnum m2icondb)</label>
-            <div class="row"><input class="inp num" style="flex:1" type="number" value="${it.icon||""}" placeholder="ex. 40817" oninput="setField('item','${it.id}','icon',this.value);const im=document.querySelector('#ic_${it.id} .iconprev');im.innerHTML=this.value?'<img src=\\''+('https://img.m2icondb.com/'+String(this.value).padStart(5,'0')+'.png')+'\\' onerror=&quot;this.style.display=\\'none\\'&quot;>':'·'">
-            </div></div>
+          <div class="field"><label>Iconiță (vnum m2icondb)</label><input class="inp num" type="number" value="${it.icon||""}" placeholder="ex. 40817" oninput="setField('item','${it.id}','icon',this.value);updIconPrev('${it.id}',this.value)"></div>
           <div class="field"><label>Tip</label><select class="inp" onchange="setField('item','${it.id}','kind',this.value);renderAdmin('${it.id}')">
-            <option value="upgrade"${it.kind==="upgrade"?" selected":""}>Upgrade (cu tabel)</option>
+            <option value="upgrade"${it.kind==="upgrade"?" selected":""}>Upgrade (cu matrice)</option>
             <option value="info"${it.kind==="info"?" selected":""}>Info (doar text)</option></select></div>
         </div>
         <div class="field"><label>Descriere</label><textarea class="inp" rows="2" oninput="setField('item','${it.id}','desc',this.value)">${esc(it.desc)}</textarea></div>
@@ -409,50 +481,50 @@ function edItems(focusId){
         <div class="row" style="margin-top:10px"><button class="btn danger sm" onclick="delItem('${it.id}')">🗑 Șterge itemul</button></div>
       </div></div>`;
   }).join("");
-  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Adaugă/editează iteme. Clic pe un item ca să-l deschizi.</div>
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Adaugă/editează iteme. Clic pe un item ca să-l deschizi. Matricea vizuală (materiale + preț pe treaptă) apare automat din pașii de mai jos.</div>
     ${cards||'<div class="muted">Niciun item încă.</div>'}<button class="btn ghost sm" style="margin-top:6px" onclick="addItem()">+ Item</button>`;
 }
+function updIconPrev(id,v){ const el=document.getElementById("ipv_"+id); if(el)el.innerHTML=v?`<img src="${iconURL(v)}" onerror="this.style.display='none'">`:"·"; }
 function matOptions(sel){return (DB.mats||[]).map(m=>`<option value="${m.id}"${m.id===sel?" selected":""}>${esc(m.name)}</option>`).join("");}
 function edLevels(it){
   const rows=(it.levels||[]).map((lv,i)=>{
     const mats=(lv.mats||[]).map((mm,j)=>`<span class="lvmat">
       <select class="inp sm" onchange="setLevMat('${it.id}',${i},${j},'m',this.value)">${matOptions(mm.m)}</select>
-      <input class="inp num" style="width:56px" type="number" value="${mm.q||1}" onchange="setLevMat('${it.id}',${i},${j},'q',this.value)">
+      <input class="inp num" style="width:52px" type="number" value="${mm.q||1}" onchange="setLevMat('${it.id}',${i},${j},'q',this.value)">
       <button class="btn danger sm" onclick="delLevMat('${it.id}',${i},${j})">✕</button></span>`).join("");
     return `<div class="lvrow">
-      <input class="inp num" type="number" value="${lv.to}" onchange="setLev('${it.id}',${i},'to',this.value)" title="nivel">
-      <input class="inp num" type="number" value="${lv.tax||0}" onchange="setLev('${it.id}',${i},'tax',this.value)" title="taxă">
-      <input class="inp num" type="number" value="${lv.chance!=null?lv.chance:''}" onchange="setLev('${it.id}',${i},'chance',this.value)" title="șansă %">
+      <input class="inp num" type="number" value="${lv.to}" onchange="setLev('${it.id}',${i},'to',this.value)" title="nivel (+)">
+      <input class="inp num" type="number" value="${lv.tax||0}" onchange="setLev('${it.id}',${i},'tax',this.value)" title="taxă yang">
+      <input class="inp num" type="number" value="${lv.chance!=null?lv.chance:''}" onchange="setLev('${it.id}',${i},'chance',this.value)" title="șansă % (opțional)" placeholder="%">
       <div class="mats">${mats}<button class="btn ghost sm" onclick="addLevMat('${it.id}',${i})">+ mat</button></div>
       <button class="btn danger sm" onclick="delLev('${it.id}',${i})">✕</button></div>`;
   }).join("");
-  return `<div class="field"><label>Pași upgrade — nivel · taxă · șansă% · materiale</label>${rows}
+  return `<div class="field"><label>Pași upgrade — nivel · taxă · șansă% (opțional) · materiale</label>${rows}
     <button class="btn ghost sm" style="margin-top:4px" onclick="addLev('${it.id}')">+ Pas</button></div>`;
 }
 function addItem(){ const c=cats()[0]; DB.items=DB.items||[]; const it={id:uid("i"),cat:c?c.id:"",name:"Item nou",icon:0,desc:"",kind:"upgrade",recipe:[],levels:[]}; DB.items.push(it); dirty(); edItems(it.id); buildNav(); }
 function delItem(id){ if(!confirm("Ștergi itemul?"))return; DB.items=DB.items.filter(i=>i.id!==id); dirty(); edItems(); buildNav(); }
 function itById(id){return DB.items.find(i=>i.id===id);}
-function addLev(id){ const it=itById(id); const last=(it.levels||[]).slice(-1)[0]; it.levels=it.levels||[]; it.levels.push({to:(last?last.to+1:1),tax:0,chance:100,mats:[]}); dirty(); renderAdmin(id); }
-function delLev(id,i){ const it=itById(id); it.levels.splice(i,1); dirty(); renderAdmin(id); }
-function setLev(id,i,f,v){ const it=itById(id); it.levels[i][f]=(f==="chance"&&v==="")?null:Number(v); dirty(true); }
+function addLev(id){ const it=itById(id); it.levels=it.levels||[]; const last=it.levels.slice(-1)[0]; it.levels.push({to:(last?last.to+1:1),tax:0,chance:null,mats:[]}); dirty(); renderAdmin(id); }
+function delLev(id,i){ itById(id).levels.splice(i,1); dirty(); renderAdmin(id); }
+function setLev(id,i,f,v){ const it=itById(id); it.levels[i][f]=(f==="chance"&&(v===""||v==null))?null:Number(v); dirty(true); }
 function addLevMat(id,i){ const it=itById(id); const m=(DB.mats||[])[0]; it.levels[i].mats=it.levels[i].mats||[]; it.levels[i].mats.push({m:m?m.id:"",q:1}); dirty(); renderAdmin(id); }
-function delLevMat(id,i,j){ const it=itById(id); it.levels[i].mats.splice(j,1); dirty(); renderAdmin(id); }
+function delLevMat(id,i,j){ itById(id).levels[i].mats.splice(j,1); dirty(); renderAdmin(id); }
 function setLevMat(id,i,j,f,v){ const it=itById(id); it.levels[i].mats[j][f]=f==="q"?Number(v):v; dirty(true); }
 
-// -- setField generic (nu re-randeaza, ca sa nu pierzi focusul in timp ce scrii) --
 function setField(kind,id,f,v){
-  let arr=kind==="cat"?DB.cats:kind==="mat"?DB.mats:DB.items;
-  const o=arr.find(x=>x.id===id); if(!o)return;
+  let arr=kind==="sec"?DB.sections:kind==="cat"?DB.cats:kind==="mat"?DB.mats:DB.items;
+  const o=(arr||[]).find(x=>x.id===id); if(!o)return;
   if(f==="order"||f==="vnum"||f==="price"||f==="icon") v=Number(v)||0;
   o[f]=v; dirty(true);
 }
 let dirtyFlag=false;
-function dirty(silent){ dirtyFlag=true; if(!silent)mark("Modificări nesalvate."); else mark("Modificări nesalvate."); }
+function dirty(){ dirtyFlag=true; mark("Modificări nesalvate."); }
 function mark(t){ const s=$("#savest"); if(s)s.textContent=t; }
 async function saveDB(){
   mark("Se salvează…");
+  if(PREVIEW){ mark("Previzualizare — nu se salvează pe server (doar pe deliricbae.ro)."); return; }
   try{
-    if(PREVIEW){ mark("Previzualizare — nu se salvează pe server."); return; }
     const r=await fetch("/api/tools",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(DB)});
     const j=await r.json().catch(()=>({}));
     if(r.ok){ dirtyFlag=false; mark("Salvat ✓ ("+new Date().toLocaleTimeString("ro-RO")+")"); }
