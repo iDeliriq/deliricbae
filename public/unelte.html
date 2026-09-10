@@ -216,6 +216,13 @@ tr.pityrow .mlbl{color:var(--gold2)}
 .notabtn:hover{border-color:var(--gold);color:var(--gold2)}
 .lvlbadge{display:inline-block;margin-top:5px;font-size:11px;font-weight:600;color:var(--gold2);background:rgba(231,185,84,.1);border:1px solid rgba(231,185,84,.3);border-radius:20px;padding:2px 10px;letter-spacing:.3px}
 .slwrap{display:flex;flex-wrap:wrap;gap:8px}
+.cmpsel{width:100%;max-width:340px;padding:9px 11px;border:1px solid var(--line2);border-radius:9px;background:var(--panel2);color:var(--ink);font-size:13px;margin-bottom:10px}
+.cmpcols{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.cmpcols{grid-template-columns:1fr}}
+.cmpcard{background:var(--bg2);border:1px solid var(--line2);border-radius:12px;padding:12px}
+.cmphead{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.cmphead b{font-family:"Cinzel",serif;font-size:15px}
+.cmptot{color:var(--mut);font-size:13px}.cmptot b{color:var(--gold2);font-size:16px}
 .slchip{display:inline-flex;align-items:center;gap:7px;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;padding:5px 11px 5px 6px;font-size:12.5px;color:var(--ink)}
 .slchip b{color:var(--gold2)}
 .micon.sm{width:26px;height:26px;border-radius:5px}
@@ -290,13 +297,13 @@ let curLang=(function(){try{var s=localStorage.getItem('db_lang');if(s&&LANG[s])
 function t(k){return (LANG[curLang]&&LANG[curLang][k])||LANG.en[k]||k;}
 // chei i18n noi (tooltip/calculator/etc.)
 (function(){var add={
- en:{from_level:'From level',shoplist:'Materials list',copy:'Copy',copied:'Copied!',reports:'Reports',mokoko_tab:'Mokoko',collected:'collected',overall:'Overall'},
- ro:{from_level:'De la nivel',shoplist:'Listă materiale',copy:'Copiază',copied:'Copiat!',reports:'Rapoarte',mokoko_tab:'Mokoko',collected:'colectate',overall:'Total'},
- de:{from_level:'Ab Stufe',shoplist:'Materialliste',copy:'Kopieren',copied:'Kopiert!',reports:'Berichte',mokoko_tab:'Mokoko',collected:'gesammelt',overall:'Gesamt'},
- pl:{from_level:'Od poziomu',shoplist:'Lista materiałów',copy:'Kopiuj',copied:'Skopiowano!',reports:'Raporty',mokoko_tab:'Mokoko',collected:'zebrane',overall:'Razem'},
- tr:{from_level:'Seviyeden',shoplist:'Malzeme listesi',copy:'Kopyala',copied:'Kopyalandı!',reports:'Raporlar',mokoko_tab:'Mokoko',collected:'toplandı',overall:'Toplam'},
- fr:{from_level:'À partir du niveau',shoplist:'Liste des matériaux',copy:'Copier',copied:'Copié !',reports:'Rapports',mokoko_tab:'Mokoko',collected:'collectés',overall:'Total'},
- es:{from_level:'Desde nivel',shoplist:'Lista de materiales',copy:'Copiar',copied:'¡Copiado!',reports:'Informes',mokoko_tab:'Mokoko',collected:'recogidos',overall:'Total'}};
+ en:{from_level:'From level',shoplist:'Materials list',copy:'Copy',copied:'Copied!',reports:'Reports',mokoko_tab:'Mokoko',collected:'collected',overall:'Overall',compare:'Compare',compare_pick:'Pick an item'},
+ ro:{from_level:'De la nivel',shoplist:'Listă materiale',copy:'Copiază',copied:'Copiat!',reports:'Rapoarte',mokoko_tab:'Mokoko',collected:'colectate',overall:'Total',compare:'Compară',compare_pick:'Alege un item'},
+ de:{from_level:'Ab Stufe',shoplist:'Materialliste',copy:'Kopieren',copied:'Kopiert!',reports:'Berichte',mokoko_tab:'Mokoko',collected:'gesammelt',overall:'Gesamt',compare:'Vergleichen',compare_pick:'Item wählen'},
+ pl:{from_level:'Od poziomu',shoplist:'Lista materiałów',copy:'Kopiuj',copied:'Skopiowano!',reports:'Raporty',mokoko_tab:'Mokoko',collected:'zebrane',overall:'Razem',compare:'Porównaj',compare_pick:'Wybierz przedmiot'},
+ tr:{from_level:'Seviyeden',shoplist:'Malzeme listesi',copy:'Kopyala',copied:'Kopyalandı!',reports:'Raporlar',mokoko_tab:'Mokoko',collected:'toplandı',overall:'Toplam',compare:'Karşılaştır',compare_pick:'Bir eşya seç'},
+ fr:{from_level:'À partir du niveau',shoplist:'Liste des matériaux',copy:'Copier',copied:'Copié !',reports:'Rapports',mokoko_tab:'Mokoko',collected:'collectés',overall:'Total',compare:'Comparer',compare_pick:'Choisir un objet'},
+ es:{from_level:'Desde nivel',shoplist:'Lista de materiales',copy:'Copiar',copied:'¡Copiado!',reports:'Informes',mokoko_tab:'Mokoko',collected:'recogidos',overall:'Total',compare:'Comparar',compare_pick:'Elige un objeto'}};
  for(var l in add){LANG[l]=LANG[l]||{};for(var k in add[l])if(!(k in LANG[l]))LANG[l][k]=add[l][k];}})();
 function copyList(txt){try{navigator.clipboard.writeText(txt);}catch(e){}try{const t=itipEl();t.textContent=(LANG[curLang]&&LANG[curLang].copied)||'Copied!';t.style.display='block';t.style.left=(window.innerWidth/2-40)+'px';t.style.top='80px';setTimeout(itipHide,1100);}catch(e){}}
 function mkPriceHint(){return t('price_hint').replace('{L}',"<a href='#' onclick='routeMateriale();return false'>"+t('materials')+"</a>");}
@@ -449,8 +456,35 @@ function renderItem(it){
     const chips=it.recipe.map(mm=>{const m=matById(mm.m);return `<span class="matchip"><span class="q">${mm.q}×</span> ${esc(m?m.name:"?")}</span>`;}).join("");
     html+=`<div class="sect">${t('craft')}</div><div class="card">${chips}</div>`;
   }
+  // ---- Comparație cu alt item ----
+  const opts=(DB.items||[]).filter(x=>x.kind==="upgrade"&&(x.levels||[]).length&&x.id!==it.id)
+    .map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join("");
+  if(opts){
+    html+=`<div class="sect" style="margin-top:20px">⇄ ${t('compare')}</div>
+      <select class="cmpsel" onchange="cmpRender('${it.id}',this.value)"><option value="">${t('compare_pick')}…</option>${opts}</select>
+      <div id="cmpout"></div>`;
+  }
   html+=`<div class="dim" style="margin-top:14px;font-size:12px">${mkPriceHint()}</div>`;
   return html;
+}
+function itemSummary(it){ // {total, agg{matId:qty}}
+  const agg={}; let total=0;
+  (it.levels||[]).forEach(l=>{ total+=stageCost(l,it.id); const p=hasPity(l)?getPity(it.id,l.to):0;
+    (l.mats||[]).forEach(mm=>{agg[mm.m]=(agg[mm.m]||0)+(mm.q||0)*(p+1);}); });
+  return {total,agg};
+}
+function cmpCol(it){
+  const s=itemSummary(it);
+  const ic=it.icon?`<img src="${iconURL(it.icon)}" style="width:34px;height:34px" onerror="this.replaceWith(document.createTextNode('🗡️'))">`:"🗡️";
+  const chips=Object.keys(s.agg).map(id=>{const m=matById(id);const ic2=(m&&m.vnum)?`<img src="${iconURL(m.vnum)}" onerror="this.parentNode.textContent='◆'">`:"◆";return `<span class="slchip" data-nm="${esc(m?m.name:'?')}"><span class="micon sm">${ic2}</span><b>×${fmt(s.agg[id])}</b></span>`;}).join("");
+  return `<div class="cmpcard"><div class="cmphead">${ic}<div><b>${esc(it.name)}</b>${it.reqLevel?`<div class="dim" style="font-size:11px">${t('from_level')} ${it.reqLevel}</div>`:""}</div></div>
+    <div class="cmptot">${t('total_tm')}: <b>${kk(s.total)}</b></div><div class="slwrap" style="margin-top:8px">${chips}</div></div>`;
+}
+function cmpRender(aId,bId){ const out=document.getElementById('cmpout'); if(!out)return;
+  if(!bId){out.innerHTML="";return;}
+  const a=(DB.items||[]).find(x=>x.id===aId), b=(DB.items||[]).find(x=>x.id===bId);
+  if(!a||!b){out.innerHTML="";return;}
+  out.innerHTML=`<div class="cmpcols">${cmpCol(a)}${cmpCol(b)}</div>`;
 }
 
 function renderMateriale(){
