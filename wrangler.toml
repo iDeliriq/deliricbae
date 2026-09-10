@@ -8,7 +8,7 @@ compatibility_date = "2024-11-01"
 directory = "./public"
 binding = "ASSETS"
 
-# Stocarea datelor de raport (trimise de publisher-ul de pe PC).
+# Stocare KV: rapoarte (cheia "latest") + unelte (cheia "tools_db").
 [[kv_namespaces]]
-binding = "REPORTS"
+binding = "DB"
 id = "5625fad515024865bd472be5c8287076"

@@ -1,0 +1,465 @@
+<meta charset="utf-8">
+<title>deliricbae unelte</title>
+<meta name="description" content="Unelte Baerim — calculatoare de upgrade și prețuri, editabile de admin.">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --bg:#080b16; --bg2:#0b1020; --panel:#111a30; --panel2:#152037; --panel3:#1b2947;
+  --line:#243256; --line2:#33456f;
+  --ink:#eaeefb; --mut:#9aa6c8; --dim:#5f6c93;
+  --gold:#e7b954; --gold2:#f6d488; --goldd:#a9812c;
+  --ok:#5fd39a; --bad:#e2685f;
+  --sbw:250px;
+  --shadow:0 14px 34px -20px rgba(0,0,0,.8);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{color:var(--ink);font-family:"Poppins",system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;
+  background:radial-gradient(1200px 600px at 78% -10%,rgba(231,185,84,.10),transparent 60%),
+    radial-gradient(900px 500px at 8% 6%,rgba(90,120,255,.08),transparent 55%),var(--bg);}
+.stars{position:fixed;inset:0;z-index:-1;pointer-events:none;opacity:.5;
+  background-image:radial-gradient(1px 1px at 20% 30%,#fff,transparent),radial-gradient(1px 1px at 60% 70%,#cdd6ff,transparent),
+    radial-gradient(1px 1px at 80% 20%,#fff,transparent),radial-gradient(1px 1px at 35% 80%,#e7d6a0,transparent),
+    radial-gradient(1px 1px at 90% 55%,#fff,transparent),radial-gradient(2px 2px at 48% 18%,#fff,transparent);
+  background-repeat:repeat;background-size:520px 520px;}
+a{color:var(--gold2);text-decoration:none}
+
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--sbw);z-index:40;
+  background:linear-gradient(180deg,rgba(17,26,48,.96),rgba(11,16,32,.98));
+  border-right:1px solid var(--line);display:flex;flex-direction:column;transition:transform .22s ease}
+.brand{display:flex;align-items:center;gap:10px;padding:16px 16px 12px}
+.brand h1{font-family:"Cinzel",serif;font-weight:700;font-size:19px;margin:0;letter-spacing:1px;
+  background:linear-gradient(180deg,var(--gold2),var(--goldd));-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.brand .sub{color:var(--dim);font-size:10px;letter-spacing:1px;text-transform:uppercase;margin-top:3px}
+.sbsearch{padding:0 14px 10px}
+.sbsearch input{width:100%;padding:9px 11px;border-radius:9px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-size:13px;font-family:inherit}
+.sbsearch input:focus{outline:2px solid rgba(231,185,84,.4);border-color:var(--gold)}
+.nav{flex:1;overflow:auto;padding:4px 8px 10px}
+.grp{margin-bottom:2px}
+.grphead{display:flex;align-items:center;gap:9px;padding:9px 10px;border-radius:9px;cursor:pointer;
+  color:var(--mut);font-size:12px;font-weight:600;letter-spacing:.4px;text-transform:uppercase;user-select:none}
+.grphead:hover{background:var(--panel2);color:var(--ink)}
+.grphead .chev{margin-left:auto;transition:transform .18s;font-size:10px;color:var(--dim)}
+.grp.open .chev{transform:rotate(90deg)}
+.grpbody{display:none;padding:2px 0 6px 6px}
+.grp.open .grpbody{display:block}
+.navitem{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:8px;cursor:pointer;color:var(--mut);font-size:13px;user-select:none}
+.navitem:hover{background:var(--panel2);color:var(--ink)}
+.navitem.active{color:var(--gold2);background:rgba(231,185,84,.10)}
+.navitem img{width:18px;height:18px;flex:none;border-radius:4px;background:var(--bg2)}
+.navitem .dot{width:8px;height:8px;border-radius:2px;background:var(--line2);flex:none;transform:rotate(45deg)}
+.navitem .empty{color:var(--dim);font-style:italic}
+.sbfoot{padding:8px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:2px}
+.sbfoot .navitem{font-size:12.5px}
+.sbfoot .adm{color:var(--gold2)}
+
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:35;opacity:0;pointer-events:none;transition:opacity .2s}
+.main{margin-left:var(--sbw);min-height:100vh}
+.topbar{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20;background:rgba(8,11,22,.85);backdrop-filter:blur(6px)}
+.iconbtn{width:36px;height:36px;border:1px solid var(--line2);border-radius:9px;background:var(--panel2);color:var(--ink);cursor:pointer;display:none;align-items:center;justify-content:center}
+.iconbtn svg{width:18px;height:18px}
+.crumbs{color:var(--dim);font-size:13px}
+.crumbs b{color:var(--gold2);font-weight:600}
+.content{padding:20px;max-width:1000px}
+
+.ihead{display:flex;align-items:center;gap:16px;background:linear-gradient(180deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:var(--shadow)}
+.ihead .ic{width:56px;height:56px;flex:none;border-radius:12px;background:var(--bg2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ihead .ic img{width:48px;height:48px}
+.ihead h2{font-family:"Cinzel",serif;margin:0;font-size:22px;letter-spacing:.5px}
+.ihead .desc{color:var(--mut);font-size:13px;margin-top:2px}
+
+.sect{font-family:"Cinzel",serif;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold2);margin:22px 2px 10px}
+.tblwrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+table{border-collapse:collapse;width:100%;min-width:520px}
+th,td{padding:9px 10px;text-align:center;border-bottom:1px solid var(--line);font-size:12.5px}
+th{color:var(--gold2);font-family:"JetBrains Mono",monospace;font-weight:600;background:var(--panel2)}
+tr:last-child td{border-bottom:0}
+td.lbl,th.lbl{text-align:left;color:var(--mut);white-space:nowrap}
+.num{font-family:"JetBrains Mono",monospace}
+.matchip{display:inline-flex;align-items:center;gap:4px;background:var(--panel3);border:1px solid var(--line2);border-radius:7px;padding:2px 7px;margin:2px;font-size:11px;white-space:nowrap}
+.matchip .q{color:var(--gold2);font-family:"JetBrains Mono",monospace}
+.total{display:flex;align-items:baseline;gap:12px;justify-content:flex-end;margin-top:14px;
+  font-family:"Cinzel",serif;font-size:20px}
+.total b{color:var(--gold2);font-family:"JetBrains Mono",monospace}
+
+.card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+.muted{color:var(--mut)}
+.dim{color:var(--dim)}
+input,select,textarea{font-family:inherit}
+.inp{padding:8px 10px;border-radius:8px;border:1px solid var(--line2);background:var(--bg2);color:var(--ink);font-size:13px}
+.inp:focus{outline:2px solid rgba(231,185,84,.35);border-color:var(--gold)}
+.num.inp{font-family:"JetBrains Mono",monospace}
+.btn{border:0;border-radius:9px;padding:9px 14px;cursor:pointer;font-family:"Cinzel",serif;font-size:13px;letter-spacing:.4px;
+  background:linear-gradient(180deg,var(--gold),var(--goldd));color:#1a1204;font-weight:700}
+.btn:hover{background:linear-gradient(180deg,var(--gold2),var(--gold))}
+.btn.ghost{background:var(--panel2);color:var(--ink);border:1px solid var(--line2);font-weight:600}
+.btn.ghost:hover{border-color:var(--gold)}
+.btn.sm{padding:5px 9px;font-size:12px;font-family:"Poppins",sans-serif}
+.btn.danger{background:var(--panel2);color:var(--bad);border:1px solid color-mix(in srgb,var(--bad) 40%,transparent)}
+.btn.danger:hover{background:color-mix(in srgb,var(--bad) 14%,transparent)}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.spread{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+
+/* login admin */
+.login{max-width:360px;margin:8vh auto 0}
+.login .card h2{font-family:"Cinzel",serif;text-align:center;margin:0 0 4px;font-size:18px}
+.login p{color:var(--mut);text-align:center;font-size:13px;margin:0 0 16px}
+.login .err{color:var(--bad);font-size:12.5px;text-align:center;margin-top:10px;min-height:16px}
+
+/* admin editor */
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:8px 14px;border-radius:9px;border:1px solid var(--line2);background:var(--panel2);color:var(--mut);cursor:pointer;font-size:13px;font-weight:600}
+.tab.on{background:rgba(231,185,84,.12);color:var(--gold2);border-color:color-mix(in srgb,var(--gold) 40%,transparent)}
+.erow{display:grid;gap:8px;align-items:center;padding:8px;border:1px solid var(--line);border-radius:10px;background:var(--panel);margin-bottom:8px}
+.erow.cat{grid-template-columns:1fr 90px 40px}
+.erow.mat{grid-template-columns:1fr 90px 130px 40px}
+.itemcard{border:1px solid var(--line);border-radius:12px;background:var(--panel);margin-bottom:10px;overflow:hidden}
+.itemhd{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);cursor:pointer}
+.itemhd .nm{font-weight:600}
+.itemhd .chev{margin-left:auto;color:var(--dim);transition:transform .18s}
+.itemcard.open .itemhd .chev{transform:rotate(90deg)}
+.itembody{display:none;padding:12px;border-top:1px solid var(--line)}
+.itemcard.open .itembody{display:block}
+.field{display:flex;flex-direction:column;gap:4px;margin-bottom:10px}
+.field label{font-size:11px;color:var(--dim);letter-spacing:.4px;text-transform:uppercase}
+.grid2f{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.lvrow{display:grid;grid-template-columns:60px 110px 80px 1fr 34px;gap:8px;align-items:start;padding:8px;border:1px solid var(--line);border-radius:9px;margin-bottom:7px;background:var(--bg2)}
+.lvrow .mats{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.lvmat{display:flex;gap:4px;align-items:center;background:var(--panel2);border:1px solid var(--line2);border-radius:7px;padding:3px 5px}
+.lvmat select{max-width:150px}
+.savebar{position:sticky;bottom:0;margin-top:16px;padding:12px;border-top:1px solid var(--line);
+  background:rgba(8,11,22,.92);backdrop-filter:blur(6px);display:flex;align-items:center;gap:12px;justify-content:flex-end;border-radius:0 0 14px 14px}
+.savebar .st{margin-right:auto;font-size:12.5px;color:var(--mut)}
+.iconprev{width:34px;height:34px;border-radius:7px;background:var(--bg2);border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.iconprev img{width:30px;height:30px}
+.editbtn{margin-left:auto}
+.placeholder{color:var(--mut);max-width:520px;line-height:1.7;margin:8vh auto 0;text-align:center}
+.placeholder .big{font-family:"Cinzel",serif;font-size:20px;color:var(--ink);margin-bottom:8px}
+
+@media (max-width:860px){
+  .sidebar{transform:translateX(-100%)}
+  body.nav-open .sidebar{transform:translateX(0)}
+  body.nav-open .scrim{opacity:1;pointer-events:auto}
+  .main{margin-left:0}
+  .iconbtn{display:inline-flex}
+  .grid2f{grid-template-columns:1fr}
+  .lvrow{grid-template-columns:1fr 1fr;}
+}
+</style>
+
+<div class="stars"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <svg width="26" height="26" viewBox="0 0 34 34"><polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/>
+      <polygon points="17,2 32,17 17,17" fill="#f6d488"/><polygon points="2,17 17,32 17,17" fill="#a9812c"/>
+      <polygon points="17,2 17,17 2,17" fill="#e7b954"/><polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>
+    <div><h1>deliricbae</h1><div class="sub">Unelte Baerim</div></div>
+  </div>
+  <div class="sbsearch"><input id="search" placeholder="Caută item…" autocomplete="off"></div>
+  <nav class="nav" id="nav"></nav>
+  <div class="sbfoot">
+    <div class="navitem" onclick="location.href='/'"><span class="dot"></span> ← Înapoi la site</div>
+    <div class="navitem adm" id="adminNav"><span class="dot" style="background:var(--gold)"></span> Admin</div>
+  </div>
+</aside>
+<div class="scrim" id="scrim"></div>
+
+<div class="main">
+  <div class="topbar">
+    <button class="iconbtn" id="burger" aria-label="Meniu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+    <div class="crumbs" id="crumbs">Unelte</div>
+  </div>
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const PREVIEW=!(location.hostname==="deliricbae.ro"||location.hostname==="www.deliricbae.ro"||location.hostname.endsWith("workers.dev"));
+const PKEY="db_prices_v1"; // suprascrieri de pret per-user (local)
+
+// notatie metin2
+const kk=n=>{n=Number(n)||0;const s=n<0?"-":"";n=Math.abs(n);
+  const f=(v,d)=>{let x=v.toFixed(d);if(x.indexOf(".")>=0)x=x.replace(/0+$/,"").replace(/\.$/,"");return x;};
+  if(n>=1e9)return s+f(n/1e9,2)+" kkk"; if(n>=1e6)return s+f(n/1e6,2)+" kk";
+  if(n>=1e3)return s+Math.round(n/1e3)+" k"; return s+Math.round(n);};
+const fmt=n=>Number(n||0).toLocaleString("ro-RO");
+const uid=p=>p+"_"+Math.random().toString(36).slice(2,8);
+const iconURL=v=>v?`https://img.m2icondb.com/${String(v).padStart(5,"0")}.png`:"";
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let DB=null, isAdmin=false, view={type:"home"}, atab="cat";
+
+// fallback local (preview/offline) — pe site datele vin din /api/tools
+const DEFAULT_TOOLS={v:1,cats:[{id:"c_arme",name:"Arme",order:10},{id:"c_armuri",name:"Armuri",order:20},
+  {id:"c_acc",name:"Accesorii",order:30},{id:"c_mat",name:"Materiale",order:90}],
+  mats:[{id:"m_sul",name:"Sul binecuvântat",vnum:25040,price:46000},{id:"m_piatra",name:"Piatră magică",vnum:25041,price:120000}],
+  items:[{id:"i_demo",cat:"c_arme",name:"Exemplu +9 (șterge-mă)",icon:0,desc:"Item exemplu — editează-l sau șterge-l din Admin.",kind:"upgrade",recipe:[],
+    levels:[{to:1,tax:20000,chance:100,mats:[{m:"m_sul",q:1}]},{to:2,tax:30000,chance:100,mats:[{m:"m_sul",q:1}]},
+      {to:3,tax:40000,chance:90,mats:[{m:"m_sul",q:2},{m:"m_piatra",q:1}]}]}]};
+
+// ---- preturi ----
+function userPrices(){try{return JSON.parse(localStorage.getItem(PKEY)||"{}")}catch(e){return {}}}
+function setUserPrice(id,v){const o=userPrices(); if(v==null||v==="")delete o[id]; else o[id]=Number(v); try{localStorage.setItem(PKEY,JSON.stringify(o))}catch(e){}}
+function matById(id){return (DB.mats||[]).find(m=>m.id===id);}
+function priceOf(id){const up=userPrices(); if(id in up)return up[id]; const m=matById(id); return m?Number(m.price||0):0;}
+
+// ---- incarcare ----
+async function boot(){
+  try{ DB=await fetch("/api/tools").then(r=>r.json()); }catch(e){ DB=null; }
+  if(!DB||!Array.isArray(DB.cats)){ DB=JSON.parse(JSON.stringify(DEFAULT_TOOLS)); }
+  try{ isAdmin=(await fetch("/api/admin/me").then(r=>r.json())).admin; }catch(e){ isAdmin=false; }
+  buildNav(); routeHome();
+}
+function cats(){return (DB.cats||[]).slice().sort((a,b)=>(a.order||0)-(b.order||0));}
+function itemsOf(cid){return (DB.items||[]).filter(i=>i.cat===cid);}
+
+// ---- sidebar ----
+function buildNav(filter){
+  filter=(filter||"").toLowerCase();
+  const nav=$("#nav"); nav.innerHTML="";
+  cats().forEach(c=>{
+    let items=itemsOf(c.id);
+    if(filter) items=items.filter(i=>i.name.toLowerCase().includes(filter));
+    if(filter && !items.length) return;
+    const grp=document.createElement("div"); grp.className="grp"+((filter||c.id===view.cat)?" open":"");
+    const hd=document.createElement("div"); hd.className="grphead";
+    hd.innerHTML=`<span>${esc(c.name)}</span><span class="chev">▶</span>`;
+    hd.onclick=()=>grp.classList.toggle("open");
+    const body=document.createElement("div"); body.className="grpbody";
+    if(!items.length){ const e=document.createElement("div"); e.className="navitem empty"; e.textContent="(gol)"; body.appendChild(e); }
+    items.forEach(it=>{
+      const el=document.createElement("div"); el.className="navitem"+(view.type==="item"&&view.id===it.id?" active":"");
+      el.innerHTML=(it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.visibility='hidden'">`:`<span class="dot"></span>`)+`<span>${esc(it.name)}</span>`;
+      el.onclick=()=>{ routeItem(it.id); closeNav(); };
+      body.appendChild(el);
+    });
+    grp.appendChild(hd); grp.appendChild(body); nav.appendChild(grp);
+  });
+  $("#adminNav").innerHTML=`<span class="dot" style="background:var(--gold)"></span> ${isAdmin?"Admin ✓":"Admin"}`;
+}
+$("#search").addEventListener("input",e=>buildNav(e.target.value));
+$("#burger").onclick=()=>document.body.classList.toggle("nav-open");
+$("#scrim").onclick=closeNav;
+function closeNav(){document.body.classList.remove("nav-open");}
+$("#adminNav").onclick=()=>{ routeAdmin(); closeNav(); };
+
+// ---- rutare ----
+function setCrumbs(h){$("#crumbs").innerHTML=h;}
+function routeHome(){ view={type:"home"}; buildNav($("#search").value);
+  const list=cats().map(c=>{const n=itemsOf(c.id).length;return `<div class="navitem" style="justify-content:space-between" onclick="document.querySelectorAll('.grp')[${cats().indexOf(c)}]?.classList.add('open')">${esc(c.name)} <span class="dim">${n}</span></div>`;}).join("");
+  setCrumbs("Unelte");
+  $("#content").innerHTML=`<div class="ihead"><div class="ic">🛠️</div><div><h2>Unelte Baerim</h2>
+    <div class="desc">Alege un item din stânga pentru calculatorul de upgrade. Prețurile le setezi în „Materiale" și rămân salvate pentru tine.</div></div></div>
+    <div class="sect">Categorii</div><div class="card">${list||'<div class="muted">Nimic încă. Intră în Admin ca să adaugi.</div>'}</div>`;
+}
+function routeItem(id){
+  const it=(DB.items||[]).find(x=>x.id===id); if(!it)return routeHome();
+  view={type:"item",id,cat:it.cat}; buildNav($("#search").value);
+  const c=(DB.cats||[]).find(x=>x.id===it.cat);
+  setCrumbs(`Unelte › ${esc(c?c.name:"")} › <b>${esc(it.name)}</b>`);
+  $("#content").innerHTML=renderItem(it);
+}
+function routeMateriale(){
+  view={type:"mat"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Materiale</b>");
+  $("#content").innerHTML=renderMateriale();
+}
+
+// ---- randare item (calculator upgrade) ----
+function stageCost(lv){ let mats=0; (lv.mats||[]).forEach(mm=>mats+=priceOf(mm.m)*(mm.q||0)); return (lv.tax||0)+mats; }
+function renderItem(it){
+  const ic=it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.display='none'">`:"🗡️";
+  let html=`<div class="ihead"><div class="ic">${ic}</div><div><h2>${esc(it.name)}</h2>${it.desc?`<div class="desc">${esc(it.desc)}</div>`:""}</div>
+    ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('item','${it.id}')">✎ Editează</button>`:""}</div>`;
+  if(it.kind!=="upgrade"||!(it.levels||[]).length){
+    html+=`<div class="card muted">Fără tabel de upgrade. ${isAdmin?'Adaugă pași în Admin.':''}</div>`; return html;
+  }
+  let total=0;
+  const rows=(it.levels||[]).map(lv=>{
+    const cost=stageCost(lv); total+=cost;
+    const chips=(lv.mats||[]).map(mm=>{const m=matById(mm.m);return `<span class="matchip"><span class="q">${mm.q}×</span> ${esc(m?m.name:"?")}</span>`;}).join("")||'<span class="dim">—</span>';
+    return `<tr><td class="num" style="color:var(--gold2)">+${lv.to}</td>
+      <td class="num">${fmt(lv.tax||0)}</td><td class="num">${lv.chance!=null?lv.chance+"%":"—"}</td>
+      <td class="lbl">${chips}</td><td class="num">${kk(cost)}</td></tr>`;
+  }).join("");
+  html+=`<div class="sect">Cost upgrade</div><div class="tblwrap"><table>
+    <tr><th>Nivel</th><th>Taxă</th><th>Șansă</th><th class="lbl">Materiale</th><th>Cost/pas</th></tr>${rows}</table></div>
+    <div class="total">Total până la +${it.levels[it.levels.length-1].to}: <b>${kk(total)}</b></div>`;
+  if((it.recipe||[]).length){
+    const chips=it.recipe.map(mm=>{const m=matById(mm.m);return `<span class="matchip"><span class="q">${mm.q}×</span> ${esc(m?m.name:"?")}</span>`;}).join("");
+    html+=`<div class="sect">Rețetă craft</div><div class="card">${chips}</div>`;
+  }
+  html+=`<div class="dim" style="margin-top:14px;font-size:12px">Prețurile se modifică în <a href="#" onclick="routeMateriale();return false">Materiale</a> și rămân salvate pentru tine.</div>`;
+  return html;
+}
+
+// ---- Materiale ----
+function renderMateriale(){
+  const up=userPrices();
+  const rows=(DB.mats||[]).map(m=>{
+    const uv=(m.id in up)?up[m.id]:"";
+    return `<tr><td class="lbl">${m.icon||m.vnum?`<img src="${iconURL(m.vnum)}" style="width:20px;height:20px;vertical-align:middle;margin-right:6px" onerror="this.style.display='none'">`:""}${esc(m.name)}</td>
+      <td class="num dim">${m.vnum||"—"}</td>
+      <td class="num">${fmt(m.price||0)}</td>
+      <td><input class="inp num" style="width:130px" type="number" min="0" placeholder="al meu…" value="${uv}" oninput="setUserPrice('${m.id}',this.value)"></td></tr>`;
+  }).join("");
+  return `<div class="ihead"><div class="ic">💰</div><div><h2>Materiale &amp; prețuri</h2>
+    <div class="desc">Prețul „de bază" e setat de admin. Poți pune prețul tău (coloana din dreapta) — se salvează doar pentru tine.</div></div>
+    ${isAdmin?`<button class="btn ghost sm editbtn" onclick="routeAdmin('mat')">✎ Editează baza</button>`:""}</div>
+    <div class="tblwrap"><table><tr><th class="lbl">Material</th><th>vnum</th><th>Preț bază</th><th>Prețul meu</th></tr>${rows||'<tr><td class="muted" colspan="4">Niciun material încă.</td></tr>'}</table></div>`;
+}
+
+// ================= ADMIN =================
+async function routeAdmin(tab,focusId){
+  isAdmin=(await fetch("/api/admin/me").then(r=>r.json()).catch(()=>({admin:false}))).admin || (PREVIEW&&isAdmin);
+  view={type:"admin"}; buildNav($("#search").value); setCrumbs("Unelte › <b>Admin</b>");
+  if(!isAdmin){ return renderAdminLogin(); }
+  if(tab)atab=tab;
+  renderAdmin(focusId);
+}
+function renderAdminLogin(){
+  $("#content").innerHTML=`<div class="login"><div class="card">
+    <h2>Admin</h2><p>Introdu parola de administrator ca să editezi uneltele.</p>
+    <input id="apw" class="inp" style="width:100%" type="password" autocomplete="current-password" placeholder="Parolă admin" autofocus>
+    <button class="btn" style="width:100%;margin-top:12px" id="alogin">Intră</button>
+    <div class="err" id="aerr">${PREVIEW?'<span class="dim">Previzualizare — orice parolă intră.</span>':''}</div></div></div>`;
+  const go=async()=>{
+    const pw=$("#apw").value, err=$("#aerr");
+    if(PREVIEW){ isAdmin=true; return renderAdmin(); }
+    err.textContent="";
+    try{
+      const r=await fetch("/api/admin/login",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify({password:pw})});
+      if(r.ok){ isAdmin=true; buildNav(); renderAdmin(); return; }
+      const j=await r.json().catch(()=>({}));
+      err.textContent=j.error==="unconfigured"?"ADMIN_PASSWORD nu e setat încă în Cloudflare.":"Parolă greșită.";
+    }catch(e){ err.textContent="Eroare de rețea."; }
+  };
+  $("#alogin").onclick=go; $("#apw").addEventListener("keydown",e=>{if(e.key==="Enter")go();});
+}
+
+function renderAdmin(focusId){
+  const tabs=[["cat","Categorii"],["item","Iteme"],["mat","Materiale"]];
+  let h=`<div class="spread"><div class="tabs">`+
+    tabs.map(t=>`<div class="tab ${atab===t[0]?"on":""}" onclick="atab='${t[0]}';renderAdmin()">${t[1]}</div>`).join("")+
+    `</div><button class="btn ghost sm" onclick="adminLogout()">Ieși din admin</button></div><div id="ed"></div>
+    <div class="savebar"><span class="st" id="savest"></span>
+      <button class="btn ghost" onclick="reloadDB()">Reîncarcă</button>
+      <button class="btn" onclick="saveDB()">💾 Salvează tot</button></div>`;
+  $("#content").innerHTML=h;
+  if(atab==="cat")edCats(); else if(atab==="mat")edMats(); else edItems(focusId);
+}
+async function adminLogout(){ try{await fetch("/api/admin/logout",{method:"POST",credentials:"same-origin"})}catch(e){} isAdmin=false; buildNav(); routeHome(); }
+async function reloadDB(){ DB=await fetch("/api/tools").then(r=>r.json()); mark("Reîncărcat de pe server."); renderAdmin(); }
+
+// -- categorii --
+function edCats(){
+  const list=cats().map(c=>`<div class="erow cat">
+    <input class="inp" value="${esc(c.name)}" oninput="setField('cat','${c.id}','name',this.value)">
+    <input class="inp num" type="number" value="${c.order||0}" oninput="setField('cat','${c.id}','order',this.value)" title="ordine">
+    <button class="btn danger sm" onclick="delCat('${c.id}')">✕</button></div>`).join("");
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Categoriile din bara stângă. „Ordine" = poziția (mai mic = mai sus).</div>
+    ${list}<button class="btn ghost sm" onclick="addCat()">+ Categorie</button>`;
+}
+function addCat(){ DB.cats.push({id:uid("c"),name:"Categorie nouă",order:(Math.max(0,...DB.cats.map(c=>c.order||0))+10)}); dirty(); edCats(); buildNav(); }
+function delCat(id){ if(itemsOf(id).length && !confirm("Categoria are iteme. Ștergi oricum? (itemele rămân fără categorie)"))return;
+  DB.cats=DB.cats.filter(c=>c.id!==id); dirty(); edCats(); buildNav(); }
+
+// -- materiale --
+function edMats(){
+  const list=(DB.mats||[]).map(m=>`<div class="erow mat">
+    <input class="inp" value="${esc(m.name)}" oninput="setField('mat','${m.id}','name',this.value)" placeholder="nume">
+    <input class="inp num" type="number" value="${m.vnum||""}" oninput="setField('mat','${m.id}','vnum',this.value)" placeholder="vnum">
+    <input class="inp num" type="number" value="${m.price||0}" oninput="setField('mat','${m.id}','price',this.value)" placeholder="preț bază">
+    <button class="btn danger sm" onclick="delMat('${m.id}')">✕</button></div>`).join("");
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Baza de prețuri. „vnum" = id-ul itemului (pt. iconiță m2icondb). Prețul de aici e citit de toate calculatoarele.</div>
+    <div class="erow mat" style="background:transparent;border:0;color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.4px"><span>Nume</span><span>vnum</span><span>Preț bază</span><span></span></div>
+    ${list}<button class="btn ghost sm" onclick="addMat()">+ Material</button>`;
+}
+function addMat(){ DB.mats=DB.mats||[]; DB.mats.push({id:uid("m"),name:"Material nou",vnum:0,price:0}); dirty(); edMats(); }
+function delMat(id){ DB.mats=DB.mats.filter(m=>m.id!==id); dirty(); edMats(); }
+
+// -- iteme --
+function edItems(focusId){
+  const opts=cats().map(c=>`<option value="${c.id}">${esc(c.name)}</option>`).join("");
+  const cards=(DB.items||[]).map(it=>{
+    const open=it.id===focusId;
+    return `<div class="itemcard${open?" open":""}" id="ic_${it.id}">
+      <div class="itemhd" onclick="document.getElementById('ic_${it.id}').classList.toggle('open')">
+        <span class="iconprev">${it.icon?`<img src="${iconURL(it.icon)}" onerror="this.style.display='none'">`:"·"}</span>
+        <span class="nm">${esc(it.name)||"(fără nume)"}</span>
+        <span class="dim">${esc((cats().find(c=>c.id===it.cat)||{}).name||"fără categorie")}</span>
+        <span class="chev">▶</span></div>
+      <div class="itembody">
+        <div class="grid2f">
+          <div class="field"><label>Nume</label><input class="inp" value="${esc(it.name)}" oninput="setField('item','${it.id}','name',this.value);document.querySelector('#ic_${it.id} .nm').textContent=this.value"></div>
+          <div class="field"><label>Categorie</label><select class="inp" onchange="setField('item','${it.id}','cat',this.value);buildNav()">${opts.replace(`value="${it.cat}"`,`value="${it.cat}" selected`)}</select></div>
+          <div class="field"><label>Iconiță (vnum m2icondb)</label>
+            <div class="row"><input class="inp num" style="flex:1" type="number" value="${it.icon||""}" placeholder="ex. 40817" oninput="setField('item','${it.id}','icon',this.value);const im=document.querySelector('#ic_${it.id} .iconprev');im.innerHTML=this.value?'<img src=\\''+('https://img.m2icondb.com/'+String(this.value).padStart(5,'0')+'.png')+'\\' onerror=&quot;this.style.display=\\'none\\'&quot;>':'·'">
+            </div></div>
+          <div class="field"><label>Tip</label><select class="inp" onchange="setField('item','${it.id}','kind',this.value);renderAdmin('${it.id}')">
+            <option value="upgrade"${it.kind==="upgrade"?" selected":""}>Upgrade (cu tabel)</option>
+            <option value="info"${it.kind==="info"?" selected":""}>Info (doar text)</option></select></div>
+        </div>
+        <div class="field"><label>Descriere</label><textarea class="inp" rows="2" oninput="setField('item','${it.id}','desc',this.value)">${esc(it.desc)}</textarea></div>
+        ${it.kind==="upgrade"?edLevels(it):""}
+        <div class="row" style="margin-top:10px"><button class="btn danger sm" onclick="delItem('${it.id}')">🗑 Șterge itemul</button></div>
+      </div></div>`;
+  }).join("");
+  $("#ed").innerHTML=`<div class="muted" style="margin-bottom:10px">Adaugă/editează iteme. Clic pe un item ca să-l deschizi.</div>
+    ${cards||'<div class="muted">Niciun item încă.</div>'}<button class="btn ghost sm" style="margin-top:6px" onclick="addItem()">+ Item</button>`;
+}
+function matOptions(sel){return (DB.mats||[]).map(m=>`<option value="${m.id}"${m.id===sel?" selected":""}>${esc(m.name)}</option>`).join("");}
+function edLevels(it){
+  const rows=(it.levels||[]).map((lv,i)=>{
+    const mats=(lv.mats||[]).map((mm,j)=>`<span class="lvmat">
+      <select class="inp sm" onchange="setLevMat('${it.id}',${i},${j},'m',this.value)">${matOptions(mm.m)}</select>
+      <input class="inp num" style="width:56px" type="number" value="${mm.q||1}" onchange="setLevMat('${it.id}',${i},${j},'q',this.value)">
+      <button class="btn danger sm" onclick="delLevMat('${it.id}',${i},${j})">✕</button></span>`).join("");
+    return `<div class="lvrow">
+      <input class="inp num" type="number" value="${lv.to}" onchange="setLev('${it.id}',${i},'to',this.value)" title="nivel">
+      <input class="inp num" type="number" value="${lv.tax||0}" onchange="setLev('${it.id}',${i},'tax',this.value)" title="taxă">
+      <input class="inp num" type="number" value="${lv.chance!=null?lv.chance:''}" onchange="setLev('${it.id}',${i},'chance',this.value)" title="șansă %">
+      <div class="mats">${mats}<button class="btn ghost sm" onclick="addLevMat('${it.id}',${i})">+ mat</button></div>
+      <button class="btn danger sm" onclick="delLev('${it.id}',${i})">✕</button></div>`;
+  }).join("");
+  return `<div class="field"><label>Pași upgrade — nivel · taxă · șansă% · materiale</label>${rows}
+    <button class="btn ghost sm" style="margin-top:4px" onclick="addLev('${it.id}')">+ Pas</button></div>`;
+}
+function addItem(){ const c=cats()[0]; DB.items=DB.items||[]; const it={id:uid("i"),cat:c?c.id:"",name:"Item nou",icon:0,desc:"",kind:"upgrade",recipe:[],levels:[]}; DB.items.push(it); dirty(); edItems(it.id); buildNav(); }
+function delItem(id){ if(!confirm("Ștergi itemul?"))return; DB.items=DB.items.filter(i=>i.id!==id); dirty(); edItems(); buildNav(); }
+function itById(id){return DB.items.find(i=>i.id===id);}
+function addLev(id){ const it=itById(id); const last=(it.levels||[]).slice(-1)[0]; it.levels=it.levels||[]; it.levels.push({to:(last?last.to+1:1),tax:0,chance:100,mats:[]}); dirty(); renderAdmin(id); }
+function delLev(id,i){ const it=itById(id); it.levels.splice(i,1); dirty(); renderAdmin(id); }
+function setLev(id,i,f,v){ const it=itById(id); it.levels[i][f]=(f==="chance"&&v==="")?null:Number(v); dirty(true); }
+function addLevMat(id,i){ const it=itById(id); const m=(DB.mats||[])[0]; it.levels[i].mats=it.levels[i].mats||[]; it.levels[i].mats.push({m:m?m.id:"",q:1}); dirty(); renderAdmin(id); }
+function delLevMat(id,i,j){ const it=itById(id); it.levels[i].mats.splice(j,1); dirty(); renderAdmin(id); }
+function setLevMat(id,i,j,f,v){ const it=itById(id); it.levels[i].mats[j][f]=f==="q"?Number(v):v; dirty(true); }
+
+// -- setField generic (nu re-randeaza, ca sa nu pierzi focusul in timp ce scrii) --
+function setField(kind,id,f,v){
+  let arr=kind==="cat"?DB.cats:kind==="mat"?DB.mats:DB.items;
+  const o=arr.find(x=>x.id===id); if(!o)return;
+  if(f==="order"||f==="vnum"||f==="price"||f==="icon") v=Number(v)||0;
+  o[f]=v; dirty(true);
+}
+let dirtyFlag=false;
+function dirty(silent){ dirtyFlag=true; if(!silent)mark("Modificări nesalvate."); else mark("Modificări nesalvate."); }
+function mark(t){ const s=$("#savest"); if(s)s.textContent=t; }
+async function saveDB(){
+  mark("Se salvează…");
+  try{
+    if(PREVIEW){ mark("Previzualizare — nu se salvează pe server."); return; }
+    const r=await fetch("/api/tools",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(DB)});
+    const j=await r.json().catch(()=>({}));
+    if(r.ok){ dirtyFlag=false; mark("Salvat ✓ ("+new Date().toLocaleTimeString("ro-RO")+")"); }
+    else mark("Eroare: "+(j.error||r.status)+(r.status===401?" — reintră în admin.":""));
+  }catch(e){ mark("Eroare de rețea."); }
+}
+window.addEventListener("beforeunload",e=>{ if(dirtyFlag){ e.preventDefault(); e.returnValue=""; } });
+
+boot();
+</script>
