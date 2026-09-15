@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Licențe — deliricbae</title>
+<style>
+  :root{ --bg:#080b16; --card:#0f1424; --line:#1e2740; --gold:#e7b954;
+         --txt:#e8ecf6; --muted:#8b95ad; --red:#e5484d; --green:#46b06a; --blue:#4a90d9; }
+  *{ box-sizing:border-box; }
+  body{ margin:0; background:var(--bg); color:var(--txt);
+        font-family:"Poppins",system-ui,Segoe UI,Arial,sans-serif; }
+  a{ color:var(--gold); }
+  .wrap{ max-width:1000px; margin:0 auto; padding:24px 16px 60px; }
+  h1{ font-family:"Cinzel",Georgia,serif; color:var(--gold); font-weight:700;
+      letter-spacing:.5px; margin:8px 0 2px; font-size:26px; }
+  .sub{ color:var(--muted); font-size:13px; margin-bottom:22px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:14px;
+         padding:18px; margin-bottom:18px; }
+  label{ display:block; color:var(--muted); font-size:12px; margin:0 0 4px; }
+  input,select{ width:100%; background:#0b1020; border:1px solid var(--line);
+     color:var(--txt); border-radius:9px; padding:9px 11px; font-size:14px; font-family:inherit; }
+  input:focus,select:focus{ outline:none; border-color:var(--gold); }
+  button{ cursor:pointer; border:0; border-radius:9px; padding:9px 15px; font-weight:600;
+     font-size:14px; font-family:inherit; background:var(--gold); color:#241a02; }
+  button.ghost{ background:transparent; border:1px solid var(--line); color:var(--txt); }
+  button.red{ background:var(--red); color:#fff; }
+  button.sm{ padding:5px 10px; font-size:12.5px; }
+  .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:end; }
+  .row>div{ flex:1; min-width:140px; }
+  table{ width:100%; border-collapse:collapse; font-size:13.5px; }
+  th,td{ text-align:left; padding:9px 8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+  th{ color:var(--muted); font-weight:600; font-size:12px; text-transform:uppercase; letter-spacing:.4px; }
+  code{ font-family:"JetBrains Mono",ui-monospace,Consolas,monospace; font-size:12.5px; color:#cdd6ea; }
+  .pill{ display:inline-block; padding:2px 9px; border-radius:20px; font-size:11.5px; font-weight:700; }
+  .pill.ok{ background:rgba(70,176,106,.16); color:#7fe0a1; }
+  .pill.blocked{ background:rgba(229,72,77,.16); color:#ff9a9d; }
+  .pill.expired{ background:rgba(139,149,173,.16); color:#b6c0d6; }
+  .toolbar{ display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+  .kill{ display:flex; align-items:center; gap:10px; background:#160c10; border:1px solid #3a1c20;
+         border-radius:12px; padding:12px 15px; }
+  .kill.on{ background:#2a0e12; border-color:var(--red); }
+  .msg{ font-size:13px; color:var(--muted); min-height:18px; }
+  .msg.ok{ color:#7fe0a1; } .msg.err{ color:#ff9a9d; }
+  .hint{ color:var(--muted); font-size:12px; }
+  .center{ text-align:center; }
+  #login{ max-width:360px; margin:60px auto; }
+  .switch{ position:relative; width:52px; height:28px; }
+  .switch input{ opacity:0; width:0; height:0; position:absolute; }
+  .slider{ position:absolute; inset:0; background:#33405f; border-radius:20px; transition:.15s; cursor:pointer; }
+  .slider:before{ content:""; position:absolute; width:22px; height:22px; left:3px; top:3px;
+     background:#fff; border-radius:50%; transition:.15s; }
+  .switch input:checked + .slider{ background:var(--red); }
+  .switch input:checked + .slider:before{ transform:translateX(24px); }
+  .muted{ color:var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔐 Licențe — Metin Clicker</h1>
+  <div class="sub">Kill switch și autorizare pe HWID. Modificările se salvează automat și se aplică la următoarea pornire a uneltei.</div>
+
+  <!-- LOGIN -->
+  <div id="login" class="card" hidden>
+    <label>Parolă admin</label>
+    <input id="pw" type="password" placeholder="Parola de admin" autocomplete="current-password">
+    <div style="height:10px"></div>
+    <button id="loginBtn" style="width:100%">Intră</button>
+    <div id="loginMsg" class="msg err" style="margin-top:10px"></div>
+  </div>
+
+  <!-- APP -->
+  <div id="app" hidden>
+    <!-- kill all -->
+    <div class="card">
+      <div class="toolbar">
+        <div class="kill" id="killBox">
+          <label class="switch"><input type="checkbox" id="killAll"><span class="slider"></span></label>
+          <div>
+            <div style="font-weight:700">Oprește TOT (kill all)</div>
+            <div class="hint">Pornit = nimeni nu mai poate folosi unealta, indiferent de HWID.</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div id="msg" class="msg"></div>
+          <button class="ghost sm" id="reloadBtn">Reîncarcă</button>
+          <button class="ghost sm" id="logoutBtn">Ieși</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- add -->
+    <div class="card">
+      <div style="font-weight:700; margin-bottom:12px">➕ Adaugă un PC</div>
+      <div class="row">
+        <div><label>Nume (cine e)</label><input id="aName" placeholder="ex. C4PONE"></div>
+        <div><label>HWID (codul de la ei)</label><input id="aHwid" placeholder="ex. 3f9a1c…"></div>
+        <div style="max-width:170px"><label>Expiră la (opțional)</label><input id="aExp" type="date"></div>
+        <div style="flex:0 0 auto"><label>&nbsp;</label><button id="addBtn">Adaugă</button></div>
+      </div>
+      <div class="hint" style="margin-top:8px">Lasă „Expiră" gol = fără expirare. Codul HWID îl vede fiecare în unealtă, la prima pornire.</div>
+    </div>
+
+    <!-- list -->
+    <div class="card">
+      <div style="font-weight:700; margin-bottom:10px">Lista PC-urilor autorizate (<span id="cnt">0</span>)</div>
+      <div style="overflow-x:auto">
+      <table>
+        <thead><tr>
+          <th>Nume</th><th>HWID</th><th>Status</th><th>Expiră</th><th>Văzut ultima dată</th><th>Notă</th><th></th>
+        </tr></thead>
+        <tbody id="tb"></tbody>
+      </table>
+      </div>
+      <div id="empty" class="center muted" style="padding:22px" hidden>Niciun PC încă. Adaugă unul mai sus.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = s => document.querySelector(s);
+let DB = { killAll:false, list:[] };
+
+async function api(path, opts){ const r = await fetch(path, {credentials:"same-origin", ...opts}); return r; }
+function esc(s){ return String(s==null?"":s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+function fmtDate(sec){ if(!sec) return "—"; const d=new Date(sec*1000); return d.toLocaleDateString(); }
+function rel(sec){ if(!sec) return "—"; const s=Math.floor(Date.now()/1000)-sec;
+  if(s<90) return "acum"; if(s<3600) return Math.floor(s/60)+" min"; if(s<86400) return Math.floor(s/3600)+" h";
+  return Math.floor(s/86400)+" zile"; }
+
+function statusPill(e){
+  const now=Math.floor(Date.now()/1000);
+  if(e.status==="blocked") return '<span class="pill blocked">blocat</span>';
+  if(e.expires && e.expires>0 && now>e.expires) return '<span class="pill expired">expirat</span>';
+  return '<span class="pill ok">activ</span>';
+}
+
+function render(){
+  $("#killAll").checked = !!DB.killAll;
+  $("#killBox").classList.toggle("on", !!DB.killAll);
+  const tb=$("#tb"); tb.innerHTML="";
+  DB.list.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+  $("#cnt").textContent = DB.list.length;
+  $("#empty").hidden = DB.list.length>0;
+  DB.list.forEach((e,i)=>{
+    const tr=document.createElement("tr");
+    const blocked = e.status==="blocked";
+    tr.innerHTML =
+      `<td>${esc(e.name||"—")}</td>`+
+      `<td><code>${esc(e.hwid)}</code></td>`+
+      `<td>${statusPill(e)}</td>`+
+      `<td>${fmtDate(e.expires)}</td>`+
+      `<td class="muted">${rel(e.last_seen)}</td>`+
+      `<td><input data-note="${i}" value="${esc(e.note||"")}" placeholder="notă" style="padding:5px 8px;font-size:12px"></td>`+
+      `<td style="white-space:nowrap">`+
+        `<button class="ghost sm" data-block="${i}">${blocked?"Deblochează":"Blochează"}</button> `+
+        `<button class="red sm" data-del="${i}">Șterge</button>`+
+      `</td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("[data-block]").forEach(b=>b.onclick=()=>{
+    const e=DB.list[+b.dataset.block]; e.status = e.status==="blocked"?"active":"blocked"; save(); });
+  tb.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
+    if(confirm("Ștergi acest PC din listă?")){ DB.list.splice(+b.dataset.del,1); save(); } });
+  tb.querySelectorAll("[data-note]").forEach(inp=>inp.onchange=()=>{
+    DB.list[+inp.dataset.note].note = inp.value.slice(0,120); save(true); });
+}
+
+function setMsg(t, ok){ const m=$("#msg"); m.textContent=t||""; m.className="msg"+(ok?" ok":(t?" err":"")); }
+
+async function load(){
+  const r = await api("/api/admin/licenses");
+  if(r.status===401){ showLogin(); return; }
+  DB = await r.json(); if(!Array.isArray(DB.list)) DB.list=[];
+  showApp(); render();
+}
+
+let saveTimer=null;
+async function save(quiet){
+  render();
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(async ()=>{
+    setMsg("Se salvează…");
+    const r = await api("/api/admin/licenses", {method:"POST",
+      headers:{"Content-Type":"application/json"}, body:JSON.stringify(DB)});
+    if(r.ok){ const j=await r.json(); setMsg("Salvat ✓ ("+j.count+" PC-uri)", true); }
+    else if(r.status===401){ showLogin(); }
+    else { const j=await r.json().catch(()=>({})); setMsg("Eroare: "+(j.error||r.status)); }
+  }, quiet?400:60);
+}
+
+// events
+$("#killAll").onchange = ()=>{ DB.killAll = $("#killAll").checked; save(); };
+$("#addBtn").onclick = ()=>{
+  const name=$("#aName").value.trim(), hwid=$("#aHwid").value.trim();
+  if(!hwid){ alert("Pune HWID-ul."); return; }
+  if(DB.list.some(e=>e.hwid===hwid)){ alert("HWID deja în listă."); return; }
+  let exp=0; const d=$("#aExp").value; if(d){ exp=Math.floor(new Date(d+"T23:59:59").getTime()/1000); }
+  DB.list.push({ hwid, name, status:"active", expires:exp, note:"",
+                 added:Math.floor(Date.now()/1000), last_seen:0 });
+  $("#aName").value=""; $("#aHwid").value=""; $("#aExp").value="";
+  save();
+};
+$("#reloadBtn").onclick = load;
+$("#logoutBtn").onclick = async ()=>{ await api("/api/admin/logout",{method:"POST"}); showLogin(); };
+$("#loginBtn").onclick = doLogin;
+$("#pw").addEventListener("keydown", e=>{ if(e.key==="Enter") doLogin(); });
+
+async function doLogin(){
+  $("#loginMsg").textContent="";
+  const r = await api("/api/admin/login", {method:"POST",
+    headers:{"Content-Type":"application/json"}, body:JSON.stringify({password:$("#pw").value})});
+  if(r.ok){ $("#pw").value=""; load(); }
+  else { $("#loginMsg").textContent="Parolă greșită."; }
+}
+function showLogin(){ $("#app").hidden=true; $("#login").hidden=false; $("#pw").focus(); }
+function showApp(){ $("#login").hidden=true; $("#app").hidden=false; }
+
+// start
+(async()=>{
+  const me = await api("/api/admin/me").then(r=>r.json()).catch(()=>({admin:false}));
+  if(me.admin) load(); else showLogin();
+})();
+</script>
+</body>
+</html>

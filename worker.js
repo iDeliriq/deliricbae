@@ -110,6 +110,39 @@ function validTools(o) {
     Array.isArray(o.cats) && Array.isArray(o.items) && Array.isArray(o.mats);
 }
 
+// ---------- licente (kill switch pentru unealta metin) ----------
+// KV cheia "licenses": { updated_at, killAll:bool, list:[
+//   { hwid, name, status:"active"|"blocked", expires:0|unixSec, note, added, last_seen } ] }
+const LIC_EMPTY = { updated_at: 0, killAll: false, list: [] };
+
+async function readLicenses(env) {
+  if (!env.DB) return { ...LIC_EMPTY };
+  const raw = await env.DB.get("licenses");
+  if (!raw) return { ...LIC_EMPTY };
+  try {
+    const o = JSON.parse(raw);
+    if (o && Array.isArray(o.list)) return o;
+  } catch (e) { /* cade pe gol */ }
+  return { ...LIC_EMPTY };
+}
+
+function validLicenses(o) {
+  return o && typeof o === "object" && Array.isArray(o.list) &&
+    o.list.every(e => e && typeof e.hwid === "string" && e.hwid.length > 0);
+}
+
+// decide statusul unui hwid: ok | killed | blocked | expired | unknown
+function licenseStatus(db, hwid) {
+  if (db.killAll) return { status: "killed", message: "Access disabled by admin." };
+  const e = (db.list || []).find(x => x.hwid === hwid);
+  if (!e) return { status: "unknown", message: "This PC is not authorized. Send your ID to the admin." };
+  if (e.status === "blocked") return { status: "blocked", message: "This PC has been blocked.", name: e.name || "" };
+  const now = Math.floor(Date.now() / 1000);
+  if (e.expires && Number(e.expires) > 0 && now > Number(e.expires))
+    return { status: "expired", message: "Your access has expired.", name: e.name || "", expires: e.expires };
+  return { status: "ok", message: "", name: e.name || "", expires: e.expires || 0 };
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -171,6 +204,47 @@ export default {
       if (!env.DB) return json({ ok: false, error: "no kv" }, 500);
       await env.DB.put("tools_db", JSON.stringify(obj));
       return json({ ok: true, updated_at: obj.updated_at });
+    }
+
+    // ---------- licente ----------
+    // verificarea facuta de unealta (publica): raspunde ok/blocked/... pt un hwid
+    if (p === "/api/license" && request.method === "GET") {
+      const hwid = (url.searchParams.get("hwid") || "").trim().slice(0, 128);
+      if (!hwid) return json({ status: "unknown", message: "no id" });
+      const db = await readLicenses(env);
+      const res = licenseStatus(db, hwid);
+      // marcheaza "last_seen" (o data pe ora max, ca sa nu scrie KV la fiecare pornire)
+      if (env.DB) {
+        const e = (db.list || []).find(x => x.hwid === hwid);
+        const now = Math.floor(Date.now() / 1000);
+        if (e && (!e.last_seen || now - Number(e.last_seen) > 3600)) {
+          e.last_seen = now;
+          try { await env.DB.put("licenses", JSON.stringify(db)); } catch (err) { /* ignora */ }
+        }
+      }
+      return json(res, 200, { "Cache-Control": "no-store" });
+    }
+    // admin: citeste toata lista
+    if (p === "/api/admin/licenses" && request.method === "GET") {
+      if (!await validToken(getCookie(request, ADM), admin))
+        return json({ ok: false, error: "unauthorized" }, 401);
+      return json(await readLicenses(env));
+    }
+    // admin: salveaza toata lista (kill / add / edit din pagina de admin)
+    if (p === "/api/admin/licenses" && request.method === "POST") {
+      if (!await validToken(getCookie(request, ADM), admin))
+        return json({ ok: false, error: "unauthorized" }, 401);
+      let text = "";
+      try { text = await request.text(); } catch (e) { text = ""; }
+      if (!text || text.length > 1_000_000) return json({ ok: false, error: "bad body" }, 400);
+      let obj;
+      try { obj = JSON.parse(text); } catch (e) { return json({ ok: false, error: "not json" }, 400); }
+      if (!validLicenses(obj)) return json({ ok: false, error: "bad shape" }, 400);
+      obj.killAll = !!obj.killAll;
+      obj.updated_at = Math.floor(Date.now() / 1000);
+      if (!env.DB) return json({ ok: false, error: "no kv" }, 500);
+      await env.DB.put("licenses", JSON.stringify(obj));
+      return json({ ok: true, updated_at: obj.updated_at, count: obj.list.length });
     }
 
     // orice altceva -> fisierele statice
