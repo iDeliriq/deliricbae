@@ -194,7 +194,12 @@ const GATE_OPEN = new Set([
   "/api/license", "/api/publish",
   "/api/admin/login", "/api/admin/logout", "/api/admin/me",
   "/favicon.ico", "/favicon-32.png", "/apple-touch-icon.png", "/og.png",
+  "/discord",
 ]);
+
+// aurumbots.com/discord -> invitatia pe serverul de Discord (fara expirare).
+// Daca se schimba invitatia, se schimba doar aici; linkul public ramane acelasi.
+const DISCORD_INVITE = "https://discord.gg/SxxWjZcJR3";
 
 const GATE_HTML = `<!doctype html>
 <html lang="ro"><head><meta charset="utf-8">
@@ -263,6 +268,9 @@ export default {
     const p = url.pathname;
     const site = env.SITE_PASSWORD;
     const admin = env.ADMIN_PASSWORD;
+
+    if (p === "/discord" || p === "/discord/")
+      return Response.redirect(DISCORD_INVITE, 302);
 
     if (env.SITE_GATE !== "off" && !GATE_OPEN.has(p) &&
         !await validToken(getCookie(request, ADM), admin)) {
