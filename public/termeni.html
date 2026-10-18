@@ -6,7 +6,7 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="Termenii de utilizare, abonamentul, rambursarea și datele păstrate pentru Aurum Farm și Aurum Fish.">
+<meta name="description" content="Aurum — terms of use, subscription, refunds and stored data for Aurum Farm and Aurum Fish.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -25,9 +25,12 @@ body{
 }
 a{color:var(--gold2)}
 .wrap{max-width:760px; margin:0 auto; padding:0 16px}
-header{display:flex; align-items:center; justify-content:space-between; padding:20px 0}
+header{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 0; flex-wrap:wrap}
 .logo{display:flex; align-items:center; gap:10px; font-family:"Cinzel",serif; font-weight:700; letter-spacing:.08em;
   color:var(--gold2); font-size:20px; text-decoration:none}
+select{appearance:none; -webkit-appearance:none; background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239aa6c8' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;
+  color:var(--ink); border:1px solid var(--line2); border-radius:10px; padding:9px 30px 9px 12px; font:inherit; font-size:14px; cursor:pointer}
+select:focus{outline:2px solid var(--gold); outline-offset:1px}
 h1{font-family:"Cinzel",serif; font-size:clamp(28px,5vw,40px); color:var(--gold2); margin:32px 0 4px}
 .upd{color:var(--dim); font-size:14px; margin:0 0 32px}
 h2{font-size:18px; margin:32px 0 8px; color:var(--ink)}
@@ -36,71 +39,347 @@ ul{padding-left:22px}
 li{margin:6px 0}
 b{color:var(--ink); font-weight:500}
 .warn{border-left:3px solid var(--bad); padding:10px 16px; background:var(--panel); border-radius:0 10px 10px 0}
+.warn p{margin:0}
 footer{padding:40px 0; margin-top:40px; text-align:center; color:var(--dim); font-size:13px; border-top:1px solid var(--line)}
+.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <a class="logo" href="/"><svg width="24" height="24" viewBox="0 0 34 34" aria-hidden="true"><polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/><polygon points="17,2 32,17 17,17" fill="#f6d488"/><polygon points="2,17 17,32 17,17" fill="#a9812c"/><polygon points="17,2 17,17 2,17" fill="#e7b954"/><polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>AURUM</a>
+    <label class="sr" for="langSel">Language</label>
+    <select id="langSel">
+      <option value="ro">🇷🇴 Română</option>
+      <option value="en">🇬🇧 English</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="pl">🇵🇱 Polski</option>
+      <option value="tr">🇹🇷 Türkçe</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="es">🇪🇸 Español</option>
+    </select>
   </header>
 
-  <h1>Termeni și confidențialitate</h1>
-  <p class="upd">Ultima actualizare: 18 octombrie 2026</p>
+  <h1 id="title"></h1>
+  <p class="upd" id="upd"></p>
+  <div class="warn"><p id="sum"></p></div>
+  <div id="body"></div>
 
-  <div class="warn"><p style="margin:0"><b>Pe scurt:</b> licența e personală, pe un singur PC, pe perioada plătită. Folosirea oricărui bot încalcă regulile serverului de joc — riscul de ban îl asumi tu și nu dă drept la rambursare.</p></div>
-
-  <h2>1. Licența</h2>
-  <ul>
-    <li>Cumperi dreptul de a folosi <b>Aurum Farm</b>, <b>Aurum Fish</b> sau ambele, pe <b>un singur PC</b>, pe perioada plătită.</li>
-    <li>Licența nu se revinde, nu se împarte și nu se folosește pe mai multe PC-uri în același timp.</li>
-    <li>Dacă schimbi PC-ul, ai o resetare gratuită pe lună, prin ticket pe Discord.</li>
-    <li>Programul nu se modifică, nu se decompilează și nu se ocolește verificarea licenței.</li>
-  </ul>
-
-  <h2>2. Abonamentul</h2>
-  <ul>
-    <li>Un abonament durează 30 de zile (sau perioada aleasă) de la activare.</li>
-    <li>Prelungirea se face oricând, prin Discord; zilele rămase se adună.</li>
-    <li>Botul verifică licența la pornire și apoi periodic. La expirare se oprește singur.</li>
-    <li>Fără internet, botul mai merge cel mult 3 zile după ultima verificare reușită, dar nu după data de expirare.</li>
-  </ul>
-
-  <h2>3. Plata</h2>
-  <ul>
-    <li>Plata se face prin Revolut, în avans, pentru perioada aleasă.</li>
-    <li>Licența se activează manual după ce primim dovada plății, de obicei în mai puțin de o oră.</li>
-    <li>Prețurile pot fi schimbate pentru perioadele viitoare; perioada deja plătită nu se modifică.</li>
-  </ul>
-
-  <h2>4. Riscuri</h2>
-  <ul>
-    <li>Boții automatizează acțiuni în joc. Asta <b>încalcă regulile serverului de joc</b>, care poate suspenda sau bana contul.</li>
-    <li>Boții lucrează doar pe ecran (capturi și clickuri), fără să modifice jocul, dar nimeni nu poate garanta lipsa riscului.</li>
-    <li>Nu răspundem pentru conturi banate, iteme pierdute sau alte urmări ale folosirii în joc.</li>
-    <li>Jocul se poate schimba oricând. Facem update-uri cât de repede putem, dar nu garantăm funcționarea neîntreruptă.</li>
-  </ul>
-
-  <h2>5. Rambursarea</h2>
-  <ul>
-    <li>Rambursare completă în <b>primele 24 de ore</b> de la plată, dacă botul nu pornește pe PC-ul tău și nu reușim să rezolvăm împreună.</li>
-    <li>Nu se rambursează: banul în joc, perioadele parțial folosite, schimbarea părerii după 24 de ore.</li>
-    <li>Putem opri o licență folosită abuziv (revândută, partajată, ocolită), fără rambursare.</li>
-  </ul>
-
-  <h2>6. Datele pe care le păstrăm</h2>
-  <ul>
-    <li><b>ID-ul PC-ului</b> — un cod calculat din identificatorul Windows; nu conține numele, fișierele sau datele tale.</li>
-    <li><b>Numele</b> pe care ni-l dai pentru licență (poate fi un pseudonim) și o notă internă.</li>
-    <li><b>Data expirării</b> și <b>data ultimei verificări</b> a licenței.</li>
-    <li>Pentru plată vedem doar ce afișează Revolut (numele plătitorului și suma).</li>
-    <li>Nu vindem și nu dăm datele altcuiva, cu excepția cazurilor cerute de lege. Poți cere ștergerea lor oricând, prin ticket.</li>
-  </ul>
-
-  <h2>7. Contact</h2>
-  <p>Suportul, plata și resetările se fac pe <a href="[LINK-DISCORD]">serverul nostru de Discord</a>, prin ticket.</p>
-
-  <footer>Aurum · aurumbots.com · <a href="/">Înapoi la pagina principală</a></footer>
+  <footer>Aurum · aurumbots.com · <a href="/" id="back"></a></footer>
 </div>
+
+<script>
+// Textul de referinta e cel in romana; celelalte sunt traduceri.
+// Fiecare sectiune: [titlu, [puncte]]. "{discord}" = linkul serverului de Discord.
+const DISCORD = "[LINK-DISCORD]";
+const T = {
+ro: {
+  doc: "Termeni — Aurum", title: "Termeni și confidențialitate", upd: "Ultima actualizare: 18 octombrie 2026",
+  sum: "<b>Pe scurt:</b> licența e personală, pe un singur PC, pe perioada plătită. Folosirea oricărui bot încalcă regulile serverului de joc — riscul de ban îl asumi tu și nu dă drept la rambursare.",
+  back: "Înapoi la pagina principală",
+  s: [
+    ["1. Licența", [
+      "Cumperi dreptul de a folosi <b>Aurum Farm</b>, <b>Aurum Fish</b> sau ambele, pe <b>un singur PC</b>, pe perioada plătită.",
+      "Licența nu se revinde, nu se împarte și nu se folosește pe mai multe PC-uri în același timp.",
+      "Dacă schimbi PC-ul, ai o resetare gratuită pe lună, prin ticket pe Discord.",
+      "Programul nu se modifică, nu se decompilează și nu se ocolește verificarea licenței."]],
+    ["2. Abonamentul", [
+      "Un abonament durează 30 de zile (sau perioada aleasă) de la activare.",
+      "Prelungirea se face oricând, prin Discord; zilele rămase se adună.",
+      "Botul verifică licența la pornire și apoi periodic. La expirare se oprește singur.",
+      "Fără internet, botul mai merge cel mult 3 zile după ultima verificare reușită, dar nu după data de expirare.",
+      "Un PC nou poate primi o singură dată un trial gratuit de 24 de ore pentru fiecare bot."]],
+    ["3. Plata", [
+      "Plata se face prin Revolut (@aurumb), în avans, pentru perioada aleasă, în moneda afișată pe site.",
+      "La mesajul plății scrii ID-ul PC-ului, ca plata să poată fi legată de licența ta.",
+      "Licența se activează manual după ce primim plata, de obicei în mai puțin de o oră.",
+      "Prețurile pot fi schimbate pentru perioadele viitoare; perioada deja plătită nu se modifică."]],
+    ["4. Riscuri", [
+      "Boții automatizează acțiuni în joc. Asta <b>încalcă regulile serverului de joc</b>, care poate suspenda sau bana contul.",
+      "Boții lucrează doar pe ecran (capturi și clickuri), fără să modifice jocul, dar nimeni nu poate garanta lipsa riscului.",
+      "Nu răspundem pentru conturi banate, iteme pierdute sau alte urmări ale folosirii în joc.",
+      "Jocul se poate schimba oricând. Facem update-uri cât de repede putem, dar nu garantăm funcționarea neîntreruptă."]],
+    ["5. Rambursarea", [
+      "Rambursare completă în <b>primele 24 de ore</b> de la plată, dacă botul nu pornește pe PC-ul tău și nu reușim să rezolvăm împreună.",
+      "Nu se rambursează: banul în joc, perioadele parțial folosite, schimbarea părerii după 24 de ore.",
+      "Putem opri o licență folosită abuziv (revândută, partajată, ocolită), fără rambursare."]],
+    ["6. Datele pe care le păstrăm", [
+      "<b>ID-ul PC-ului</b> — un cod calculat din identificatorul Windows; nu conține numele, fișierele sau datele tale.",
+      "<b>Numele</b> pe care ni-l dai pentru licență (poate fi un pseudonim) și o notă internă.",
+      "<b>Data expirării</b> și <b>data ultimei verificări</b> a licenței.",
+      "Pentru plată vedem doar ce afișează Revolut (numele plătitorului, suma și mesajul).",
+      "Nu vindem și nu dăm datele altcuiva, cu excepția cazurilor cerute de lege. Poți cere ștergerea lor oricând, prin ticket."]],
+    ["7. Contact", [
+      "Suportul, plata și resetările se fac pe <a href=\"{discord}\">serverul nostru de Discord</a>, prin ticket."]],
+  ],
+},
+en: {
+  doc: "Terms — Aurum", title: "Terms & privacy", upd: "Last updated: 18 October 2026",
+  sum: "<b>In short:</b> the license is personal, for one PC, for the period you paid. Using any bot breaks the game server's rules — the ban risk is yours and is not refunded.",
+  back: "Back to the home page",
+  s: [
+    ["1. The license", [
+      "You buy the right to use <b>Aurum Farm</b>, <b>Aurum Fish</b> or both, on <b>one PC</b>, for the period you paid.",
+      "The license may not be resold, shared or used on several PCs at the same time.",
+      "If you change your PC, you get one free reset per month, via a Discord ticket.",
+      "The program may not be modified or decompiled, and the license check may not be bypassed."]],
+    ["2. The subscription", [
+      "A subscription lasts 30 days (or the chosen period) from activation.",
+      "You can renew anytime on Discord; remaining days are added up.",
+      "The bot checks the license at start and then periodically. When it expires, it stops by itself.",
+      "Without internet, the bot keeps working for at most 3 days after the last successful check, but never past the expiry date.",
+      "A new PC can get a free 24-hour trial once for each bot."]],
+    ["3. Payment", [
+      "Payment is made via Revolut (@aurumb), in advance, for the chosen period, in the currency shown on the site.",
+      "Write your PC ID in the payment note, so the payment can be linked to your license.",
+      "The license is activated manually after we receive the payment, usually in under an hour.",
+      "Prices may change for future periods; a period already paid does not change."]],
+    ["4. Risks", [
+      "The bots automate in-game actions. This <b>breaks the game server's rules</b>, and the server may suspend or ban the account.",
+      "The bots only work on screen (screenshots and clicks), without modifying the game, but nobody can guarantee zero risk.",
+      "We are not liable for banned accounts, lost items or other consequences of in-game use.",
+      "The game can change at any time. We release updates as fast as we can, but we do not guarantee uninterrupted operation."]],
+    ["5. Refunds", [
+      "Full refund within the <b>first 24 hours</b> after payment, if the bot does not start on your PC and we cannot fix it together.",
+      "Not refunded: in-game bans, partially used periods, changing your mind after 24 hours.",
+      "We may stop a license that is abused (resold, shared, bypassed), without a refund."]],
+    ["6. Data we keep", [
+      "<b>Your PC ID</b> — a code computed from the Windows identifier; it does not contain your name, files or personal data.",
+      "<b>The name</b> you give us for the license (it can be a nickname) and an internal note.",
+      "<b>The expiry date</b> and <b>the date of the last license check</b>.",
+      "For payments we only see what Revolut shows (payer name, amount and note).",
+      "We do not sell or share the data, except where the law requires it. You can ask for deletion anytime, via a ticket."]],
+    ["7. Contact", [
+      "Support, payments and resets are handled on <a href=\"{discord}\">our Discord server</a>, via tickets."]],
+  ],
+},
+de: {
+  doc: "Bedingungen — Aurum", title: "Bedingungen & Datenschutz", upd: "Zuletzt aktualisiert: 18. Oktober 2026",
+  sum: "<b>Kurz gesagt:</b> Die Lizenz ist persönlich, für einen PC, für den bezahlten Zeitraum. Jeder Bot verstößt gegen die Regeln des Spielservers — das Bann-Risiko trägst du, es wird nicht erstattet.",
+  back: "Zurück zur Startseite",
+  s: [
+    ["1. Die Lizenz", [
+      "Du erwirbst das Recht, <b>Aurum Farm</b>, <b>Aurum Fish</b> oder beide auf <b>einem PC</b> für den bezahlten Zeitraum zu nutzen.",
+      "Die Lizenz darf nicht weiterverkauft, geteilt oder gleichzeitig auf mehreren PCs genutzt werden.",
+      "Bei PC-Wechsel hast du einen kostenlosen Reset pro Monat, per Discord-Ticket.",
+      "Das Programm darf nicht verändert oder dekompiliert und die Lizenzprüfung nicht umgangen werden."]],
+    ["2. Das Abo", [
+      "Ein Abo läuft 30 Tage (oder den gewählten Zeitraum) ab Aktivierung.",
+      "Du kannst jederzeit über Discord verlängern; Resttage werden addiert.",
+      "Der Bot prüft die Lizenz beim Start und danach regelmäßig. Bei Ablauf stoppt er von selbst.",
+      "Ohne Internet läuft der Bot höchstens 3 Tage nach der letzten erfolgreichen Prüfung, aber nie über das Ablaufdatum hinaus.",
+      "Ein neuer PC kann einmalig pro Bot eine kostenlose 24-Stunden-Testphase erhalten."]],
+    ["3. Zahlung", [
+      "Die Zahlung erfolgt per Revolut (@aurumb), im Voraus, für den gewählten Zeitraum, in der auf der Website angezeigten Währung.",
+      "Schreib deine PC-ID in den Verwendungszweck, damit die Zahlung deiner Lizenz zugeordnet werden kann.",
+      "Die Lizenz wird nach Zahlungseingang manuell aktiviert, meist in unter einer Stunde.",
+      "Preise können sich für künftige Zeiträume ändern; ein bereits bezahlter Zeitraum ändert sich nicht."]],
+    ["4. Risiken", [
+      "Die Bots automatisieren Aktionen im Spiel. Das <b>verstößt gegen die Regeln des Spielservers</b>, der das Konto sperren oder bannen kann.",
+      "Die Bots arbeiten nur am Bildschirm (Screenshots und Klicks), ohne das Spiel zu verändern, aber niemand kann null Risiko garantieren.",
+      "Wir haften nicht für gebannte Konten, verlorene Items oder andere Folgen der Nutzung im Spiel.",
+      "Das Spiel kann sich jederzeit ändern. Wir liefern Updates so schnell wie möglich, garantieren aber keinen unterbrechungsfreien Betrieb."]],
+    ["5. Erstattung", [
+      "Volle Erstattung innerhalb der <b>ersten 24 Stunden</b> nach Zahlung, wenn der Bot auf deinem PC nicht startet und wir es gemeinsam nicht lösen können.",
+      "Nicht erstattet werden: Banns im Spiel, teilweise genutzte Zeiträume, Meinungsänderung nach 24 Stunden.",
+      "Missbräuchlich genutzte Lizenzen (weiterverkauft, geteilt, umgangen) können ohne Erstattung gesperrt werden."]],
+    ["6. Gespeicherte Daten", [
+      "<b>Deine PC-ID</b> — ein aus der Windows-Kennung berechneter Code; er enthält weder Namen, Dateien noch persönliche Daten.",
+      "<b>Der Name</b>, den du uns für die Lizenz nennst (kann ein Spitzname sein), und eine interne Notiz.",
+      "<b>Das Ablaufdatum</b> und <b>das Datum der letzten Lizenzprüfung</b>.",
+      "Bei Zahlungen sehen wir nur, was Revolut anzeigt (Name des Zahlers, Betrag und Verwendungszweck).",
+      "Wir verkaufen oder teilen keine Daten, außer wenn das Gesetz es verlangt. Du kannst jederzeit per Ticket die Löschung verlangen."]],
+    ["7. Kontakt", [
+      "Support, Zahlungen und Resets laufen über <a href=\"{discord}\">unseren Discord-Server</a>, per Ticket."]],
+  ],
+},
+pl: {
+  doc: "Regulamin — Aurum", title: "Regulamin i prywatność", upd: "Ostatnia aktualizacja: 18 października 2026",
+  sum: "<b>W skrócie:</b> licencja jest osobista, na jeden PC, na opłacony okres. Używanie każdego bota łamie zasady serwera gry — ryzyko bana ponosisz ty i nie podlega ono zwrotowi.",
+  back: "Wróć do strony głównej",
+  s: [
+    ["1. Licencja", [
+      "Kupujesz prawo do używania <b>Aurum Farm</b>, <b>Aurum Fish</b> lub obu, na <b>jednym PC</b>, przez opłacony okres.",
+      "Licencji nie wolno odsprzedawać, udostępniać ani używać na kilku komputerach jednocześnie.",
+      "Przy zmianie PC masz jeden darmowy reset w miesiącu, przez ticket na Discordzie.",
+      "Programu nie wolno modyfikować ani dekompilować, a weryfikacji licencji nie wolno obchodzić."]],
+    ["2. Subskrypcja", [
+      "Subskrypcja trwa 30 dni (lub wybrany okres) od aktywacji.",
+      "Przedłużasz w dowolnym momencie na Discordzie; pozostałe dni się sumują.",
+      "Bot sprawdza licencję przy starcie, a potem okresowo. Po wygaśnięciu sam się zatrzymuje.",
+      "Bez internetu bot działa najwyżej 3 dni od ostatniej udanej weryfikacji, ale nigdy po dacie wygaśnięcia.",
+      "Nowy komputer może raz otrzymać darmowy 24-godzinny okres próbny dla każdego bota."]],
+    ["3. Płatność", [
+      "Płatność przez Revolut (@aurumb), z góry, za wybrany okres, w walucie pokazanej na stronie.",
+      "W tytule płatności wpisz ID komputera, aby można było powiązać płatność z twoją licencją.",
+      "Licencja jest aktywowana ręcznie po otrzymaniu płatności, zwykle w mniej niż godzinę.",
+      "Ceny mogą się zmienić dla przyszłych okresów; już opłacony okres się nie zmienia."]],
+    ["4. Ryzyko", [
+      "Boty automatyzują działania w grze. To <b>łamie zasady serwera gry</b>, który może zawiesić lub zbanować konto.",
+      "Boty działają tylko na ekranie (zrzuty i kliknięcia), bez modyfikowania gry, ale nikt nie zagwarantuje zera ryzyka.",
+      "Nie odpowiadamy za zbanowane konta, utracone przedmioty ani inne skutki używania w grze.",
+      "Gra może się zmienić w każdej chwili. Wydajemy aktualizacje najszybciej, jak się da, ale nie gwarantujemy nieprzerwanego działania."]],
+    ["5. Zwroty", [
+      "Pełny zwrot w ciągu <b>pierwszych 24 godzin</b> od płatności, jeśli bot nie uruchamia się na twoim PC i nie uda się tego wspólnie naprawić.",
+      "Nie podlegają zwrotowi: bany w grze, częściowo wykorzystane okresy, zmiana zdania po 24 godzinach.",
+      "Możemy zablokować licencję używaną niezgodnie z zasadami (odsprzedaną, udostępnioną, obejściem), bez zwrotu."]],
+    ["6. Dane, które przechowujemy", [
+      "<b>ID komputera</b> — kod obliczony z identyfikatora Windows; nie zawiera twojego imienia, plików ani danych osobowych.",
+      "<b>Nazwa</b>, którą podajesz do licencji (może być pseudonim), i notatka wewnętrzna.",
+      "<b>Data wygaśnięcia</b> i <b>data ostatniej weryfikacji</b> licencji.",
+      "Przy płatnościach widzimy tylko to, co pokazuje Revolut (nazwa płacącego, kwota i tytuł).",
+      "Nie sprzedajemy ani nie udostępniamy danych, chyba że wymaga tego prawo. Możesz w każdej chwili poprosić o ich usunięcie przez ticket."]],
+    ["7. Kontakt", [
+      "Wsparcie, płatności i resety odbywają się na <a href=\"{discord}\">naszym serwerze Discord</a>, przez tickety."]],
+  ],
+},
+tr: {
+  doc: "Şartlar — Aurum", title: "Şartlar ve gizlilik", upd: "Son güncelleme: 18 Ekim 2026",
+  sum: "<b>Kısaca:</b> lisans kişiseldir, tek bir PC içindir ve ödenen süre boyunca geçerlidir. Herhangi bir bot kullanmak oyun sunucusunun kurallarını çiğner — ban riski sana aittir ve iade edilmez.",
+  back: "Ana sayfaya dön",
+  s: [
+    ["1. Lisans", [
+      "<b>Aurum Farm</b>, <b>Aurum Fish</b> veya ikisini, <b>tek bir PC</b>'de, ödediğin süre boyunca kullanma hakkını satın alırsın.",
+      "Lisans yeniden satılamaz, paylaşılamaz ve aynı anda birden fazla PC'de kullanılamaz.",
+      "PC değiştirirsen, Discord ticket'ı ile ayda bir ücretsiz sıfırlama hakkın vardır.",
+      "Program değiştirilemez, kaynak koda dönüştürülemez ve lisans kontrolü atlatılamaz."]],
+    ["2. Abonelik", [
+      "Abonelik, etkinleştirmeden itibaren 30 gün (veya seçilen süre) sürer.",
+      "Discord üzerinden istediğin zaman uzatabilirsin; kalan günler eklenir.",
+      "Bot lisansı açılışta ve sonra düzenli olarak kontrol eder. Süresi dolunca kendiliğinden durur.",
+      "İnternet olmadan bot, son başarılı kontrolden sonra en fazla 3 gün çalışır, ama asla bitiş tarihinden sonra çalışmaz.",
+      "Yeni bir PC, her bot için bir kez ücretsiz 24 saatlik deneme alabilir."]],
+    ["3. Ödeme", [
+      "Ödeme Revolut (@aurumb) ile, seçilen süre için peşin olarak, sitede gösterilen para biriminde yapılır.",
+      "Ödemenin lisansınla eşleştirilebilmesi için ödeme açıklamasına PC kimliğini yaz.",
+      "Lisans, ödeme alındıktan sonra manuel olarak etkinleştirilir, genellikle bir saatten kısa sürede.",
+      "Fiyatlar gelecek dönemler için değişebilir; önceden ödenmiş bir dönem değişmez."]],
+    ["4. Riskler", [
+      "Botlar oyun içi eylemleri otomatikleştirir. Bu <b>oyun sunucusunun kurallarını çiğner</b>; sunucu hesabı askıya alabilir veya banlayabilir.",
+      "Botlar yalnızca ekranda çalışır (ekran görüntüsü ve tıklama), oyunu değiştirmez, ama kimse sıfır risk garanti edemez.",
+      "Banlanan hesaplardan, kaybolan eşyalardan veya oyun içi kullanımın diğer sonuçlarından sorumlu değiliz.",
+      "Oyun her an değişebilir. Güncellemeleri olabildiğince hızlı yayınlarız, ama kesintisiz çalışmayı garanti etmeyiz."]],
+    ["5. İade", [
+      "Ödemeden sonraki <b>ilk 24 saat</b> içinde, bot PC'nde başlamazsa ve birlikte çözemezsek tam iade.",
+      "İade edilmez: oyun içi banlar, kısmen kullanılmış süreler, 24 saatten sonra fikir değiştirme.",
+      "Kötüye kullanılan (yeniden satılan, paylaşılan, atlatılan) bir lisansı iade olmadan durdurabiliriz."]],
+    ["6. Sakladığımız veriler", [
+      "<b>PC kimliğin</b> — Windows tanımlayıcısından hesaplanan bir kod; adını, dosyalarını veya kişisel verilerini içermez.",
+      "Lisans için bize verdiğin <b>isim</b> (takma ad olabilir) ve dahili bir not.",
+      "<b>Bitiş tarihi</b> ve <b>son lisans kontrolünün tarihi</b>.",
+      "Ödemelerde yalnızca Revolut'un gösterdiğini görürüz (ödeyenin adı, tutar ve açıklama).",
+      "Verileri satmayız veya paylaşmayız, yasanın gerektirdiği durumlar hariç. İstediğin zaman ticket ile silinmelerini isteyebilirsin."]],
+    ["7. İletişim", [
+      "Destek, ödemeler ve sıfırlamalar <a href=\"{discord}\">Discord sunucumuzda</a>, ticket ile yapılır."]],
+  ],
+},
+fr: {
+  doc: "Conditions — Aurum", title: "Conditions et confidentialité", upd: "Dernière mise à jour : 18 octobre 2026",
+  sum: "<b>En bref :</b> la licence est personnelle, pour un seul PC, pour la période payée. Utiliser un bot enfreint les règles du serveur de jeu — le risque de bannissement est le vôtre et n'est pas remboursé.",
+  back: "Retour à la page d'accueil",
+  s: [
+    ["1. La licence", [
+      "Vous achetez le droit d'utiliser <b>Aurum Farm</b>, <b>Aurum Fish</b> ou les deux, sur <b>un seul PC</b>, pour la période payée.",
+      "La licence ne peut être ni revendue, ni partagée, ni utilisée sur plusieurs PC en même temps.",
+      "Si vous changez de PC, vous avez une réinitialisation gratuite par mois, via un ticket Discord.",
+      "Le programme ne peut être ni modifié ni décompilé, et la vérification de licence ne peut pas être contournée."]],
+    ["2. L'abonnement", [
+      "Un abonnement dure 30 jours (ou la période choisie) à partir de l'activation.",
+      "Vous pouvez renouveler à tout moment sur Discord ; les jours restants s'additionnent.",
+      "Le bot vérifie la licence au démarrage puis régulièrement. À l'expiration, il s'arrête seul.",
+      "Sans internet, le bot fonctionne au maximum 3 jours après la dernière vérification réussie, mais jamais après la date d'expiration.",
+      "Un nouveau PC peut obtenir une seule fois un essai gratuit de 24 heures pour chaque bot."]],
+    ["3. Paiement", [
+      "Le paiement se fait par Revolut (@aurumb), à l'avance, pour la période choisie, dans la devise affichée sur le site.",
+      "Indiquez l'ID de votre PC dans le message du paiement, pour qu'il puisse être lié à votre licence.",
+      "La licence est activée manuellement après réception du paiement, en général en moins d'une heure.",
+      "Les prix peuvent changer pour les périodes futures ; une période déjà payée ne change pas."]],
+    ["4. Risques", [
+      "Les bots automatisent des actions en jeu. Cela <b>enfreint les règles du serveur de jeu</b>, qui peut suspendre ou bannir le compte.",
+      "Les bots travaillent uniquement à l'écran (captures et clics), sans modifier le jeu, mais personne ne peut garantir un risque nul.",
+      "Nous ne sommes pas responsables des comptes bannis, des objets perdus ou d'autres conséquences de l'utilisation en jeu.",
+      "Le jeu peut changer à tout moment. Nous publions des mises à jour aussi vite que possible, sans garantir un fonctionnement ininterrompu."]],
+    ["5. Remboursement", [
+      "Remboursement intégral dans les <b>24 premières heures</b> après le paiement, si le bot ne démarre pas sur votre PC et que nous ne parvenons pas à résoudre le problème ensemble.",
+      "Non remboursés : les bannissements en jeu, les périodes partiellement utilisées, un changement d'avis après 24 heures.",
+      "Nous pouvons arrêter une licence utilisée de manière abusive (revendue, partagée, contournée), sans remboursement."]],
+    ["6. Données conservées", [
+      "<b>L'ID de votre PC</b> — un code calculé à partir de l'identifiant Windows ; il ne contient ni votre nom, ni vos fichiers, ni vos données personnelles.",
+      "<b>Le nom</b> que vous nous donnez pour la licence (un pseudo convient) et une note interne.",
+      "<b>La date d'expiration</b> et <b>la date de la dernière vérification</b> de la licence.",
+      "Pour les paiements, nous voyons seulement ce qu'affiche Revolut (nom du payeur, montant et message).",
+      "Nous ne vendons ni ne partageons les données, sauf obligation légale. Vous pouvez demander leur suppression à tout moment, via un ticket."]],
+    ["7. Contact", [
+      "Le support, les paiements et les réinitialisations se font sur <a href=\"{discord}\">notre serveur Discord</a>, par ticket."]],
+  ],
+},
+es: {
+  doc: "Términos — Aurum", title: "Términos y privacidad", upd: "Última actualización: 18 de octubre de 2026",
+  sum: "<b>En resumen:</b> la licencia es personal, para un solo PC, durante el periodo pagado. Usar cualquier bot infringe las reglas del servidor del juego — el riesgo de baneo es tuyo y no se reembolsa.",
+  back: "Volver a la página principal",
+  s: [
+    ["1. La licencia", [
+      "Compras el derecho a usar <b>Aurum Farm</b>, <b>Aurum Fish</b> o ambos, en <b>un solo PC</b>, durante el periodo pagado.",
+      "La licencia no se puede revender, compartir ni usar en varios PC a la vez.",
+      "Si cambias de PC, tienes un reinicio gratis al mes, mediante un ticket en Discord.",
+      "El programa no se puede modificar ni descompilar, y la verificación de licencia no se puede eludir."]],
+    ["2. La suscripción", [
+      "Una suscripción dura 30 días (o el periodo elegido) desde la activación.",
+      "Puedes renovar cuando quieras en Discord; los días restantes se suman.",
+      "El bot verifica la licencia al iniciar y luego periódicamente. Al caducar, se detiene solo.",
+      "Sin internet, el bot funciona como máximo 3 días después de la última verificación correcta, pero nunca después de la fecha de caducidad.",
+      "Un PC nuevo puede recibir una sola vez una prueba gratuita de 24 horas para cada bot."]],
+    ["3. Pago", [
+      "El pago se hace por Revolut (@aurumb), por adelantado, para el periodo elegido, en la moneda mostrada en el sitio.",
+      "Escribe el ID de tu PC en el concepto del pago, para poder vincularlo a tu licencia.",
+      "La licencia se activa manualmente tras recibir el pago, normalmente en menos de una hora.",
+      "Los precios pueden cambiar para periodos futuros; un periodo ya pagado no cambia."]],
+    ["4. Riesgos", [
+      "Los bots automatizan acciones en el juego. Esto <b>infringe las reglas del servidor del juego</b>, que puede suspender o banear la cuenta.",
+      "Los bots solo trabajan en pantalla (capturas y clics), sin modificar el juego, pero nadie puede garantizar riesgo cero.",
+      "No respondemos por cuentas baneadas, objetos perdidos u otras consecuencias del uso en el juego.",
+      "El juego puede cambiar en cualquier momento. Publicamos actualizaciones lo antes posible, pero no garantizamos un funcionamiento ininterrumpido."]],
+    ["5. Reembolsos", [
+      "Reembolso completo en las <b>primeras 24 horas</b> tras el pago, si el bot no arranca en tu PC y no logramos solucionarlo juntos.",
+      "No se reembolsan: baneos en el juego, periodos usados en parte, cambiar de opinión después de 24 horas.",
+      "Podemos detener una licencia usada de forma abusiva (revendida, compartida, eludida), sin reembolso."]],
+    ["6. Datos que guardamos", [
+      "<b>El ID de tu PC</b> — un código calculado a partir del identificador de Windows; no contiene tu nombre, archivos ni datos personales.",
+      "<b>El nombre</b> que nos das para la licencia (puede ser un apodo) y una nota interna.",
+      "<b>La fecha de caducidad</b> y <b>la fecha de la última verificación</b> de la licencia.",
+      "En los pagos solo vemos lo que muestra Revolut (nombre del pagador, importe y concepto).",
+      "No vendemos ni compartimos los datos, salvo cuando la ley lo exige. Puedes pedir su eliminación en cualquier momento, mediante un ticket."]],
+    ["7. Contacto", [
+      "El soporte, los pagos y los reinicios se gestionan en <a href=\"{discord}\">nuestro servidor de Discord</a>, mediante tickets."]],
+  ],
+},
+};
+
+function store(k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; } }
+function detectLang() {
+  const saved = store("aurum_lang"); if (saved && T[saved]) return saved;
+  const nav = (navigator.languages || [navigator.language || "en"]).map(l => l.slice(0, 2).toLowerCase());
+  return nav.find(l => T[l]) || "en";
+}
+let lang = detectLang();
+
+function render() {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = t.doc;
+  document.getElementById("title").textContent = t.title;
+  document.getElementById("upd").textContent = t.upd;
+  document.getElementById("sum").innerHTML = t.sum;
+  document.getElementById("back").textContent = t.back;
+  document.getElementById("body").innerHTML = t.s.map(([h, items]) =>
+    "<h2>" + h + "</h2>" + (items.length === 1 && h.indexOf("7.") === 0
+      ? "<p>" + items[0].replace("{discord}", DISCORD) + "</p>"
+      : "<ul>" + items.map(i => "<li>" + i.replace("{discord}", DISCORD) + "</li>").join("") + "</ul>")
+  ).join("");
+  document.getElementById("langSel").value = lang;
+}
+document.getElementById("langSel").addEventListener("change", e => { lang = e.target.value; store("aurum_lang", lang); render(); });
+render();
+</script>
 </body>
 </html>
