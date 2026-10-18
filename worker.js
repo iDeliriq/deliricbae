@@ -45,6 +45,52 @@ const DEFAULT_TOOLS = {
   ],
 };
 
+// ---------- limita de incercari la login (pe IP) ----------
+// max LOGIN_MAX parole gresite in LOGIN_WINDOW secunde; apoi 429 pana trece fereastra.
+const LOGIN_MAX = 5, LOGIN_WINDOW = 15 * 60;
+
+function clientIp(req) {
+  return req.headers.get("CF-Connecting-IP") || req.headers.get("X-Forwarded-For") || "local";
+}
+
+async function loginBlocked(env, req, scope) {
+  if (!env.DB) return false;
+  const raw = await env.DB.get(`rl:${scope}:${clientIp(req)}`);
+  if (!raw) return false;
+  try { const o = JSON.parse(raw); return o.n >= LOGIN_MAX && Date.now() / 1000 - o.t0 < LOGIN_WINDOW; }
+  catch (e) { return false; }
+}
+
+async function loginFailed(env, req, scope) {
+  if (!env.DB) return;
+  const key = `rl:${scope}:${clientIp(req)}`, now = Math.floor(Date.now() / 1000);
+  let o = { n: 0, t0: now };
+  try { const raw = await env.DB.get(key); if (raw) o = JSON.parse(raw); } catch (e) { /* nou */ }
+  if (now - o.t0 >= LOGIN_WINDOW) o = { n: 0, t0: now };
+  o.n += 1;
+  await env.DB.put(key, JSON.stringify(o), { expirationTtl: LOGIN_WINDOW + 60 });
+}
+
+// ---------- semnatura raspunsurilor de licenta (Ed25519) ----------
+// Cheia privata sta in secretul Cloudflare LICENSE_SIGN_KEY (pkcs8, base64). Botii au cheia
+// publica si accepta "ok" doar cu semnatura valida pe: aurum1|hwid|product|status|expires|nonce|t
+let SIGN_KEY = null;
+async function signKey(env) {
+  if (SIGN_KEY || !env.LICENSE_SIGN_KEY) return SIGN_KEY;
+  const der = Uint8Array.from(atob(env.LICENSE_SIGN_KEY.trim()), c => c.charCodeAt(0));
+  SIGN_KEY = await crypto.subtle.importKey("pkcs8", der, { name: "Ed25519" }, false, ["sign"]);
+  return SIGN_KEY;
+}
+
+async function signLicense(env, res, hwid, product, nonce) {
+  const key = await signKey(env);
+  if (!key || !nonce) return res;
+  const t = Math.floor(Date.now() / 1000);
+  const msg = `aurum1|${hwid}|${product}|${res.status}|${Number(res.expires) || 0}|${nonce}|${t}`;
+  const sig = new Uint8Array(await crypto.subtle.sign({ name: "Ed25519" }, key, enc.encode(msg)));
+  return { ...res, t, sig: btoa(String.fromCharCode(...sig)) };
+}
+
 function json(obj, status = 200, headers = {}) {
   return new Response(JSON.stringify(obj), {
     status, headers: { "Content-Type": "application/json", ...headers },
@@ -93,14 +139,17 @@ function setCookie(name, value, maxAge) {
 }
 
 // verifica un {password} din body fata de un secret; da cookie la potrivire
-async function loginWith(request, secret, cookieName) {
+async function loginWith(request, secret, cookieName, env) {
   if (!secret) return json({ ok: false, error: "unconfigured" }, 500);
+  if (env && await loginBlocked(env, request, cookieName))
+    return json({ ok: false, error: "too many attempts, try again in 15 minutes" }, 429);
   let pw = "";
   try { const b = await request.json(); pw = (b && b.password) || ""; } catch (e) { pw = ""; }
   if (typeof pw === "string" && pw.length > 0 && safeEq(pw, secret)) {
     const tok = await makeToken(secret);
     return json({ ok: true }, 200, { "Set-Cookie": setCookie(cookieName, tok, MAX_AGE) });
   }
+  if (env) await loginFailed(env, request, cookieName);
   return json({ ok: false, error: "bad" }, 401);
 }
 
@@ -152,15 +201,15 @@ function licenseStatus(db, hwid, product = "farm") {
   if (db.killAll) return { status: "killed", message: "Access disabled by admin." };
   const e = (db.list || []).find(x => x.hwid === hwid);
   if (!e) return { status: "unknown", message: "This PC is not authorized. Send your ID to the admin." };
-  if (e.status === "blocked") return { status: "blocked", message: "This PC has been blocked.", name: e.name || "" };
+  if (e.status === "blocked") return { status: "blocked", message: "This PC has been blocked." };
   const prods = entryProducts(e);
   if (!Object.prototype.hasOwnProperty.call(prods, product))
-    return { status: "noproduct", message: "This PC has no subscription for this bot.", name: e.name || "" };
+    return { status: "noproduct", message: "This PC has no subscription for this bot." };
   const exp = Number(prods[product]) || 0;
   const now = Math.floor(Date.now() / 1000);
   if (exp > 0 && now > exp)
-    return { status: "expired", message: "Your subscription has expired.", name: e.name || "", expires: exp };
-  return { status: "ok", message: "", name: e.name || "", expires: exp, product };
+    return { status: "expired", message: "Your subscription has expired.", expires: exp };
+  return { status: "ok", message: "", expires: exp, product };
 }
 
 // ---------- poarta "site in pregatire" ----------
@@ -257,7 +306,7 @@ export default {
 
     // ---------- rapoarte (vizitator) ----------
     if (p === "/api/login" && request.method === "POST")
-      return loginWith(request, site, SESS);
+      return loginWith(request, site, SESS, env);
     if (p === "/api/logout" && request.method === "POST")
       return json({ ok: true }, 200, { "Set-Cookie": setCookie(SESS, "", 0) });
 
@@ -284,7 +333,7 @@ export default {
 
     // ---------- admin ----------
     if (p === "/api/admin/login" && request.method === "POST")
-      return loginWith(request, admin, ADM);
+      return loginWith(request, admin, ADM, env);
     if (p === "/api/admin/logout" && request.method === "POST")
       return json({ ok: true }, 200, { "Set-Cookie": setCookie(ADM, "", 0) });
     if (p === "/api/admin/me")
@@ -321,6 +370,7 @@ export default {
       if (!PRODUCTS.includes(product)) return json({ status: "unknown", message: "bad product" });
       const db = await readLicenses(env);
       // fara trial: un PC primeste acces doar cand e adaugat din licente.html
+      const nonce = (url.searchParams.get("n") || "").trim().slice(0, 64);
       const res = licenseStatus(db, hwid, product);
       // marcheaza "last_seen" (o data pe ora max, ca sa nu scrie KV la fiecare pornire)
       if (env.DB) {
@@ -331,7 +381,7 @@ export default {
           try { await env.DB.put("licenses", JSON.stringify(db)); } catch (err) { /* ignora */ }
         }
       }
-      return json(res, 200, { "Cache-Control": "no-store" });
+      return json(await signLicense(env, res, hwid, product, nonce), 200, { "Cache-Control": "no-store" });
     }
     // admin: citeste toata lista
     if (p === "/api/admin/licenses" && request.method === "GET") {
