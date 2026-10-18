@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>deliricbae</title>
+<title>Aurum — rapoarte</title>
 <meta name="description" content="Panou privat pentru botul Baerim — rapoarte pe zile și sesiuni.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -203,13 +203,13 @@ svg{display:block}
       <polygon points="17,17 32,17 17,32" fill="#c99a3a"/>
       <polygon points="17,2 32,17 17,32 2,17" fill="none" stroke="#080b16" stroke-width="1.4"/>
     </svg>
-    <div><h1>deliric<b>bae</b></h1><div class="sub">Baerim · panou</div></div>
+    <div><h1>Aur<b>um</b></h1><div class="sub">Baerim · panou</div></div>
   </div>
   <div class="navlbl">Meniu</div>
   <nav id="nav"></nav>
   <div class="sbfoot">
     <div class="out" id="logout">↩ Deconectare</div>
-    <div style="padding-top:8px">© deliricbae</div>
+    <div style="padding-top:8px">© Aurum</div>
   </div>
 </aside>
 <div id="stars"></div><div id="stars2"></div>
@@ -244,13 +244,12 @@ const MENU=[
   {id:"live", label:"Live", soon:true, icon:'<circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="2" fill="none"/>'},
 ];
 
-// ---- mediu: pe artifact/preview arătăm demo; pe deliricbae.ro folosim /api ----
-const PREVIEW = !(location.hostname==="deliricbae.ro" || location.hostname==="www.deliricbae.ro"
-                  || location.hostname.endsWith("workers.dev"));
+// ---- mediu: pe artifact/preview arătăm demo; pe site (orice domeniu) folosim /api ----
+const PREVIEW = location.protocol === "file:" || /(^|\.)(claude\.ai|claudeusercontent\.com)$/.test(location.hostname);
 
 // date demo (doar pe preview) — aceeasi forma ca datele reale din /api/reports
 const DEMO={
-  generated_at:Math.floor(Date.now()/1000), player:"~Deliric~",
+  generated_at:Math.floor(Date.now()/1000), player:"~Jucator~",
   totals:{sessions:6, yang:512000000, kills:5120, seconds:6*3600+1500, loot_value:1840000000},
   daily:[
     {d:"04.09",yang:64000000,kills:640,loot:210000000},

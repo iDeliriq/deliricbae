@@ -1,4 +1,4 @@
-// Worker deliricbae.
+// Worker Aurum (site + licente).
 // - serveste site-ul static (binding ASSETS)
 // - Rapoarte: protejate cu SITE_PASSWORD (cookie semnat HMAC "dbsess").
 //     /api/login, /api/logout, /api/publish (X-Publish-Key), /api/reports
@@ -176,7 +176,7 @@ const GATE_HTML = `<!doctype html>
 <html lang="ro"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
-<title>deliricbae — în curând</title>
+<title>Aurum — în curând</title>
 <style>
 :root{--bg:#080b16;--panel:#111a30;--line:#243256;--ink:#eaeefb;--mut:#9aa6c8;--gold:#e7b954;--gold2:#f6d488;--bad:#e2685f}
 *{box-sizing:border-box}html,body{margin:0;height:100%}
@@ -192,7 +192,7 @@ button:disabled{opacity:.6;cursor:default}
 .err{min-height:20px;margin-top:10px;color:var(--bad);font-size:13px}
 </style></head><body>
 <form class="card" id="f">
-  <h1>deliricbae</h1>
+  <h1>AURUM</h1>
   <p>Site-ul este în pregătire și va fi disponibil în curând.</p>
   <input id="pw" type="password" autocomplete="current-password" placeholder="Parolă" aria-label="Parolă" required autofocus>
   <button id="b" type="submit">Intră</button>

@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<title>deliricbae unelte</title>
+<title>Aurum — unelte</title>
 <meta name="description" content="Unelte Baerim — calculatoare de upgrade și prețuri, editabile de admin.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -255,7 +255,7 @@ tr.pityrow .mlbl{color:var(--gold2)}
     <svg width="26" height="26" viewBox="0 0 34 34"><polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/>
       <polygon points="17,2 32,17 17,17" fill="#f6d488"/><polygon points="2,17 17,32 17,17" fill="#a9812c"/>
       <polygon points="17,2 17,17 2,17" fill="#e7b954"/><polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>
-    <div><h1>deliricbae</h1><div class="sub">Unelte Baerim</div></div>
+    <div><h1>Aurum</h1><div class="sub">Unelte Baerim</div></div>
   </div>
   <div class="sblang"><select id="langSel" onchange="setLang(this.value)" aria-label="Language"><option value="ro">Română</option><option value="en">English</option><option value="de">Deutsch</option><option value="pl">Polski</option><option value="tr">Türkçe</option><option value="fr">Français</option><option value="es">Español</option></select><button id="notaBtn" class="notabtn" title="Notație numere (kk ⇄ număr complet)" onclick="toggleNota()">kk</button></div>
   <div class="sbsearch"><input id="search" placeholder="Caută item…" autocomplete="off"></div>
@@ -277,7 +277,7 @@ tr.pityrow .mlbl{color:var(--gold2)}
 
 <script>
 const $=s=>document.querySelector(s);
-const PREVIEW=!(location.hostname==="deliricbae.ro"||location.hostname==="www.deliricbae.ro"||location.hostname.endsWith("workers.dev"));
+const PREVIEW = location.protocol === "file:" || /(^|\.)(claude\.ai|claudeusercontent\.com)$/.test(location.hostname);
 const PKEY="db_prices_v1";
 
 let NOTA=(()=>{try{return localStorage.getItem('db_nota')||'kk'}catch(e){return 'kk'}})();
@@ -668,7 +668,7 @@ function dirty(){ dirtyFlag=true; mark("Modificări nesalvate."); }
 function mark(t){ const s=$("#savest"); if(s)s.textContent=t; }
 async function saveDB(){
   mark("Se salvează…");
-  if(PREVIEW){ mark("Previzualizare — nu se salvează pe server (doar pe deliricbae.ro)."); return; }
+  if(PREVIEW){ mark("Previzualizare — nu se salvează pe server (doar pe site)."); return; }
   try{
     const r=await fetch("/api/tools",{method:"POST",credentials:"same-origin",headers:{"Content-Type":"application/json"},body:JSON.stringify(DB)});
     const j=await r.json().catch(()=>({}));

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Licențe — deliricbae</title>
+<title>Licențe — Aurum</title>
 <style>
   :root{ --bg:#080b16; --card:#0f1424; --line:#1e2740; --gold:#e7b954;
          --txt:#e8ecf6; --muted:#8b95ad; --red:#e5484d; --green:#46b06a; --blue:#4a90d9; }
@@ -94,7 +94,7 @@
     <div class="card">
       <div style="font-weight:700; margin-bottom:12px">➕ Adaugă un PC</div>
       <div class="row">
-        <div><label>Nume (cine e)</label><input id="aName" placeholder="ex. Deliric"></div>
+        <div><label>Nume (cine e)</label><input id="aName" placeholder="ex. Andrei"></div>
         <div><label>HWID (codul de la ei)</label><input id="aHwid" placeholder="ex. 3f9a1c…"></div>
         <div style="flex:0 0 auto"><label>Produse</label>
           <div style="display:flex;gap:12px;padding:9px 0">
@@ -169,7 +169,7 @@ function render(){
     const tr=document.createElement("tr");
     const blocked = e.status==="blocked";
     tr.innerHTML =
-      `<td>${esc(e.name||"—")}</td>`+
+      `<td><input data-name="${i}" value="${esc(e.name||"")}" placeholder="nume" style="padding:5px 8px;font-size:12px;min-width:90px"></td>`+
       `<td><code>${esc(e.hwid)}</code></td>`+
       `<td>${statusPill(e)}</td>`+
       `<td>${prodCell(e,i,"farm")}</td>`+
@@ -195,6 +195,8 @@ function render(){
     if(confirm("Scoți accesul la "+b.dataset.p+" pentru "+(e.name||e.hwid)+"?")){ delete e.products[b.dataset.p]; save(); } });
   tb.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
     if(confirm("Ștergi acest PC din listă?")){ DB.list.splice(+b.dataset.del,1); save(); } });
+  tb.querySelectorAll("[data-name]").forEach(inp=>inp.onchange=()=>{
+    DB.list[+inp.dataset.name].name = inp.value.trim().slice(0,60); save(true); });
   tb.querySelectorAll("[data-note]").forEach(inp=>inp.onchange=()=>{
     DB.list[+inp.dataset.note].note = inp.value.slice(0,120); save(true); });
 }
