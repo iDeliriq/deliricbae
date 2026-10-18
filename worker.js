@@ -232,8 +232,14 @@ document.getElementById("f").addEventListener("submit", async function (ev) {
     var r = await fetch("/api/admin/login", {method: "POST", credentials: "same-origin",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({password: document.getElementById("pw").value})});
-    if (r.ok) { location.reload(); return; }
-    e.textContent = "Parolă greșită.";
+    if (r.ok) {
+      // parola e buna; verificam ca browserul a pastrat cookie-ul de login
+      var me = await fetch("/api/admin/me", {credentials: "same-origin", cache: "no-store"}).then(function (x) { return x.json(); });
+      if (me && me.admin) { location.replace(location.pathname + location.search); return; }
+      e.textContent = "Parola e corectă, dar browserul nu a păstrat cookie-ul de login. Permite cookie-urile pentru acest site (sau încearcă alt browser / o fereastră privată).";
+      b.disabled = false; return;
+    }
+    e.textContent = r.status === 401 ? "Parolă greșită." : "Eroare pe server (" + r.status + "). Încearcă din nou.";
   } catch (x) { e.textContent = "Eroare de rețea, încearcă din nou."; }
   b.disabled = false;
 });
