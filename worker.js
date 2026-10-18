@@ -193,6 +193,7 @@ function licenseStatus(db, hwid, product = "farm") {
 const GATE_OPEN = new Set([
   "/api/license", "/api/publish",
   "/api/admin/login", "/api/admin/logout", "/api/admin/me",
+  "/favicon.ico", "/favicon-32.png", "/apple-touch-icon.png", "/og.png",
 ]);
 
 const GATE_HTML = `<!doctype html>
@@ -200,6 +201,7 @@ const GATE_HTML = `<!doctype html>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Aurum — în curând</title>
+<link rel="icon" href="/favicon.ico" sizes="any">
 <style>
 :root{--bg:#080b16;--panel:#111a30;--line:#243256;--ink:#eaeefb;--mut:#9aa6c8;--gold:#e7b954;--gold2:#f6d488;--bad:#e2685f}
 *{box-sizing:border-box}html,body{margin:0;height:100%}
