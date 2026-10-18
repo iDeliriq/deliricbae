@@ -143,12 +143,81 @@ function licenseStatus(db, hwid) {
   return { status: "ok", message: "", name: e.name || "", expires: e.expires || 0 };
 }
 
+// ---------- poarta "site in pregatire" ----------
+// Cat timp site-ul nu e lansat, TOT site-ul cere parola de admin (ADMIN_PASSWORD).
+// Raman deschise doar rutele de care au nevoie botii (licenta, publicare rapoarte)
+// si cele de login. Lansare: variabila SITE_GATE = "off" in Cloudflare.
+const GATE_OPEN = new Set([
+  "/api/license", "/api/publish",
+  "/api/admin/login", "/api/admin/logout", "/api/admin/me",
+]);
+
+const GATE_HTML = `<!doctype html>
+<html lang="ro"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>deliricbae — în curând</title>
+<style>
+:root{--bg:#080b16;--panel:#111a30;--line:#243256;--ink:#eaeefb;--mut:#9aa6c8;--gold:#e7b954;--gold2:#f6d488;--bad:#e2685f}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{display:grid;place-items:center;padding:16px;color:var(--ink);font-family:system-ui,"Segoe UI",sans-serif;
+background:radial-gradient(1000px 520px at 78% -10%,rgba(231,185,84,.12),transparent 60%),radial-gradient(800px 460px at 8% 6%,rgba(90,120,255,.09),transparent 55%),var(--bg)}
+.card{width:100%;max-width:380px;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:28px 24px;box-shadow:0 18px 40px -20px rgba(0,0,0,.85)}
+h1{margin:0 0 4px;font-size:22px;letter-spacing:.06em;color:var(--gold2)}
+p{margin:0 0 20px;color:var(--mut);font-size:14px;line-height:1.5}
+input{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:#0b1020;color:var(--ink);font-size:15px}
+input:focus{outline:2px solid var(--gold);outline-offset:1px}
+button{margin-top:12px;width:100%;padding:12px;border:0;border-radius:10px;background:var(--gold);color:#1a1405;font-weight:700;font-size:15px;cursor:pointer}
+button:disabled{opacity:.6;cursor:default}
+.err{min-height:20px;margin-top:10px;color:var(--bad);font-size:13px}
+</style></head><body>
+<form class="card" id="f">
+  <h1>deliricbae</h1>
+  <p>Site-ul este în pregătire și va fi disponibil în curând.</p>
+  <input id="pw" type="password" autocomplete="current-password" placeholder="Parolă" aria-label="Parolă" required autofocus>
+  <button id="b" type="submit">Intră</button>
+  <div class="err" id="e" role="alert"></div>
+</form>
+<script>
+document.getElementById("f").addEventListener("submit", async function (ev) {
+  ev.preventDefault();
+  var b = document.getElementById("b"), e = document.getElementById("e");
+  b.disabled = true; e.textContent = "";
+  try {
+    var r = await fetch("/api/admin/login", {method: "POST", credentials: "same-origin",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({password: document.getElementById("pw").value})});
+    if (r.ok) { location.reload(); return; }
+    e.textContent = "Parolă greșită.";
+  } catch (x) { e.textContent = "Eroare de rețea, încearcă din nou."; }
+  b.disabled = false;
+});
+</script>
+</body></html>`;
+
+function gatePage() {
+  return new Response(GATE_HTML, {
+    status: 401,
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store",
+      "X-Robots-Tag": "noindex, nofollow",
+    },
+  });
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
     const p = url.pathname;
     const site = env.SITE_PASSWORD;
     const admin = env.ADMIN_PASSWORD;
+
+    if (env.SITE_GATE !== "off" && !GATE_OPEN.has(p) &&
+        !await validToken(getCookie(request, ADM), admin)) {
+      if (p.startsWith("/api/")) return json({ error: "site closed" }, 401);
+      return gatePage();
+    }
 
     // ---------- rapoarte (vizitator) ----------
     if (p === "/api/login" && request.method === "POST")
