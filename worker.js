@@ -128,19 +128,39 @@ async function readLicenses(env) {
 
 function validLicenses(o) {
   return o && typeof o === "object" && Array.isArray(o.list) &&
-    o.list.every(e => e && typeof e.hwid === "string" && e.hwid.length > 0);
+    o.list.every(e => e && typeof e.hwid === "string" && e.hwid.length > 0 &&
+      (e.products === undefined || validProducts(e.products)));
 }
 
-// decide statusul unui hwid: ok | killed | blocked | expired | unknown
-function licenseStatus(db, hwid) {
+function validProducts(p) {
+  return p && typeof p === "object" && !Array.isArray(p) &&
+    Object.entries(p).every(([k, v]) => PRODUCTS.includes(k) && Number.isFinite(Number(v)) && Number(v) >= 0);
+}
+
+// produse vandute: farm (Baerim Metin Queue), fishing (Pescar).
+// Intrare noua: products = { farm: expires, fishing: expires } (0 = fara expirare;
+// produs lipsa = fara acces). Intrarile vechi, fara "products", = doar farm cu e.expires.
+const PRODUCTS = ["farm", "fishing"];
+
+function entryProducts(e) {
+  if (e.products && typeof e.products === "object") return e.products;
+  return { farm: Number(e.expires) || 0 };
+}
+
+// decide statusul unui hwid pentru un produs: ok | killed | blocked | expired | noproduct | unknown
+function licenseStatus(db, hwid, product = "farm") {
   if (db.killAll) return { status: "killed", message: "Access disabled by admin." };
   const e = (db.list || []).find(x => x.hwid === hwid);
   if (!e) return { status: "unknown", message: "This PC is not authorized. Send your ID to the admin." };
   if (e.status === "blocked") return { status: "blocked", message: "This PC has been blocked.", name: e.name || "" };
+  const prods = entryProducts(e);
+  if (!Object.prototype.hasOwnProperty.call(prods, product))
+    return { status: "noproduct", message: "This PC has no subscription for this bot.", name: e.name || "" };
+  const exp = Number(prods[product]) || 0;
   const now = Math.floor(Date.now() / 1000);
-  if (e.expires && Number(e.expires) > 0 && now > Number(e.expires))
-    return { status: "expired", message: "Your access has expired.", name: e.name || "", expires: e.expires };
-  return { status: "ok", message: "", name: e.name || "", expires: e.expires || 0 };
+  if (exp > 0 && now > exp)
+    return { status: "expired", message: "Your subscription has expired.", name: e.name || "", expires: exp };
+  return { status: "ok", message: "", name: e.name || "", expires: exp, product };
 }
 
 // ---------- poarta "site in pregatire" ----------
@@ -280,8 +300,11 @@ export default {
     if (p === "/api/license" && request.method === "GET") {
       const hwid = (url.searchParams.get("hwid") || "").trim().slice(0, 128);
       if (!hwid) return json({ status: "unknown", message: "no id" });
+      // botii vechi nu trimit ?product -> farm
+      const product = (url.searchParams.get("product") || "farm").trim();
+      if (!PRODUCTS.includes(product)) return json({ status: "unknown", message: "bad product" });
       const db = await readLicenses(env);
-      const res = licenseStatus(db, hwid);
+      const res = licenseStatus(db, hwid, product);
       // marcheaza "last_seen" (o data pe ora max, ca sa nu scrie KV la fiecare pornire)
       if (env.DB) {
         const e = (db.list || []).find(x => x.hwid === hwid);

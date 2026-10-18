@@ -58,8 +58,8 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>🔐 Licențe — Metin Clicker</h1>
-  <div class="sub">Kill switch și autorizare pe HWID. Modificările se salvează automat și se aplică la următoarea pornire a uneltei.</div>
+  <h1>🔐 Licențe — Farm &amp; Fishing</h1>
+  <div class="sub">Kill switch și autorizare pe HWID. Modificările se salvează automat și se aplică la următoarea verificare a botului. Fiecare produs are propria dată de expirare.</div>
 
   <!-- LOGIN -->
   <div id="login" class="card" hidden>
@@ -96,10 +96,15 @@
       <div class="row">
         <div><label>Nume (cine e)</label><input id="aName" placeholder="ex. Deliric"></div>
         <div><label>HWID (codul de la ei)</label><input id="aHwid" placeholder="ex. 3f9a1c…"></div>
+        <div style="flex:0 0 auto"><label>Produse</label>
+          <div style="display:flex;gap:12px;padding:9px 0">
+            <label style="display:flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="aFarm" checked style="width:auto">Farm</label>
+            <label style="display:flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="aFish" style="width:auto">Fishing</label>
+          </div></div>
         <div style="max-width:170px"><label>Expiră la (opțional)</label><input id="aExp" type="date"></div>
         <div style="flex:0 0 auto"><label>&nbsp;</label><button id="addBtn">Adaugă</button></div>
       </div>
-      <div class="hint" style="margin-top:8px">Lasă „Expiră" gol = fără expirare. Codul HWID îl vede fiecare în unealtă, la prima pornire.</div>
+      <div class="hint" style="margin-top:8px">Lasă „Expiră" gol = fără expirare. Abonament: pune data, apoi prelungești cu „+30 z”. Codul HWID îl vede fiecare în unealtă, la prima pornire.</div>
     </div>
 
     <!-- list -->
@@ -108,7 +113,7 @@
       <div style="overflow-x:auto">
       <table>
         <thead><tr>
-          <th>Nume</th><th>HWID</th><th>Status</th><th>Expiră</th><th>Văzut ultima dată</th><th>Notă</th><th></th>
+          <th>Nume</th><th>HWID</th><th>Status</th><th>Farm</th><th>Fishing</th><th>Văzut ultima dată</th><th>Notă</th><th></th>
         </tr></thead>
         <tbody id="tb"></tbody>
       </table>
@@ -129,11 +134,28 @@ function rel(sec){ if(!sec) return "—"; const s=Math.floor(Date.now()/1000)-se
   if(s<90) return "acum"; if(s<3600) return Math.floor(s/60)+" min"; if(s<86400) return Math.floor(s/3600)+" h";
   return Math.floor(s/86400)+" zile"; }
 
+const PRODS = ["farm","fishing"];
+const DAY = 86400;
 function statusPill(e){
-  const now=Math.floor(Date.now()/1000);
   if(e.status==="blocked") return '<span class="pill blocked">blocat</span>';
-  if(e.expires && e.expires>0 && now>e.expires) return '<span class="pill expired">expirat</span>';
   return '<span class="pill ok">activ</span>';
+}
+// intrarile vechi (fara products) = doar farm, cu e.expires
+function migrate(e){
+  if(!e.products || typeof e.products!=="object") e.products = { farm: Number(e.expires)||0 };
+  return e;
+}
+function prodCell(e,i,p){
+  const now=Math.floor(Date.now()/1000);
+  if(!(p in e.products))
+    return `<button class="ghost sm" data-ext="${i}" data-p="${p}" title="Dă acces 30 de zile">+30 z</button>`;
+  const exp=Number(e.products[p])||0;
+  let txt = exp ? fmtDate(exp) : "nelimitat";
+  if(exp && now>exp) txt = '<span class="pill expired">expirat '+fmtDate(exp)+'</span>';
+  else if(exp && exp-now<3*DAY) txt = '<span style="color:var(--gold,#e7b954)">'+txt+'</span>';
+  return `<div style="white-space:nowrap">${txt}</div>`+
+    `<div style="white-space:nowrap;margin-top:4px"><button class="ghost sm" data-ext="${i}" data-p="${p}" title="Prelungește 30 de zile">+30 z</button> `+
+    `<button class="ghost sm" data-rm="${i}" data-p="${p}" title="Scoate accesul la produs">×</button></div>`;
 }
 
 function render(){
@@ -150,7 +172,8 @@ function render(){
       `<td>${esc(e.name||"—")}</td>`+
       `<td><code>${esc(e.hwid)}</code></td>`+
       `<td>${statusPill(e)}</td>`+
-      `<td>${fmtDate(e.expires)}</td>`+
+      `<td>${prodCell(e,i,"farm")}</td>`+
+      `<td>${prodCell(e,i,"fishing")}</td>`+
       `<td class="muted">${rel(e.last_seen)}</td>`+
       `<td><input data-note="${i}" value="${esc(e.note||"")}" placeholder="notă" style="padding:5px 8px;font-size:12px"></td>`+
       `<td style="white-space:nowrap">`+
@@ -161,6 +184,15 @@ function render(){
   });
   tb.querySelectorAll("[data-block]").forEach(b=>b.onclick=()=>{
     const e=DB.list[+b.dataset.block]; e.status = e.status==="blocked"?"active":"blocked"; save(); });
+  tb.querySelectorAll("[data-ext]").forEach(b=>b.onclick=()=>{
+    const e=DB.list[+b.dataset.ext], p=b.dataset.p, now=Math.floor(Date.now()/1000);
+    const cur = Number(e.products[p])||0;
+    if(p in e.products && cur===0){ alert("Acest produs e deja nelimitat."); return; }
+    // prelungirea se adauga la zilele ramase; daca a expirat, porneste de azi
+    e.products[p] = Math.max(cur, now) + 30*DAY; save(); });
+  tb.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{
+    const e=DB.list[+b.dataset.rm];
+    if(confirm("Scoți accesul la "+b.dataset.p+" pentru "+(e.name||e.hwid)+"?")){ delete e.products[b.dataset.p]; save(); } });
   tb.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{
     if(confirm("Ștergi acest PC din listă?")){ DB.list.splice(+b.dataset.del,1); save(); } });
   tb.querySelectorAll("[data-note]").forEach(inp=>inp.onchange=()=>{
@@ -173,6 +205,7 @@ async function load(){
   const r = await api("/api/admin/licenses");
   if(r.status===401){ showLogin(); return; }
   DB = await r.json(); if(!Array.isArray(DB.list)) DB.list=[];
+  DB.list.forEach(migrate);
   showApp(); render();
 }
 
@@ -197,7 +230,11 @@ $("#addBtn").onclick = ()=>{
   if(!hwid){ alert("Pune HWID-ul."); return; }
   if(DB.list.some(e=>e.hwid===hwid)){ alert("HWID deja în listă."); return; }
   let exp=0; const d=$("#aExp").value; if(d){ exp=Math.floor(new Date(d+"T23:59:59").getTime()/1000); }
-  DB.list.push({ hwid, name, status:"active", expires:exp, note:"",
+  const products={};
+  if($("#aFarm").checked) products.farm=exp;
+  if($("#aFish").checked) products.fishing=exp;
+  if(!Object.keys(products).length){ alert("Bifează cel puțin un produs."); return; }
+  DB.list.push({ hwid, name, status:"active", expires:exp, products, note:"",
                  added:Math.floor(Date.now()/1000), last_seen:0 });
   $("#aName").value=""; $("#aHwid").value=""; $("#aExp").value="";
   save();
