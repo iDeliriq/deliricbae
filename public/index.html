@@ -7,10 +7,10 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:title" content="Aurum — farm while you sleep">
-<meta property="og:description" content="Aurum Farm & Aurum Fish for Baerim. Monthly subscription, free 24h trial.">
+<meta property="og:description" content="Aurum Farm & Aurum Fish for Baerim. 7 days, 30 days, 90 days or lifetime.">
 <meta property="og:image" content="/og.png">
 <meta name="theme-color" content="#080b16">
-<meta name="description" content="Aurum Farm & Aurum Fish for Baerim: metin stone farming on 2 clients and automatic fishing. Monthly subscription, free 24h trial.">
+<meta name="description" content="Aurum Farm & Aurum Fish for Baerim: metin stone farming on 2 clients and automatic fishing. Licenses for 7, 30, 90 days or lifetime.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,7 +62,7 @@ h2{font-family:"Cinzel",serif; font-size:28px; margin:0 0 8px; text-align:center
 .video{aspect-ratio:16/9; border-radius:12px; border:1px dashed var(--line2); display:grid; place-items:center;
   color:var(--dim); margin-top:16px; font-size:14px; background:var(--panel2)}
 .period{display:flex; justify-content:center; margin:0 auto 24px}
-.seg{display:inline-flex; background:var(--panel); border:1px solid var(--line2); border-radius:12px; padding:4px; gap:4px}
+.seg{display:inline-flex; flex-wrap:wrap; justify-content:center; background:var(--panel); border:1px solid var(--line2); border-radius:12px; padding:4px; gap:4px}
 .seg button{background:transparent; color:var(--mut); border:0; border-radius:9px; padding:8px 16px; font:inherit; font-size:14px; cursor:pointer}
 .seg button[aria-pressed="true"]{background:var(--gold); color:#1a1405; font-weight:600}
 .price{text-align:center}
@@ -134,7 +134,7 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
     <h1 data-i="hero_h1"></h1>
     <p data-i="hero_p"></p>
     <div class="cta">
-      <a class="btn" href="/discord" data-i="cta_trial"></a>
+      <a class="btn" href="/discord" data-i="cta_discord"></a>
       <a class="btn ghost" href="#preturi" data-i="cta_prices"></a>
     </div>
   </div>
@@ -169,8 +169,10 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
     <p class="lead" data-i="prices_lead"></p>
     <div class="period">
       <div class="seg" role="group" aria-label="Period">
-        <button type="button" data-period="1" aria-pressed="true" data-i="period_1"></button>
-        <button type="button" data-period="3" aria-pressed="false" data-i="period_3"></button>
+        <button type="button" data-period="0" aria-pressed="false" data-i="period_7"></button>
+        <button type="button" data-period="1" aria-pressed="true" data-i="period_30"></button>
+        <button type="button" data-period="2" aria-pressed="false" data-i="period_90"></button>
+        <button type="button" data-period="3" aria-pressed="false" data-i="period_life"></button>
       </div>
     </div>
     <div class="grid">
@@ -211,11 +213,12 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
         <h3>Revolut · @aurumb</h3>
         <p data-i="pay_text"></p>
         <table class="amounts" aria-live="polite">
-          <thead><tr><th data-i="col_pack"></th><th data-i="col_1"></th><th data-i="col_3"></th></tr></thead>
+          <thead><tr><th data-i="col_period"></th><th>Farm</th><th>Fish</th><th>Bundle</th></tr></thead>
           <tbody>
-            <tr><td>Aurum Farm</td><td class="v" data-amt="farm-1"></td><td class="v" data-amt="farm-3"></td></tr>
-            <tr><td>Aurum Fish</td><td class="v" data-amt="fish-1"></td><td class="v" data-amt="fish-3"></td></tr>
-            <tr><td>Bundle</td><td class="v" data-amt="bundle-1"></td><td class="v" data-amt="bundle-3"></td></tr>
+            <tr><td data-i="period_7"></td><td class="v" data-amt="farm-0"></td><td class="v" data-amt="fish-0"></td><td class="v" data-amt="bundle-0"></td></tr>
+            <tr><td data-i="period_30"></td><td class="v" data-amt="farm-1"></td><td class="v" data-amt="fish-1"></td><td class="v" data-amt="bundle-1"></td></tr>
+            <tr><td data-i="period_90"></td><td class="v" data-amt="farm-2"></td><td class="v" data-amt="fish-2"></td><td class="v" data-amt="bundle-2"></td></tr>
+            <tr><td data-i="period_life"></td><td class="v" data-amt="farm-3"></td><td class="v" data-amt="fish-3"></td><td class="v" data-amt="bundle-3"></td></tr>
           </tbody>
         </table>
         <div class="pay-actions">
@@ -238,6 +241,7 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
     <details><summary data-i="q3"></summary><p data-i="a3"></p></details>
     <details><summary data-i="q4"></summary><p data-i="a4"></p></details>
     <details><summary data-i="q5"></summary><p data-i="a5"></p></details>
+    <details><summary data-i="q6"></summary><p data-i="a6"></p></details>
     <div class="warn" data-i="warn"></div>
   </section>
 
@@ -245,23 +249,29 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
 </div>
 
 <script>
-// ---- preturi: 30 zile (1) si 90 zile (3, -15%), pe moneda. Rotunjite manual. ----
+// ---- preturi: [7 zile, 30 zile, 90 zile, pe viata], pe moneda. Rotunjite manual. ----
+// Bundle e mereu mai ieftin decat Farm + Fish luate separat.
 const PRICES = {
-  EUR: { farm: [15, 38],   fish: [10, 25],   bundle: [20, 51] },
-  RON: { farm: [75, 190],  fish: [50, 125],  bundle: [99, 250] },
-  USD: { farm: [17, 43],   fish: [11, 28],   bundle: [22, 56] },
-  GBP: { farm: [13, 33],   fish: [9, 23],    bundle: [17, 43] },
-  PLN: { farm: [65, 165],  fish: [43, 110],  bundle: [85, 215] },
-  TRY: { farm: [750, 1900],fish: [500, 1250],bundle: [1000, 2550] },
+  EUR: { farm: [7.00, 24.99, 59.99, 99.99], fish: [4.99, 17.99, 42.99, 69.99], bundle: [9.99, 34.99, 84.99, 139.99] },
+  RON: { farm: [35, 125, 299, 499],         fish: [25, 89, 215, 349],          bundle: [49, 175, 425, 699] },
+  USD: { farm: [7.99, 27.99, 66.99, 109.99], fish: [5.49, 19.99, 47.99, 77.99], bundle: [10.99, 38.99, 94.99, 154.99] },
+  GBP: { farm: [5.99, 21.99, 51.99, 86.99], fish: [4.49, 15.49, 36.99, 59.99], bundle: [8.49, 29.99, 72.99, 119.99] },
+  PLN: { farm: [29, 109, 259, 429],         fish: [21, 77, 185, 299],          bundle: [43, 149, 365, 599] },
+  TRY: { farm: [339, 1199, 2899, 4799],     fish: [239, 869, 2069, 3349],      bundle: [479, 1679, 4079, 6699] },
 };
-const FMT = { EUR: v => v + " €", RON: v => v + " lei", USD: v => "$" + v, GBP: v => "£" + v, PLN: v => v + " zł", TRY: v => v.toLocaleString("tr-TR") + " ₺" };
+const money = (v, dec) => dec ? v.toFixed(2) : String(Math.round(v));
+const FMT = {
+  EUR: v => "€" + money(v, true), USD: v => "$" + money(v, true), GBP: v => "£" + money(v, true),
+  RON: v => money(v) + " lei", PLN: v => money(v) + " zł", TRY: v => Math.round(v).toLocaleString("tr-TR") + " ₺",
+};
+const PER = ["per_7", "per_30", "per_90", "per_life"];
 const LANG_CUR = { ro: "RON", en: "EUR", de: "EUR", fr: "EUR", es: "EUR", pl: "PLN", tr: "TRY" };
 
 const T = {
 ro: {
   hero_h1: "Farmezi și când dormi.",
   hero_p: "Doi boți pentru Baerim, testați luni de zile în joc: farm de metine pe 2 clienți și pescuit automat. Abonament lunar, fără instalări complicate.",
-  cta_trial: "Încearcă gratuit 24 h", cta_prices: "Vezi prețurile",
+  cta_discord: "Intră pe Discord", cta_prices: "Vezi prețurile",
   bots_h2: "Boții", bots_lead: "Fiecare lucrează pe ecran, ca un jucător — nimic injectat în joc.",
   farm_1: "<b>2 clienți în paralel</b>, coadă de până la 5 metine",
   farm_2: "<b>Nu îți ia mouse-ul</b> — poți folosi PC-ul cât farmează",
@@ -271,16 +281,16 @@ ro: {
   fish_1: "<b>Joacă singur minigame-ul de pescuit</b>", fish_2: "Ocolește oasele și pietrele, ținta = orice pește",
   fish_3: "Adâncime minimă și filtru pentru peștii mari", fish_4: "Pauze aleatoare între aruncări, ca un jucător real",
   fish_5: "Statistici live: pești pe oră, reușită, sesiune", fish_6: "Start/stop pe orice tastă, rulează din tray",
-  prices_h2: "Prețuri", prices_lead: "Abonament, licență pe 1 PC. Pe 90 de zile plătești cu 15% mai puțin.",
-  period_1: "30 zile", period_3: "90 zile · −15%",
-  per_1: "/ 30 zile", per_3: "/ 90 zile", save: "economisești {v}",
+  prices_h2: "Prețuri", prices_lead: "Licență pe 1 PC. Alegi perioada — sau plătești o singură dată, pe viață.",
+  period_7: "7 zile", period_30: "30 zile", period_90: "90 zile", period_life: "Pe viață",
+  per_7: "/ 7 zile", per_30: "/ 30 zile", per_90: "/ 90 zile", per_life: "o singură plată", save: "economisești {v}",
   upd: "Update-uri incluse", support: "Suport pe Discord", prio_support: "Suport prioritar", best: "Cel mai ales", buy: "Cumpără",
   how_h2: "Cum cumperi", how_lead: "Plata prin Revolut. Activare manuală, de obicei în mai puțin de o oră.",
   step_1: "Descarci botul din Discord și îl pornești o dată — îți arată <b>ID-ul PC-ului</b>. Apasă „Copiază ID”.",
   step_2: "Deschizi un ticket pe Discord cu pachetul ales (Farm / Fish / Bundle), perioada și ID-ul.",
   step_3: "Plătești prin <b>Revolut</b> și trimiți captura plății în ticket. Licența se activează pe PC-ul tău.",
   pay_tag: "Plată", pay_text: "Trimite suma pachetului la <b>@aurumb</b> (link sau QR). <b>La mesajul plății scrie ID-ul PC-ului.</b>",
-  col_pack: "Pachet", col_1: "30 zile", col_3: "90 zile",
+  col_period: "Perioadă",
   pay_btn: "Plătește cu Revolut", pay_ticket: "Deschide ticket",
   pay_note: "Poți plăti și fără cont Revolut, cu cardul, din pagina de plată Revolut. Sumele sunt orientative pentru moneda aleasă; plătește suma afișată.",
   pay_scan: "Scanează pentru plată",
@@ -290,13 +300,14 @@ ro: {
   q3: "Pe câte PC-uri merge licența?", a3: "Pe unul. Dacă schimbi PC-ul, ai o resetare gratuită pe lună.",
   q4: "Ce se întâmplă când expiră?", a4: "Botul se oprește și îți spune că abonamentul a expirat. Prelungești oricând; zilele rămase se adună.",
   q5: "Pot lua ban?", a5: "Orice bot încalcă regulile serverului de joc, deci riscul există și îl asumi tu. Boții se comportă cât mai uman (pauze aleatoare, fără injectare), dar nimeni nu poate garanta zero risc.",
+  q6: "Ce înseamnă licența pe viață?", a6: "Plătești o singură dată și botul merge fără expirare pe PC-ul tău, cu toate update-urile incluse, cât timp produsul există.",
   warn: "Folosirea boților încalcă regulile serverului de joc. Folosești pe propriul risc; banul nu dă drept la rambursare. Rambursare doar în primele 24 h, dacă botul nu pornește pe PC-ul tău. Detalii în <a href=\"/termeni.html\">Termeni</a>.",
   terms: "Termeni și confidențialitate", support_on: "Suport pe Discord",
 },
 en: {
   hero_h1: "Farm while you sleep.",
   hero_p: "Two bots for Baerim, tested in-game for months: metin stone farming on 2 clients and automatic fishing. Monthly subscription, no complicated setup.",
-  cta_trial: "Try free for 24h", cta_prices: "See prices",
+  cta_discord: "Join our Discord", cta_prices: "See prices",
   bots_h2: "The bots", bots_lead: "Both work on screen, like a player — nothing is injected into the game.",
   farm_1: "<b>2 clients at once</b>, queue of up to 5 stones",
   farm_2: "<b>Never takes over your mouse</b> — keep using your PC while it farms",
@@ -306,16 +317,16 @@ en: {
   fish_1: "<b>Plays the fishing minigame for you</b>", fish_2: "Dodges bones and rocks, catches any fish",
   fish_3: "Minimum depth and big-fish filter", fish_4: "Random pauses between casts, like a real player",
   fish_5: "Live stats: fish per hour, success rate, session", fish_6: "Start/stop on any key, runs from the tray",
-  prices_h2: "Prices", prices_lead: "Subscription, license for 1 PC. Save 15% with 90 days.",
-  period_1: "30 days", period_3: "90 days · −15%",
-  per_1: "/ 30 days", per_3: "/ 90 days", save: "you save {v}",
+  prices_h2: "Prices", prices_lead: "License for 1 PC. Pick a period — or pay once for lifetime access.",
+  period_7: "7 days", period_30: "30 days", period_90: "90 days", period_life: "Lifetime",
+  per_7: "/ 7 days", per_30: "/ 30 days", per_90: "/ 90 days", per_life: "one-time payment", save: "you save {v}",
   upd: "Updates included", support: "Support on Discord", prio_support: "Priority support", best: "Most popular", buy: "Buy",
   how_h2: "How to buy", how_lead: "Pay with Revolut. Manual activation, usually in under an hour.",
   step_1: "Download the bot from Discord and start it once — it shows your <b>PC ID</b>. Click “Copy ID”.",
   step_2: "Open a ticket on Discord with the package (Farm / Fish / Bundle), the period and your ID.",
   step_3: "Pay with <b>Revolut</b> and post the payment screenshot in the ticket. Your license is activated on your PC.",
   pay_tag: "Payment", pay_text: "Send the package amount to <b>@aurumb</b> (link or QR). <b>Write your PC ID in the payment note.</b>",
-  col_pack: "Package", col_1: "30 days", col_3: "90 days",
+  col_period: "Period",
   pay_btn: "Pay with Revolut", pay_ticket: "Open a ticket",
   pay_note: "You can also pay without a Revolut account, by card, on the Revolut payment page. Amounts are shown in the selected currency; send the amount displayed.",
   pay_scan: "Scan to pay",
@@ -325,13 +336,14 @@ en: {
   q3: "How many PCs per license?", a3: "One. If you change your PC, you get one free reset per month.",
   q4: "What happens when it expires?", a4: "The bot stops and tells you the subscription has expired. Renew anytime; remaining days are added up.",
   q5: "Can I get banned?", a5: "Any bot breaks the game server's rules, so the risk exists and is yours. The bots behave as human-like as possible (random pauses, no injection), but nobody can guarantee zero risk.",
+  q6: "What does the lifetime license mean?", a6: "You pay once and the bot works on your PC with no expiry date, all updates included, for as long as the product exists.",
   warn: "Using bots breaks the game server's rules. Use at your own risk; bans are not refunded. Refunds only within 24h if the bot doesn't start on your PC. Details in the <a href=\"/termeni.html\">Terms</a>.",
   terms: "Terms & privacy", support_on: "Support on Discord",
 },
 de: {
   hero_h1: "Farmen, während du schläfst.",
   hero_p: "Zwei Bots für Baerim, monatelang im Spiel getestet: Metinsteine farmen mit 2 Clients und automatisches Angeln. Monatsabo, keine komplizierte Installation.",
-  cta_trial: "24 h kostenlos testen", cta_prices: "Preise ansehen",
+  cta_discord: "Discord beitreten", cta_prices: "Preise ansehen",
   bots_h2: "Die Bots", bots_lead: "Beide arbeiten am Bildschirm wie ein Spieler — nichts wird ins Spiel injiziert.",
   farm_1: "<b>2 Clients gleichzeitig</b>, Warteschlange bis zu 5 Steinen",
   farm_2: "<b>Übernimmt nie deine Maus</b> — nutze deinen PC weiter, während er farmt",
@@ -341,16 +353,16 @@ de: {
   fish_1: "<b>Spielt das Angel-Minispiel für dich</b>", fish_2: "Weicht Knochen und Steinen aus, fängt jeden Fisch",
   fish_3: "Mindesttiefe und Filter für große Fische", fish_4: "Zufällige Pausen zwischen den Würfen, wie ein echter Spieler",
   fish_5: "Live-Statistiken: Fische pro Stunde, Erfolgsquote, Sitzung", fish_6: "Start/Stopp auf jeder Taste, läuft im Tray",
-  prices_h2: "Preise", prices_lead: "Abo, Lizenz für 1 PC. Mit 90 Tagen sparst du 15 %.",
-  period_1: "30 Tage", period_3: "90 Tage · −15 %",
-  per_1: "/ 30 Tage", per_3: "/ 90 Tage", save: "du sparst {v}",
+  prices_h2: "Preise", prices_lead: "Lizenz für 1 PC. Wähle einen Zeitraum — oder zahle einmal für lebenslangen Zugang.",
+  period_7: "7 Tage", period_30: "30 Tage", period_90: "90 Tage", period_life: "Lebenslang",
+  per_7: "/ 7 Tage", per_30: "/ 30 Tage", per_90: "/ 90 Tage", per_life: "Einmalzahlung", save: "du sparst {v}",
   upd: "Updates inklusive", support: "Support auf Discord", prio_support: "Bevorzugter Support", best: "Am beliebtesten", buy: "Kaufen",
   how_h2: "So kaufst du", how_lead: "Zahlung per Revolut. Manuelle Aktivierung, meist in unter einer Stunde.",
   step_1: "Lade den Bot über Discord herunter und starte ihn einmal — er zeigt deine <b>PC-ID</b>. Klicke „ID kopieren“.",
   step_2: "Öffne ein Ticket auf Discord mit Paket (Farm / Fish / Bundle), Laufzeit und ID.",
   step_3: "Zahle per <b>Revolut</b> und poste den Zahlungsbeleg im Ticket. Die Lizenz wird auf deinem PC aktiviert.",
   pay_tag: "Zahlung", pay_text: "Sende den Paketbetrag an <b>@aurumb</b> (Link oder QR). <b>Schreib deine PC-ID in den Verwendungszweck.</b>",
-  col_pack: "Paket", col_1: "30 Tage", col_3: "90 Tage",
+  col_period: "Zeitraum",
   pay_btn: "Mit Revolut zahlen", pay_ticket: "Ticket öffnen",
   pay_note: "Du kannst auch ohne Revolut-Konto per Karte auf der Revolut-Zahlungsseite zahlen. Die Beträge gelten für die gewählte Währung; überweise den angezeigten Betrag.",
   pay_scan: "Zum Bezahlen scannen",
@@ -360,13 +372,14 @@ de: {
   q3: "Auf wie vielen PCs gilt die Lizenz?", a3: "Auf einem. Bei PC-Wechsel hast du einen kostenlosen Reset pro Monat.",
   q4: "Was passiert beim Ablauf?", a4: "Der Bot stoppt und meldet, dass das Abo abgelaufen ist. Verlängere jederzeit; Resttage werden addiert.",
   q5: "Kann ich gebannt werden?", a5: "Jeder Bot verstößt gegen die Regeln des Spielservers, das Risiko trägst du. Die Bots verhalten sich so menschlich wie möglich (zufällige Pausen, keine Injektion), aber niemand kann null Risiko garantieren.",
+  q6: "Was bedeutet die lebenslange Lizenz?", a6: "Du zahlst einmal und der Bot läuft auf deinem PC ohne Ablaufdatum, alle Updates inklusive, solange es das Produkt gibt.",
   warn: "Bots verstoßen gegen die Regeln des Spielservers. Nutzung auf eigenes Risiko; Banns werden nicht erstattet. Erstattung nur innerhalb von 24 h, wenn der Bot auf deinem PC nicht startet. Details in den <a href=\"/termeni.html\">Bedingungen</a>.",
   terms: "Bedingungen & Datenschutz", support_on: "Support auf Discord",
 },
 pl: {
   hero_h1: "Farmuj, gdy śpisz.",
   hero_p: "Dwa boty do Baerim, testowane w grze przez miesiące: farmienie metinów na 2 klientach i automatyczne łowienie. Miesięczna subskrypcja, bez skomplikowanej instalacji.",
-  cta_trial: "Wypróbuj za darmo 24 h", cta_prices: "Zobacz ceny",
+  cta_discord: "Dołącz do Discorda", cta_prices: "Zobacz ceny",
   bots_h2: "Boty", bots_lead: "Oba działają na ekranie jak gracz — nic nie jest wstrzykiwane do gry.",
   farm_1: "<b>2 klienty naraz</b>, kolejka do 5 metinów",
   farm_2: "<b>Nie przejmuje myszki</b> — korzystasz z PC, gdy farmi",
@@ -376,16 +389,16 @@ pl: {
   fish_1: "<b>Sam gra w minigrę łowienia</b>", fish_2: "Omija kości i kamienie, łowi każdą rybę",
   fish_3: "Minimalna głębokość i filtr dużych ryb", fish_4: "Losowe przerwy między rzutami, jak prawdziwy gracz",
   fish_5: "Statystyki na żywo: ryby na godzinę, skuteczność, sesja", fish_6: "Start/stop na dowolnym klawiszu, działa z zasobnika",
-  prices_h2: "Ceny", prices_lead: "Subskrypcja, licencja na 1 PC. Przy 90 dniach oszczędzasz 15%.",
-  period_1: "30 dni", period_3: "90 dni · −15%",
-  per_1: "/ 30 dni", per_3: "/ 90 dni", save: "oszczędzasz {v}",
+  prices_h2: "Ceny", prices_lead: "Licencja na 1 PC. Wybierz okres — albo zapłać raz za dożywotni dostęp.",
+  period_7: "7 dni", period_30: "30 dni", period_90: "90 dni", period_life: "Dożywotnio",
+  per_7: "/ 7 dni", per_30: "/ 30 dni", per_90: "/ 90 dni", per_life: "jednorazowa płatność", save: "oszczędzasz {v}",
   upd: "Aktualizacje w cenie", support: "Wsparcie na Discordzie", prio_support: "Priorytetowe wsparcie", best: "Najczęściej wybierany", buy: "Kup",
   how_h2: "Jak kupić", how_lead: "Płatność przez Revolut. Ręczna aktywacja, zwykle w mniej niż godzinę.",
   step_1: "Pobierz bota z Discorda i uruchom go raz — pokaże <b>ID komputera</b>. Kliknij „Kopiuj ID”.",
   step_2: "Otwórz ticket na Discordzie z pakietem (Farm / Fish / Bundle), okresem i ID.",
   step_3: "Zapłać przez <b>Revolut</b> i wrzuć zrzut płatności do ticketu. Licencja zostanie aktywowana na twoim PC.",
   pay_tag: "Płatność", pay_text: "Wyślij kwotę pakietu na <b>@aurumb</b> (link lub QR). <b>W tytule płatności wpisz ID komputera.</b>",
-  col_pack: "Pakiet", col_1: "30 dni", col_3: "90 dni",
+  col_period: "Okres",
   pay_btn: "Zapłać przez Revolut", pay_ticket: "Otwórz ticket",
   pay_note: "Możesz też zapłacić kartą bez konta Revolut, na stronie płatności Revolut. Kwoty są w wybranej walucie; wyślij wyświetloną kwotę.",
   pay_scan: "Zeskanuj, aby zapłacić",
@@ -395,13 +408,14 @@ pl: {
   q3: "Na ilu komputerach działa licencja?", a3: "Na jednym. Przy zmianie PC masz jeden darmowy reset w miesiącu.",
   q4: "Co się dzieje po wygaśnięciu?", a4: "Bot się zatrzymuje i informuje o wygaśnięciu subskrypcji. Przedłużasz w każdej chwili; pozostałe dni się sumują.",
   q5: "Czy mogę dostać bana?", a5: "Każdy bot łamie zasady serwera gry, więc ryzyko istnieje i ponosisz je ty. Boty zachowują się jak najbardziej po ludzku (losowe przerwy, bez wstrzykiwania), ale nikt nie zagwarantuje zera ryzyka.",
+  q6: "Co oznacza licencja dożywotnia?", a6: "Płacisz raz, a bot działa na twoim PC bez daty wygaśnięcia, ze wszystkimi aktualizacjami, dopóki produkt istnieje.",
   warn: "Używanie botów łamie zasady serwera gry. Używasz na własne ryzyko; ban nie daje prawa do zwrotu. Zwrot tylko w ciągu 24 h, jeśli bot nie uruchamia się na twoim PC. Szczegóły w <a href=\"/termeni.html\">Regulaminie</a>.",
   terms: "Regulamin i prywatność", support_on: "Wsparcie na Discordzie",
 },
 tr: {
   hero_h1: "Sen uyurken farm yap.",
   hero_p: "Baerim için aylarca oyunda test edilmiş iki bot: 2 istemcide metin taşı farmı ve otomatik balık tutma. Aylık abonelik, karmaşık kurulum yok.",
-  cta_trial: "24 saat ücretsiz dene", cta_prices: "Fiyatları gör",
+  cta_discord: "Discord'a katıl", cta_prices: "Fiyatları gör",
   bots_h2: "Botlar", bots_lead: "İkisi de ekranda bir oyuncu gibi çalışır — oyuna hiçbir şey enjekte edilmez.",
   farm_1: "<b>Aynı anda 2 istemci</b>, 5 taşa kadar sıra",
   farm_2: "<b>Fareni asla ele geçirmez</b> — farm yaparken PC'ni kullanmaya devam et",
@@ -411,16 +425,16 @@ tr: {
   fish_1: "<b>Balık tutma mini oyununu senin yerine oynar</b>", fish_2: "Kemiklerden ve taşlardan kaçar, her balığı yakalar",
   fish_3: "Minimum derinlik ve büyük balık filtresi", fish_4: "Atışlar arasında rastgele molalar, gerçek bir oyuncu gibi",
   fish_5: "Canlı istatistik: saatte balık, başarı oranı, oturum", fish_6: "Herhangi bir tuşla başlat/durdur, tepside çalışır",
-  prices_h2: "Fiyatlar", prices_lead: "Abonelik, 1 PC için lisans. 90 günde %15 tasarruf.",
-  period_1: "30 gün", period_3: "90 gün · −%15",
-  per_1: "/ 30 gün", per_3: "/ 90 gün", save: "{v} tasarruf",
+  prices_h2: "Fiyatlar", prices_lead: "1 PC için lisans. Bir süre seç — ya da ömür boyu erişim için tek seferlik öde.",
+  period_7: "7 gün", period_30: "30 gün", period_90: "90 gün", period_life: "Ömür boyu",
+  per_7: "/ 7 gün", per_30: "/ 30 gün", per_90: "/ 90 gün", per_life: "tek seferlik ödeme", save: "{v} tasarruf",
   upd: "Güncellemeler dahil", support: "Discord'da destek", prio_support: "Öncelikli destek", best: "En çok tercih edilen", buy: "Satın al",
   how_h2: "Nasıl satın alınır", how_lead: "Revolut ile ödeme. Manuel aktivasyon, genellikle bir saatten kısa sürede.",
   step_1: "Botu Discord'dan indir ve bir kez başlat — <b>PC kimliğini</b> gösterir. “Kimliği kopyala”ya tıkla.",
   step_2: "Discord'da paket (Farm / Fish / Bundle), süre ve kimlik ile bir ticket aç.",
   step_3: "<b>Revolut</b> ile öde ve ödeme ekran görüntüsünü ticket'a gönder. Lisansın PC'nde etkinleştirilir.",
   pay_tag: "Ödeme", pay_text: "Paket tutarını <b>@aurumb</b> adresine gönder (link veya QR). <b>Ödeme açıklamasına PC kimliğini yaz.</b>",
-  col_pack: "Paket", col_1: "30 gün", col_3: "90 gün",
+  col_period: "Süre",
   pay_btn: "Revolut ile öde", pay_ticket: "Ticket aç",
   pay_note: "Revolut hesabın olmadan da Revolut ödeme sayfasında kartla ödeyebilirsin. Tutarlar seçilen para birimindedir; gösterilen tutarı gönder.",
   pay_scan: "Ödemek için tara",
@@ -430,13 +444,14 @@ tr: {
   q3: "Lisans kaç PC'de geçerli?", a3: "Bir tanesinde. PC değiştirirsen ayda bir ücretsiz sıfırlama hakkın var.",
   q4: "Süresi dolunca ne olur?", a4: "Bot durur ve aboneliğin bittiğini söyler. İstediğin zaman uzatabilirsin; kalan günler eklenir.",
   q5: "Ban yiyebilir miyim?", a5: "Her bot oyun sunucusunun kurallarını çiğner, yani risk vardır ve sana aittir. Botlar olabildiğince insan gibi davranır (rastgele molalar, enjeksiyon yok), ama kimse sıfır risk garanti edemez.",
+  q6: "Ömür boyu lisans ne demek?", a6: "Bir kez ödersin ve bot, ürün var olduğu sürece tüm güncellemeler dahil, süresiz olarak PC'nde çalışır.",
   warn: "Bot kullanmak oyun sunucusunun kurallarını çiğner. Riski sana ait; banlar iade edilmez. İade yalnızca 24 saat içinde, bot PC'nde başlamazsa. Ayrıntılar <a href=\"/termeni.html\">Şartlar</a>'da.",
   terms: "Şartlar ve gizlilik", support_on: "Discord'da destek",
 },
 fr: {
   hero_h1: "Farmez pendant que vous dormez.",
   hero_p: "Deux bots pour Baerim, testés en jeu pendant des mois : farm de pierres metin sur 2 clients et pêche automatique. Abonnement mensuel, sans installation compliquée.",
-  cta_trial: "Essai gratuit 24 h", cta_prices: "Voir les prix",
+  cta_discord: "Rejoindre le Discord", cta_prices: "Voir les prix",
   bots_h2: "Les bots", bots_lead: "Les deux travaillent à l'écran, comme un joueur — rien n'est injecté dans le jeu.",
   farm_1: "<b>2 clients en même temps</b>, file d'attente jusqu'à 5 pierres",
   farm_2: "<b>Ne prend jamais votre souris</b> — utilisez votre PC pendant le farm",
@@ -446,16 +461,16 @@ fr: {
   fish_1: "<b>Joue le mini-jeu de pêche à votre place</b>", fish_2: "Évite les os et les pierres, attrape tout poisson",
   fish_3: "Profondeur minimale et filtre gros poissons", fish_4: "Pauses aléatoires entre les lancers, comme un vrai joueur",
   fish_5: "Statistiques en direct : poissons par heure, réussite, session", fish_6: "Start/stop sur n'importe quelle touche, tourne dans la barre système",
-  prices_h2: "Prix", prices_lead: "Abonnement, licence pour 1 PC. −15 % sur 90 jours.",
-  period_1: "30 jours", period_3: "90 jours · −15 %",
-  per_1: "/ 30 jours", per_3: "/ 90 jours", save: "vous économisez {v}",
+  prices_h2: "Prix", prices_lead: "Licence pour 1 PC. Choisissez une durée — ou payez une fois pour un accès à vie.",
+  period_7: "7 jours", period_30: "30 jours", period_90: "90 jours", period_life: "À vie",
+  per_7: "/ 7 jours", per_30: "/ 30 jours", per_90: "/ 90 jours", per_life: "paiement unique", save: "vous économisez {v}",
   upd: "Mises à jour incluses", support: "Support sur Discord", prio_support: "Support prioritaire", best: "Le plus choisi", buy: "Acheter",
   how_h2: "Comment acheter", how_lead: "Paiement par Revolut. Activation manuelle, en général en moins d'une heure.",
   step_1: "Téléchargez le bot sur Discord et lancez-le une fois — il affiche <b>l'ID du PC</b>. Cliquez sur « Copier l'ID ».",
   step_2: "Ouvrez un ticket sur Discord avec le pack (Farm / Fish / Bundle), la durée et l'ID.",
   step_3: "Payez par <b>Revolut</b> et envoyez la capture du paiement dans le ticket. La licence est activée sur votre PC.",
   pay_tag: "Paiement", pay_text: "Envoyez le montant du pack à <b>@aurumb</b> (lien ou QR). <b>Indiquez l'ID du PC dans le message du paiement.</b>",
-  col_pack: "Pack", col_1: "30 jours", col_3: "90 jours",
+  col_period: "Durée",
   pay_btn: "Payer avec Revolut", pay_ticket: "Ouvrir un ticket",
   pay_note: "Vous pouvez aussi payer par carte sans compte Revolut, sur la page de paiement Revolut. Les montants sont dans la devise choisie ; envoyez le montant affiché.",
   pay_scan: "Scannez pour payer",
@@ -465,13 +480,14 @@ fr: {
   q3: "Sur combien de PC fonctionne la licence ?", a3: "Un seul. Si vous changez de PC, une réinitialisation gratuite par mois.",
   q4: "Que se passe-t-il à l'expiration ?", a4: "Le bot s'arrête et indique que l'abonnement a expiré. Renouvelez quand vous voulez ; les jours restants s'additionnent.",
   q5: "Puis-je être banni ?", a5: "Tout bot enfreint les règles du serveur de jeu, le risque existe et il est à vous. Les bots se comportent le plus humainement possible (pauses aléatoires, aucune injection), mais personne ne peut garantir un risque nul.",
+  q6: "Que signifie la licence à vie ?", a6: "Vous payez une fois et le bot fonctionne sur votre PC sans date d'expiration, mises à jour incluses, tant que le produit existe.",
   warn: "Utiliser des bots enfreint les règles du serveur de jeu. À vos risques ; un bannissement n'est pas remboursé. Remboursement uniquement sous 24 h si le bot ne démarre pas sur votre PC. Détails dans les <a href=\"/termeni.html\">Conditions</a>.",
   terms: "Conditions et confidentialité", support_on: "Support sur Discord",
 },
 es: {
   hero_h1: "Farmea mientras duermes.",
   hero_p: "Dos bots para Baerim, probados en el juego durante meses: farmeo de piedras metin en 2 clientes y pesca automática. Suscripción mensual, sin instalaciones complicadas.",
-  cta_trial: "Prueba gratis 24 h", cta_prices: "Ver precios",
+  cta_discord: "Únete al Discord", cta_prices: "Ver precios",
   bots_h2: "Los bots", bots_lead: "Ambos trabajan en pantalla, como un jugador — no se inyecta nada en el juego.",
   farm_1: "<b>2 clientes a la vez</b>, cola de hasta 5 piedras",
   farm_2: "<b>Nunca toma tu ratón</b> — usa tu PC mientras farmea",
@@ -481,16 +497,16 @@ es: {
   fish_1: "<b>Juega el minijuego de pesca por ti</b>", fish_2: "Esquiva huesos y piedras, pesca cualquier pez",
   fish_3: "Profundidad mínima y filtro de peces grandes", fish_4: "Pausas aleatorias entre lanzamientos, como un jugador real",
   fish_5: "Estadísticas en vivo: peces por hora, éxito, sesión", fish_6: "Inicio/parada con cualquier tecla, funciona desde la bandeja",
-  prices_h2: "Precios", prices_lead: "Suscripción, licencia para 1 PC. Ahorra un 15 % con 90 días.",
-  period_1: "30 días", period_3: "90 días · −15 %",
-  per_1: "/ 30 días", per_3: "/ 90 días", save: "ahorras {v}",
+  prices_h2: "Precios", prices_lead: "Licencia para 1 PC. Elige un periodo — o paga una vez para acceso de por vida.",
+  period_7: "7 días", period_30: "30 días", period_90: "90 días", period_life: "De por vida",
+  per_7: "/ 7 días", per_30: "/ 30 días", per_90: "/ 90 días", per_life: "pago único", save: "ahorras {v}",
   upd: "Actualizaciones incluidas", support: "Soporte en Discord", prio_support: "Soporte prioritario", best: "El más elegido", buy: "Comprar",
   how_h2: "Cómo comprar", how_lead: "Pago con Revolut. Activación manual, normalmente en menos de una hora.",
   step_1: "Descarga el bot desde Discord y ábrelo una vez — muestra el <b>ID del PC</b>. Pulsa «Copiar ID».",
   step_2: "Abre un ticket en Discord con el paquete (Farm / Fish / Bundle), el periodo y el ID.",
   step_3: "Paga con <b>Revolut</b> y envía la captura del pago al ticket. La licencia se activa en tu PC.",
   pay_tag: "Pago", pay_text: "Envía el importe del paquete a <b>@aurumb</b> (enlace o QR). <b>Escribe el ID del PC en el concepto del pago.</b>",
-  col_pack: "Paquete", col_1: "30 días", col_3: "90 días",
+  col_period: "Periodo",
   pay_btn: "Pagar con Revolut", pay_ticket: "Abrir ticket",
   pay_note: "También puedes pagar con tarjeta sin cuenta Revolut, en la página de pago de Revolut. Los importes están en la moneda elegida; envía el importe mostrado.",
   pay_scan: "Escanea para pagar",
@@ -500,6 +516,7 @@ es: {
   q3: "¿En cuántos PC funciona la licencia?", a3: "En uno. Si cambias de PC, tienes un reinicio gratis al mes.",
   q4: "¿Qué pasa cuando caduca?", a4: "El bot se detiene y te avisa de que la suscripción caducó. Renueva cuando quieras; los días restantes se suman.",
   q5: "¿Me pueden banear?", a5: "Cualquier bot infringe las reglas del servidor del juego, así que el riesgo existe y es tuyo. Los bots se comportan de la forma más humana posible (pausas aleatorias, sin inyección), pero nadie puede garantizar riesgo cero.",
+  q6: "¿Qué significa la licencia de por vida?", a6: "Pagas una vez y el bot funciona en tu PC sin fecha de caducidad, con todas las actualizaciones, mientras exista el producto.",
   warn: "Usar bots infringe las reglas del servidor del juego. Bajo tu propio riesgo; los baneos no se reembolsan. Reembolso solo en las primeras 24 h si el bot no arranca en tu PC. Detalles en los <a href=\"/termeni.html\">Términos</a>.",
   terms: "Términos y privacidad", support_on: "Soporte en Discord",
 },
@@ -515,7 +532,7 @@ function detectLang() {
 let lang = detectLang();
 let cur = store("aurum_cur") || LANG_CUR[lang] || "EUR";
 if (!PRICES[cur]) cur = "EUR";
-let period = 1;
+let period = 1;                                   // 0 = 7 zile, 1 = 30, 2 = 90, 3 = pe viata
 
 function render() {
   const t = T[lang];
@@ -524,19 +541,19 @@ function render() {
     const v = t[el.dataset.i];
     if (v !== undefined) el.innerHTML = v;
   });
-  const p = PRICES[cur], f = FMT[cur], i = period === 1 ? 0 : 1;
+  const p = PRICES[cur], f = FMT[cur], i = period;
   document.querySelectorAll("[data-price]").forEach(el => { el.textContent = f(p[el.dataset.price][i]); });
   document.querySelectorAll("[data-per]").forEach(el => {
-    let txt = t[period === 1 ? "per_1" : "per_3"];
+    let txt = t[PER[i]];
     if (el.dataset.per === "bundle") {
-      const save = p.farm[i] + p.fish[i] - p.bundle[i];
+      const save = Math.round((p.farm[i] + p.fish[i] - p.bundle[i]) * 100) / 100;
       if (save > 0) txt += " · " + t.save.replace("{v}", f(save));
     }
     el.textContent = txt;
   });
   document.querySelectorAll("[data-amt]").forEach(el => {
     const [k, per] = el.dataset.amt.split("-");
-    el.textContent = f(p[k][per === "1" ? 0 : 1]);
+    el.textContent = f(p[k][Number(per)]);
   });
   document.querySelectorAll("[data-period]").forEach(b => b.setAttribute("aria-pressed", String(Number(b.dataset.period) === period)));
   document.getElementById("langSel").value = lang;

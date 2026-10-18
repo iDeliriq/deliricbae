@@ -74,7 +74,7 @@ footer{padding:40px 0; margin-top:40px; text-align:center; color:var(--dim); fon
 const DISCORD = "/discord";
 const T = {
 ro: {
-  doc: "Termeni — Aurum", title: "Termeni și confidențialitate", upd: "Ultima actualizare: 18 octombrie 2026",
+  doc: "Termeni — Aurum", title: "Termeni și confidențialitate", upd: "Ultima actualizare: 18 octombrie 2026 (prețuri și licență pe viață)",
   sum: "<b>Pe scurt:</b> licența e personală, pe un singur PC, pe perioada plătită. Folosirea oricărui bot încalcă regulile serverului de joc — riscul de ban îl asumi tu și nu dă drept la rambursare.",
   back: "Înapoi la pagina principală",
   s: [
@@ -84,11 +84,11 @@ ro: {
       "Dacă schimbi PC-ul, ai o resetare gratuită pe lună, prin ticket pe Discord.",
       "Programul nu se modifică, nu se decompilează și nu se ocolește verificarea licenței."]],
     ["2. Abonamentul", [
-      "Un abonament durează 30 de zile (sau perioada aleasă) de la activare.",
+      "Licența durează 7, 30 sau 90 de zile de la activare, sau e pe viață (o singură plată, fără expirare).",
       "Prelungirea se face oricând, prin Discord; zilele rămase se adună.",
       "Botul verifică licența la pornire și apoi periodic. La expirare se oprește singur.",
       "Fără internet, botul mai merge cel mult 3 zile după ultima verificare reușită, dar nu după data de expirare.",
-      "Un PC nou poate primi o singură dată un trial gratuit de 24 de ore pentru fiecare bot."]],
+      "Licența pe viață merge fără dată de expirare, cu update-urile incluse, cât timp produsul există. Nu există perioadă de probă gratuită."]],
     ["3. Plata", [
       "Plata se face prin Revolut (@aurumb), în avans, pentru perioada aleasă, în moneda afișată pe site.",
       "La mesajul plății scrii ID-ul PC-ului, ca plata să poată fi legată de licența ta.",
@@ -124,11 +124,11 @@ en: {
       "If you change your PC, you get one free reset per month, via a Discord ticket.",
       "The program may not be modified or decompiled, and the license check may not be bypassed."]],
     ["2. The subscription", [
-      "A subscription lasts 30 days (or the chosen period) from activation.",
+      "A license lasts 7, 30 or 90 days from activation, or is lifetime (one payment, no expiry).",
       "You can renew anytime on Discord; remaining days are added up.",
       "The bot checks the license at start and then periodically. When it expires, it stops by itself.",
       "Without internet, the bot keeps working for at most 3 days after the last successful check, but never past the expiry date.",
-      "A new PC can get a free 24-hour trial once for each bot."]],
+      "A lifetime license has no expiry date and includes updates for as long as the product exists. There is no free trial."]],
     ["3. Payment", [
       "Payment is made via Revolut (@aurumb), in advance, for the chosen period, in the currency shown on the site.",
       "Write your PC ID in the payment note, so the payment can be linked to your license.",
@@ -164,11 +164,11 @@ de: {
       "Bei PC-Wechsel hast du einen kostenlosen Reset pro Monat, per Discord-Ticket.",
       "Das Programm darf nicht verändert oder dekompiliert und die Lizenzprüfung nicht umgangen werden."]],
     ["2. Das Abo", [
-      "Ein Abo läuft 30 Tage (oder den gewählten Zeitraum) ab Aktivierung.",
+      "Eine Lizenz läuft 7, 30 oder 90 Tage ab Aktivierung oder ist lebenslang (eine Zahlung, kein Ablauf).",
       "Du kannst jederzeit über Discord verlängern; Resttage werden addiert.",
       "Der Bot prüft die Lizenz beim Start und danach regelmäßig. Bei Ablauf stoppt er von selbst.",
       "Ohne Internet läuft der Bot höchstens 3 Tage nach der letzten erfolgreichen Prüfung, aber nie über das Ablaufdatum hinaus.",
-      "Ein neuer PC kann einmalig pro Bot eine kostenlose 24-Stunden-Testphase erhalten."]],
+      "Eine lebenslange Lizenz hat kein Ablaufdatum und enthält Updates, solange es das Produkt gibt. Es gibt keine kostenlose Testphase."]],
     ["3. Zahlung", [
       "Die Zahlung erfolgt per Revolut (@aurumb), im Voraus, für den gewählten Zeitraum, in der auf der Website angezeigten Währung.",
       "Schreib deine PC-ID in den Verwendungszweck, damit die Zahlung deiner Lizenz zugeordnet werden kann.",
@@ -204,11 +204,11 @@ pl: {
       "Przy zmianie PC masz jeden darmowy reset w miesiącu, przez ticket na Discordzie.",
       "Programu nie wolno modyfikować ani dekompilować, a weryfikacji licencji nie wolno obchodzić."]],
     ["2. Subskrypcja", [
-      "Subskrypcja trwa 30 dni (lub wybrany okres) od aktywacji.",
+      "Licencja trwa 7, 30 lub 90 dni od aktywacji albo jest dożywotnia (jedna płatność, bez wygaśnięcia).",
       "Przedłużasz w dowolnym momencie na Discordzie; pozostałe dni się sumują.",
       "Bot sprawdza licencję przy starcie, a potem okresowo. Po wygaśnięciu sam się zatrzymuje.",
       "Bez internetu bot działa najwyżej 3 dni od ostatniej udanej weryfikacji, ale nigdy po dacie wygaśnięcia.",
-      "Nowy komputer może raz otrzymać darmowy 24-godzinny okres próbny dla każdego bota."]],
+      "Licencja dożywotnia nie ma daty wygaśnięcia i obejmuje aktualizacje, dopóki produkt istnieje. Nie ma darmowego okresu próbnego."]],
     ["3. Płatność", [
       "Płatność przez Revolut (@aurumb), z góry, za wybrany okres, w walucie pokazanej na stronie.",
       "W tytule płatności wpisz ID komputera, aby można było powiązać płatność z twoją licencją.",
@@ -244,11 +244,11 @@ tr: {
       "PC değiştirirsen, Discord ticket'ı ile ayda bir ücretsiz sıfırlama hakkın vardır.",
       "Program değiştirilemez, kaynak koda dönüştürülemez ve lisans kontrolü atlatılamaz."]],
     ["2. Abonelik", [
-      "Abonelik, etkinleştirmeden itibaren 30 gün (veya seçilen süre) sürer.",
+      "Lisans, etkinleştirmeden itibaren 7, 30 veya 90 gün sürer ya da ömür boyudur (tek ödeme, süresiz).",
       "Discord üzerinden istediğin zaman uzatabilirsin; kalan günler eklenir.",
       "Bot lisansı açılışta ve sonra düzenli olarak kontrol eder. Süresi dolunca kendiliğinden durur.",
       "İnternet olmadan bot, son başarılı kontrolden sonra en fazla 3 gün çalışır, ama asla bitiş tarihinden sonra çalışmaz.",
-      "Yeni bir PC, her bot için bir kez ücretsiz 24 saatlik deneme alabilir."]],
+      "Ömür boyu lisansın bitiş tarihi yoktur ve ürün var olduğu sürece güncellemeleri içerir. Ücretsiz deneme yoktur."]],
     ["3. Ödeme", [
       "Ödeme Revolut (@aurumb) ile, seçilen süre için peşin olarak, sitede gösterilen para biriminde yapılır.",
       "Ödemenin lisansınla eşleştirilebilmesi için ödeme açıklamasına PC kimliğini yaz.",
@@ -284,11 +284,11 @@ fr: {
       "Si vous changez de PC, vous avez une réinitialisation gratuite par mois, via un ticket Discord.",
       "Le programme ne peut être ni modifié ni décompilé, et la vérification de licence ne peut pas être contournée."]],
     ["2. L'abonnement", [
-      "Un abonnement dure 30 jours (ou la période choisie) à partir de l'activation.",
+      "Une licence dure 7, 30 ou 90 jours à partir de l'activation, ou est à vie (un seul paiement, sans expiration).",
       "Vous pouvez renouveler à tout moment sur Discord ; les jours restants s'additionnent.",
       "Le bot vérifie la licence au démarrage puis régulièrement. À l'expiration, il s'arrête seul.",
       "Sans internet, le bot fonctionne au maximum 3 jours après la dernière vérification réussie, mais jamais après la date d'expiration.",
-      "Un nouveau PC peut obtenir une seule fois un essai gratuit de 24 heures pour chaque bot."]],
+      "Une licence à vie n'a pas de date d'expiration et inclut les mises à jour tant que le produit existe. Il n'y a pas d'essai gratuit."]],
     ["3. Paiement", [
       "Le paiement se fait par Revolut (@aurumb), à l'avance, pour la période choisie, dans la devise affichée sur le site.",
       "Indiquez l'ID de votre PC dans le message du paiement, pour qu'il puisse être lié à votre licence.",
@@ -324,11 +324,11 @@ es: {
       "Si cambias de PC, tienes un reinicio gratis al mes, mediante un ticket en Discord.",
       "El programa no se puede modificar ni descompilar, y la verificación de licencia no se puede eludir."]],
     ["2. La suscripción", [
-      "Una suscripción dura 30 días (o el periodo elegido) desde la activación.",
+      "Una licencia dura 7, 30 o 90 días desde la activación, o es de por vida (un solo pago, sin caducidad).",
       "Puedes renovar cuando quieras en Discord; los días restantes se suman.",
       "El bot verifica la licencia al iniciar y luego periódicamente. Al caducar, se detiene solo.",
       "Sin internet, el bot funciona como máximo 3 días después de la última verificación correcta, pero nunca después de la fecha de caducidad.",
-      "Un PC nuevo puede recibir una sola vez una prueba gratuita de 24 horas para cada bot."]],
+      "Una licencia de por vida no tiene fecha de caducidad e incluye actualizaciones mientras exista el producto. No hay prueba gratuita."]],
     ["3. Pago", [
       "El pago se hace por Revolut (@aurumb), por adelantado, para el periodo elegido, en la moneda mostrada en el sitio.",
       "Escribe el ID de tu PC en el concepto del pago, para poder vincularlo a tu licencia.",

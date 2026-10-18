@@ -147,29 +147,6 @@ function entryProducts(e) {
   return { farm: Number(e.expires) || 0 };
 }
 
-// trial automat (db.trialHours > 0, setat din licente.html): adauga produsul cu expirare
-// +trialHours ore, o singura data per hwid si produs (trial_used). Nu atinge PC-urile blocate.
-const MAX_ENTRIES = 5000;
-function grantTrial(db, hwid, product) {
-  const hours = Number(db.trialHours) || 0;
-  if (db.killAll || hours <= 0) return false;
-  const now = Math.floor(Date.now() / 1000);
-  let e = (db.list || []).find(x => x.hwid === hwid);
-  if (e && e.status === "blocked") return false;
-  if (e && e.trial_used && e.trial_used[product]) return false;
-  if (!e) {
-    if ((db.list || []).length >= MAX_ENTRIES) return false;
-    e = { hwid, name: "", status: "active", expires: 0, products: {}, note: "trial automat",
-          added: now, last_seen: 0 };
-    db.list.push(e);
-  }
-  e.products = { ...entryProducts(e) };
-  if (Object.prototype.hasOwnProperty.call(e.products, product)) return false;
-  e.products[product] = now + Math.round(hours * 3600);
-  e.trial_used = { ...(e.trial_used || {}), [product]: now };
-  return true;
-}
-
 // decide statusul unui hwid pentru un produs: ok | killed | blocked | expired | noproduct | unknown
 function licenseStatus(db, hwid, product = "farm") {
   if (db.killAll) return { status: "killed", message: "Access disabled by admin." };
@@ -343,14 +320,8 @@ export default {
       const product = (url.searchParams.get("product") || "farm").trim();
       if (!PRODUCTS.includes(product)) return json({ status: "unknown", message: "bad product" });
       const db = await readLicenses(env);
-      let res = licenseStatus(db, hwid, product);
-      // trial automat: un PC nou primeste o singura data trialHours ore pe produs
-      if (env.DB && (res.status === "unknown" || res.status === "noproduct") && grantTrial(db, hwid, product)) {
-        try {
-          await env.DB.put("licenses", JSON.stringify(db));
-          res = { ...licenseStatus(db, hwid, product), trial: true };
-        } catch (err) { /* fara trial daca nu se poate salva */ }
-      }
+      // fara trial: un PC primeste acces doar cand e adaugat din licente.html
+      const res = licenseStatus(db, hwid, product);
       // marcheaza "last_seen" (o data pe ora max, ca sa nu scrie KV la fiecare pornire)
       if (env.DB) {
         const e = (db.list || []).find(x => x.hwid === hwid);
@@ -379,7 +350,7 @@ export default {
       try { obj = JSON.parse(text); } catch (e) { return json({ ok: false, error: "not json" }, 400); }
       if (!validLicenses(obj)) return json({ ok: false, error: "bad shape" }, 400);
       obj.killAll = !!obj.killAll;
-      obj.trialHours = Math.min(168, Math.max(0, Number(obj.trialHours) || 0));
+      delete obj.trialHours;                       // trialul a fost scos complet
       obj.updated_at = Math.floor(Date.now() / 1000);
       if (!env.DB) return json({ ok: false, error: "no kv" }, 500);
       await env.DB.put("licenses", JSON.stringify(obj));

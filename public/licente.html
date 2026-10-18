@@ -85,13 +85,6 @@
             <div class="hint">Pornit = nimeni nu mai poate folosi unealta, indiferent de HWID.</div>
           </div>
         </div>
-        <div class="kill" id="trialBox" style="background:transparent;border-color:var(--line,#243256)">
-          <label class="switch"><input type="checkbox" id="trialOn"><span class="slider"></span></label>
-          <div>
-            <div style="font-weight:700">Trial automat 24 h</div>
-            <div class="hint">Pornit = un PC nou primește singur 24 h, o singură dată pe produs.</div>
-          </div>
-        </div>
         <div style="text-align:right">
           <div id="msg" class="msg"></div>
           <button class="ghost sm" id="reloadBtn">Reîncarcă</button>
@@ -114,7 +107,7 @@
         <div style="max-width:170px"><label>Expiră la (opțional)</label><input id="aExp" type="date"></div>
         <div style="flex:0 0 auto"><label>&nbsp;</label><button id="addBtn">Adaugă</button></div>
       </div>
-      <div class="hint" style="margin-top:8px">Lasă „Expiră" gol = fără expirare. Abonament: pune data, apoi prelungești cu „+30 z”. Codul HWID îl vede fiecare în unealtă, la prima pornire.</div>
+      <div class="hint" style="margin-top:8px">Lasă „Expiră" gol = pe viață. Abonament: pune data sau folosește butoanele +7 / +30 / +90 zile și ∞ (pe viață) din listă. Codul HWID îl vede fiecare în unealtă, la prima pornire.</div>
     </div>
 
     <!-- list -->
@@ -148,7 +141,6 @@ const PRODS = ["farm","fishing"];
 const DAY = 86400;
 function statusPill(e){
   if(e.status==="blocked") return '<span class="pill blocked">blocat</span>';
-  if(e.trial_used && Object.keys(e.trial_used).length) return '<span class="pill ok">activ</span> <span class="pill expired">trial</span>';
   return '<span class="pill ok">activ</span>';
 }
 // intrarile vechi (fara products) = doar farm, cu e.expires
@@ -156,23 +148,28 @@ function migrate(e){
   if(!e.products || typeof e.products!=="object") e.products = { farm: Number(e.expires)||0 };
   return e;
 }
+// durate vandute: 7, 30, 90 de zile si pe viata (0 = fara expirare)
+const DURS = [[7,"+7"],[30,"+30"],[90,"+90"],[0,"∞"]];
+function durButtons(i,p){
+  return DURS.map(([d,l])=>`<button class="ghost sm" data-ext="${i}" data-p="${p}" data-d="${d}" `+
+    `title="${d? "Prelungește "+d+" de zile" : "Licență pe viață (fără expirare)"}">${l}</button>`).join(" ");
+}
 function prodCell(e,i,p){
   const now=Math.floor(Date.now()/1000);
   if(!(p in e.products))
-    return `<button class="ghost sm" data-ext="${i}" data-p="${p}" title="Dă acces 30 de zile">+30 z</button>`;
+    return `<div style="white-space:nowrap">${durButtons(i,p)}</div>`;
   const exp=Number(e.products[p])||0;
-  let txt = exp ? fmtDate(exp) : "nelimitat";
+  let txt = exp ? fmtDate(exp) : "pe viață";
   if(exp && now>exp) txt = '<span class="pill expired">expirat '+fmtDate(exp)+'</span>';
   else if(exp && exp-now<3*DAY) txt = '<span style="color:var(--gold,#e7b954)">'+txt+'</span>';
   return `<div style="white-space:nowrap">${txt}</div>`+
-    `<div style="white-space:nowrap;margin-top:4px"><button class="ghost sm" data-ext="${i}" data-p="${p}" title="Prelungește 30 de zile">+30 z</button> `+
+    `<div style="white-space:nowrap;margin-top:4px">${exp ? durButtons(i,p) : ""} `+
     `<button class="ghost sm" data-rm="${i}" data-p="${p}" title="Scoate accesul la produs">×</button></div>`;
 }
 
 function render(){
   $("#killAll").checked = !!DB.killAll;
   $("#killBox").classList.toggle("on", !!DB.killAll);
-  $("#trialOn").checked = Number(DB.trialHours)>0;
   const tb=$("#tb"); tb.innerHTML="";
   DB.list.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   $("#cnt").textContent = DB.list.length;
@@ -198,10 +195,11 @@ function render(){
     const e=DB.list[+b.dataset.block]; e.status = e.status==="blocked"?"active":"blocked"; save(); });
   tb.querySelectorAll("[data-ext]").forEach(b=>b.onclick=()=>{
     const e=DB.list[+b.dataset.ext], p=b.dataset.p, now=Math.floor(Date.now()/1000);
-    const cur = Number(e.products[p])||0;
-    if(p in e.products && cur===0){ alert("Acest produs e deja nelimitat."); return; }
+    const days=Number(b.dataset.d), cur = Number(e.products[p])||0;
+    if(p in e.products && cur===0){ alert("Acest produs e deja pe viață."); return; }
+    if(days===0){ if(confirm("Licență PE VIAȚĂ pentru "+p+" la "+(e.name||e.hwid)+"?")){ e.products[p]=0; save(); } return; }
     // prelungirea se adauga la zilele ramase; daca a expirat, porneste de azi
-    e.products[p] = Math.max(cur, now) + 30*DAY; save(); });
+    e.products[p] = Math.max(cur, now) + days*DAY; save(); });
   tb.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{
     const e=DB.list[+b.dataset.rm];
     if(confirm("Scoți accesul la "+b.dataset.p+" pentru "+(e.name||e.hwid)+"?")){ delete e.products[b.dataset.p]; save(); } });
@@ -239,7 +237,6 @@ async function save(quiet){
 
 // events
 $("#killAll").onchange = ()=>{ DB.killAll = $("#killAll").checked; save(); };
-$("#trialOn").onchange = ()=>{ DB.trialHours = $("#trialOn").checked ? 24 : 0; save(); };
 $("#addBtn").onclick = ()=>{
   const name=$("#aName").value.trim(), hwid=$("#aHwid").value.trim();
   if(!hwid){ alert("Pune HWID-ul."); return; }
