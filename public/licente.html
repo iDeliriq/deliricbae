@@ -82,6 +82,13 @@
             <div class="hint">Pornit = nimeni nu mai poate folosi unealta, indiferent de HWID.</div>
           </div>
         </div>
+        <div class="kill" id="trialBox" style="background:transparent;border-color:var(--line,#243256)">
+          <label class="switch"><input type="checkbox" id="trialOn"><span class="slider"></span></label>
+          <div>
+            <div style="font-weight:700">Trial automat 24 h</div>
+            <div class="hint">Pornit = un PC nou primește singur 24 h, o singură dată pe produs.</div>
+          </div>
+        </div>
         <div style="text-align:right">
           <div id="msg" class="msg"></div>
           <button class="ghost sm" id="reloadBtn">Reîncarcă</button>
@@ -138,6 +145,7 @@ const PRODS = ["farm","fishing"];
 const DAY = 86400;
 function statusPill(e){
   if(e.status==="blocked") return '<span class="pill blocked">blocat</span>';
+  if(e.trial_used && Object.keys(e.trial_used).length) return '<span class="pill ok">activ</span> <span class="pill expired">trial</span>';
   return '<span class="pill ok">activ</span>';
 }
 // intrarile vechi (fara products) = doar farm, cu e.expires
@@ -161,6 +169,7 @@ function prodCell(e,i,p){
 function render(){
   $("#killAll").checked = !!DB.killAll;
   $("#killBox").classList.toggle("on", !!DB.killAll);
+  $("#trialOn").checked = Number(DB.trialHours)>0;
   const tb=$("#tb"); tb.innerHTML="";
   DB.list.sort((a,b)=>(a.name||"").localeCompare(b.name||""));
   $("#cnt").textContent = DB.list.length;
@@ -227,6 +236,7 @@ async function save(quiet){
 
 // events
 $("#killAll").onchange = ()=>{ DB.killAll = $("#killAll").checked; save(); };
+$("#trialOn").onchange = ()=>{ DB.trialHours = $("#trialOn").checked ? 24 : 0; save(); };
 $("#addBtn").onclick = ()=>{
   const name=$("#aName").value.trim(), hwid=$("#aHwid").value.trim();
   if(!hwid){ alert("Pune HWID-ul."); return; }
