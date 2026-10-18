@@ -59,8 +59,8 @@ h2{font-family:"Cinzel",serif; font-size:28px; margin:0 0 8px; text-align:center
 .card ul{padding-left:20px; margin:12px 0 0; color:var(--mut)}
 .card li{margin:6px 0}
 .card li b{color:var(--ink); font-weight:500}
-.video{aspect-ratio:16/9; border-radius:12px; border:1px dashed var(--line2); display:grid; place-items:center;
-  color:var(--dim); margin-top:16px; font-size:14px; background:var(--panel2)}
+.video{display:block; width:100%; aspect-ratio:16/9; border-radius:12px; border:1px solid var(--line);
+  margin-top:16px; background:var(--panel2); object-fit:cover}
 .period{display:flex; justify-content:center; margin:0 auto 24px}
 .seg{display:inline-flex; flex-wrap:wrap; justify-content:center; background:var(--panel); border:1px solid var(--line2); border-radius:12px; padding:4px; gap:4px}
 .seg button{background:transparent; color:var(--mut); border:0; border-radius:9px; padding:8px 16px; font:inherit; font-size:14px; cursor:pointer}
@@ -150,7 +150,7 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
           <li data-i="farm_1"></li><li data-i="farm_2"></li><li data-i="farm_3"></li>
           <li data-i="farm_4"></li><li data-i="farm_5"></li><li data-i="farm_6"></li>
         </ul>
-        <div class="video">[video Aurum Farm]</div>
+        <video class="video" src="/videos/aurum-farm.mp4" poster="/videos/aurum-farm.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Aurum Farm demo"></video>
       </div>
       <div class="card">
         <div class="tag">Fishing</div>
@@ -159,7 +159,7 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
           <li data-i="fish_1"></li><li data-i="fish_2"></li><li data-i="fish_3"></li>
           <li data-i="fish_4"></li><li data-i="fish_5"></li><li data-i="fish_6"></li>
         </ul>
-        <div class="video">[video Aurum Fish]</div>
+        <video class="video" src="/videos/aurum-fish.mp4" poster="/videos/aurum-fish.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Aurum Fish demo"></video>
       </div>
     </div>
   </section>
