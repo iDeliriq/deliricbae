@@ -339,7 +339,7 @@ const GATE_OPEN = new Set([
 
 // aurumbots.com/discord -> invitatia pe serverul de Discord (fara expirare).
 // Daca se schimba invitatia, se schimba doar aici; linkul public ramane acelasi.
-const DISCORD_INVITE = "https://discord.gg/SxxWjZcJR3";
+const DISCORD_INVITE = "https://discord.gg/522HThYQxW";
 
 const GATE_HTML = `<!doctype html>
 <html lang="ro"><head><meta charset="utf-8">
