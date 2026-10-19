@@ -2,6 +2,11 @@ name = "deliricbae"
 main = "worker.js"
 compatibility_date = "2024-11-01"
 
+routes = [
+  { pattern = "deliricbae.ro", custom_domain = true },
+  { pattern = "aurumbots.com", custom_domain = true },
+]
+
 # Poarta cu parolă pentru accesul public la site.
 [vars]
 SITE_GATE = "on"
