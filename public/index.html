@@ -2,7 +2,7 @@
 <html lang="ro">
 <head>
 <meta charset="utf-8">
-<title>Aurum — Farmul merge. Tu alegi aventura.</title>
+<title>Aurum — Farming made easy. Choose your adventure.</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -589,6 +589,16 @@ es: {
 },
 };
 
+const DOC_TITLE = {
+  ro: "Aurum — Farmul merge. Tu alegi aventura.",
+  en: "Aurum — Farming made easy. Choose your adventure.",
+  de: "Aurum — Farmen leicht gemacht. Wähle dein Abenteuer.",
+  pl: "Aurum — Farmienie bez wysiłku. Wybierz swoją przygodę.",
+  tr: "Aurum — Kolay farm. Maceranı seç.",
+  fr: "Aurum — Le farm simplifié. Choisissez votre aventure.",
+  es: "Aurum — Farmeo fácil. Elige tu aventura."
+};
+
 const UI = {
 ro: { nav_bots:"Boți", nav_servers:"Servere", nav_prices:"Prețuri", nav_faq:"Întrebări", hero_kicker:"✦ AUTOMATIZARE PENTRU BAERIM", hero_fine:"2 boți · 6 limbi · fără injectare în joc", art_product:"BAERIM / AURUM FARM", art_line:"Lasă rutina în urmă.", hero_licence:"LICENȚĂ BUNDLE", art_credit:"Artwork: Metin2 Wiki", stat_clients:"clienți simultan", stat_languages:"limbi disponibile", stat_server:"server suportat", currency_label:"Monedă" },
 en: { nav_bots:"Bots", nav_servers:"Servers", nav_prices:"Pricing", nav_faq:"FAQ", hero_kicker:"✦ AUTOMATION FOR BAERIM", hero_fine:"2 bots · 6 languages · no game injection", art_product:"BAERIM / AURUM FARM", art_line:"Leave the routine behind.", hero_licence:"BUNDLE LICENSE", art_credit:"Artwork: Metin2 Wiki", stat_clients:"clients at once", stat_languages:"languages available", stat_server:"supported server", currency_label:"Currency" },
@@ -625,6 +635,7 @@ function render() {
   const t = T[lang];
   const labels = Object.assign({}, UI[lang], DEMO_UI[lang]);
   document.documentElement.lang = lang;
+  document.title = DOC_TITLE[lang] || DOC_TITLE.en;
   document.querySelectorAll("[data-i]").forEach(el => {
     const v = t[el.dataset.i];
     if (v !== undefined) el.innerHTML = v;
