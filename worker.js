@@ -212,6 +212,120 @@ function licenseStatus(db, hwid, product = "farm") {
   return { status: "ok", message: "", expires: exp, product };
 }
 
+
+// ---------- servere suportate + stiri (editabile din admin.html) ----------
+// KV "servers": { updated_at, list: [{ id, name, url, status: working|updating|down, bots: [farm, fishing],
+//                 checked: unixSec, note }] }
+// KV "news":    { updated_at, list: [{ id, date: unixSec, title, text }] }  (cele mai noi primele)
+const SERVERS_DEFAULT = { updated_at: 0, list: [
+  { id: "baerim", name: "Baerim", url: "https://baerim.eu", status: "working", bots: ["farm", "fishing"],
+    checked: 0, note: "" },
+] };
+const NEWS_DEFAULT = { updated_at: 0, list: [] };
+const SERVER_STATUS = ["working", "updating", "down"];
+
+async function readJsonKV(env, key, def) {
+  if (!env.DB) return structuredClone(def);
+  const raw = await env.DB.get(key);
+  if (!raw) return structuredClone(def);
+  try { const o = JSON.parse(raw); if (o && Array.isArray(o.list)) return o; } catch (e) { /* implicit */ }
+  return structuredClone(def);
+}
+
+const str = (v, n) => String(v == null ? "" : v).slice(0, n);
+
+function cleanServers(o) {
+  if (!o || !Array.isArray(o.list) || o.list.length > 500) return null;
+  const list = o.list.map(x => ({
+    id: str(x.id, 40).toLowerCase().replace(/[^a-z0-9-]/g, "") || ("s" + Math.random().toString(36).slice(2, 8)),
+    name: str(x.name, 60).trim(),
+    url: /^https?:\/\//.test(String(x.url || "")) ? str(x.url, 200) : "",
+    status: SERVER_STATUS.includes(x.status) ? x.status : "working",
+    bots: (Array.isArray(x.bots) ? x.bots : []).filter(b => PRODUCTS.includes(b)),
+    checked: Math.max(0, Number(x.checked) || 0),
+    note: str(x.note, 200),
+  })).filter(x => x.name);
+  return { list };
+}
+
+function cleanNews(o) {
+  if (!o || !Array.isArray(o.list) || o.list.length > 200) return null;
+  const list = o.list.map(x => ({
+    id: str(x.id, 40) || Math.random().toString(36).slice(2, 10),
+    date: Math.max(0, Number(x.date) || 0),
+    title: str(x.title, 120).trim(),
+    text: str(x.text, 2000).trim(),
+  })).filter(x => x.title || x.text).sort((a, b) => b.date - a.date);
+  return { list };
+}
+
+// ---------- conturi de clienti ----------
+// KV "user:<email>": { email, pw: { salt, hash, iter }, lang, created, devices: [{ hwid, label, added }] }
+// Parola: PBKDF2-SHA256, 100k iteratii, sare aleatoare. Sesiune: cookie "aurum_u" = email|exp|hmac.
+// Clientul isi adauga ID-ul PC-ului si vede licenta lui (doar produsele + expirarea).
+const USER_COOKIE = "aurum_u";
+const MAX_DEVICES = 3;
+const LANGS = ["ro", "en", "de", "pl", "tr", "fr", "es"];
+
+function b64(bytes) { return btoa(String.fromCharCode(...new Uint8Array(bytes))); }
+function unb64(s) { return Uint8Array.from(atob(s), c => c.charCodeAt(0)); }
+
+async function hashPassword(pw, saltB64, iter = 100000) {
+  const salt = saltB64 ? unb64(saltB64) : crypto.getRandomValues(new Uint8Array(16));
+  const key = await crypto.subtle.importKey("raw", enc.encode(pw), "PBKDF2", false, ["deriveBits"]);
+  const bits = await crypto.subtle.deriveBits({ name: "PBKDF2", hash: "SHA-256", salt, iterations: iter }, key, 256);
+  return { salt: b64(salt), hash: b64(bits), iter };
+}
+
+function userSecret(env) { return (env.ACCOUNT_SECRET || env.ADMIN_PASSWORD || "") + "|aurum-accounts"; }
+
+async function userToken(env, email) {
+  const exp = Math.floor(Date.now() / 1000) + 30 * 24 * 3600;
+  const body = `${b64(enc.encode(email))}.${exp}`;
+  return `${body}.${await hmacHex(userSecret(env), body)}`;
+}
+
+async function currentUser(env, req) {
+  const tok = getCookie(req, USER_COOKIE);
+  if (!tok || !env.DB || !(env.ACCOUNT_SECRET || env.ADMIN_PASSWORD)) return null;
+  const parts = tok.split(".");
+  if (parts.length !== 3) return null;
+  const [em, exp, sig] = parts;
+  if (!/^\d+$/.test(exp) || Number(exp) < Date.now() / 1000) return null;
+  if (!safeEq(sig, await hmacHex(userSecret(env), `${em}.${exp}`))) return null;
+  let email;
+  try { email = new TextDecoder().decode(unb64(em)); } catch (e) { return null; }
+  const raw = await env.DB.get("user:" + email);
+  return raw ? JSON.parse(raw) : null;
+}
+
+const validEmail = e => typeof e === "string" && e.length <= 120 && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+
+async function readBody(request) {
+  try { return await request.json(); } catch (e) { return {}; }
+}
+
+// ce vede clientul despre un PC al lui: produsele cu expirarea (fara nume, note, alte PC-uri)
+function deviceView(db, d) {
+  const e = (db.list || []).find(x => x.hwid === d.hwid);
+  const now = Math.floor(Date.now() / 1000);
+  const products = {};
+  if (e && e.status !== "blocked") {
+    for (const [p, exp] of Object.entries(entryProducts(e))) {
+      const x = Number(exp) || 0;
+      products[p] = { expires: x, active: x === 0 || x > now };
+    }
+  }
+  return { hwid: d.hwid, label: d.label || "", added: d.added || 0,
+           known: !!e, blocked: !!(e && e.status === "blocked"), products };
+}
+
+async function accountView(env, u) {
+  const db = await readLicenses(env);
+  return { email: u.email, lang: u.lang || "en", created: u.created || 0,
+           devices: (u.devices || []).map(d => deviceView(db, d)) };
+}
+
 // ---------- poarta "site in pregatire" ----------
 // Cat timp site-ul nu e lansat, TOT site-ul cere parola de admin (ADMIN_PASSWORD).
 // Raman deschise doar rutele de care au nevoie botii (licenta, publicare rapoarte)
@@ -405,6 +519,114 @@ export default {
       if (!env.DB) return json({ ok: false, error: "no kv" }, 500);
       await env.DB.put("licenses", JSON.stringify(obj));
       return json({ ok: true, updated_at: obj.updated_at, count: obj.list.length });
+    }
+
+    // ---------- servere suportate + stiri ----------
+    if (p === "/api/servers" && request.method === "GET")
+      return json(await readJsonKV(env, "servers", SERVERS_DEFAULT), 200, { "Cache-Control": "no-store" });
+    if (p === "/api/news" && request.method === "GET")
+      return json(await readJsonKV(env, "news", NEWS_DEFAULT), 200, { "Cache-Control": "no-store" });
+    if ((p === "/api/admin/servers" || p === "/api/admin/news") && request.method === "POST") {
+      if (!await validToken(getCookie(request, ADM), admin))
+        return json({ ok: false, error: "unauthorized" }, 401);
+      const body = await readBody(request);
+      const isServers = p === "/api/admin/servers";
+      const clean = isServers ? cleanServers(body) : cleanNews(body);
+      if (!clean) return json({ ok: false, error: "bad shape" }, 400);
+      clean.updated_at = Math.floor(Date.now() / 1000);
+      if (!env.DB) return json({ ok: false, error: "no kv" }, 500);
+      await env.DB.put(isServers ? "servers" : "news", JSON.stringify(clean));
+      return json({ ok: true, updated_at: clean.updated_at, count: clean.list.length });
+    }
+    if (p === "/api/admin/users" && request.method === "GET") {
+      if (!await validToken(getCookie(request, ADM), admin))
+        return json({ ok: false, error: "unauthorized" }, 401);
+      const out = [];
+      if (env.DB) {
+        let cursor;
+        do {
+          const page = await env.DB.list({ prefix: "user:", cursor });
+          for (const k of page.keys) {
+            const raw = await env.DB.get(k.name);
+            if (!raw) continue;
+            const u = JSON.parse(raw);
+            out.push({ email: u.email, created: u.created || 0, lang: u.lang || "",
+                       devices: (u.devices || []).map(d => ({ hwid: d.hwid, label: d.label || "" })) });
+          }
+          cursor = page.list_complete ? null : page.cursor;
+        } while (cursor);
+      }
+      return json({ list: out });
+    }
+
+    // ---------- conturi de clienti ----------
+    if (p === "/api/account/register" && request.method === "POST") {
+      if (await loginBlocked(env, request, "acct")) return json({ ok: false, error: "too_many" }, 429);
+      const b = await readBody(request);
+      const email = String(b.email || "").trim().toLowerCase(), pw = String(b.password || "");
+      if (!validEmail(email)) return json({ ok: false, error: "email" }, 400);
+      if (pw.length < 8 || pw.length > 200) return json({ ok: false, error: "password" }, 400);
+      if (!env.DB) return json({ ok: false, error: "no kv" }, 500);
+      if (await env.DB.get("user:" + email)) {
+        await loginFailed(env, request, "acct");           // nu lasam ghicirea emailurilor la infinit
+        return json({ ok: false, error: "exists" }, 409);
+      }
+      const u = { email, pw: await hashPassword(pw), lang: LANGS.includes(b.lang) ? b.lang : "en",
+                  created: Math.floor(Date.now() / 1000), devices: [] };
+      await env.DB.put("user:" + email, JSON.stringify(u));
+      return json({ ok: true }, 200, { "Set-Cookie": setCookie(USER_COOKIE, await userToken(env, email), 30 * 24 * 3600) });
+    }
+    if (p === "/api/account/login" && request.method === "POST") {
+      if (await loginBlocked(env, request, "acct")) return json({ ok: false, error: "too_many" }, 429);
+      const b = await readBody(request);
+      const email = String(b.email || "").trim().toLowerCase(), pw = String(b.password || "");
+      const raw = env.DB && validEmail(email) ? await env.DB.get("user:" + email) : null;
+      if (raw) {
+        const u = JSON.parse(raw);
+        const h = await hashPassword(pw, u.pw.salt, u.pw.iter);
+        if (safeEq(h.hash, u.pw.hash))
+          return json({ ok: true }, 200, { "Set-Cookie": setCookie(USER_COOKIE, await userToken(env, email), 30 * 24 * 3600) });
+      }
+      await loginFailed(env, request, "acct");
+      return json({ ok: false, error: "bad" }, 401);
+    }
+    if (p === "/api/account/logout" && request.method === "POST")
+      return json({ ok: true }, 200, { "Set-Cookie": setCookie(USER_COOKIE, "", 0) });
+    if (p.startsWith("/api/account/")) {
+      const u = await currentUser(env, request);
+      if (!u) return json({ ok: false, error: "unauthorized" }, 401);
+      if (p === "/api/account/me" && request.method === "GET") return json(await accountView(env, u));
+      if (p === "/api/account/settings" && request.method === "POST") {
+        const b = await readBody(request);
+        if (LANGS.includes(b.lang)) u.lang = b.lang;
+        if (b.new_password) {
+          const ok = safeEq((await hashPassword(String(b.password || ""), u.pw.salt, u.pw.iter)).hash, u.pw.hash);
+          if (!ok) return json({ ok: false, error: "bad" }, 401);
+          if (String(b.new_password).length < 8) return json({ ok: false, error: "password" }, 400);
+          u.pw = await hashPassword(String(b.new_password));
+        }
+        await env.DB.put("user:" + u.email, JSON.stringify(u));
+        return json({ ok: true });
+      }
+      if (p === "/api/account/device" && request.method === "POST") {
+        const b = await readBody(request);
+        const hwid = String(b.hwid || "").trim().toLowerCase();
+        if (!/^[0-9a-f]{20}$/.test(hwid)) return json({ ok: false, error: "hwid" }, 400);
+        u.devices = u.devices || [];
+        if (!u.devices.find(d => d.hwid === hwid)) {
+          if (u.devices.length >= MAX_DEVICES) return json({ ok: false, error: "limit" }, 400);
+          u.devices.push({ hwid, label: str(b.label, 40), added: Math.floor(Date.now() / 1000) });
+          await env.DB.put("user:" + u.email, JSON.stringify(u));
+        }
+        return json(await accountView(env, u));
+      }
+      if (p === "/api/account/device" && request.method === "DELETE") {
+        const hwid = String(url.searchParams.get("hwid") || "");
+        u.devices = (u.devices || []).filter(d => d.hwid !== hwid);
+        await env.DB.put("user:" + u.email, JSON.stringify(u));
+        return json(await accountView(env, u));
+      }
+      return json({ ok: false, error: "not found" }, 404);
     }
 
     // orice altceva -> fisierele statice

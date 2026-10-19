@@ -2,103 +2,172 @@
 <html lang="ro">
 <head>
 <meta charset="utf-8">
-<title>Aurum</title>
+<title>Aurum — Farmul merge. Tu alegi aventura.</title>
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta property="og:title" content="Aurum — farm while you sleep">
-<meta property="og:description" content="Aurum Farm & Aurum Fish for Baerim. 7 days, 30 days, 90 days or lifetime.">
+<meta property="og:title" content="Aurum — Farmul merge. Tu alegi aventura.">
+<meta property="og:description" content="Aurum Farm și Aurum Fish pentru Baerim. Automatizare simplă, suport pe Discord.">
 <meta property="og:image" content="/og.png">
-<meta name="theme-color" content="#080b16">
-<meta name="description" content="Aurum Farm & Aurum Fish for Baerim: metin stone farming on 2 clients and automatic fishing. Licenses for 7, 30, 90 days or lifetime.">
+<meta name="theme-color" content="#100b15">
+<meta name="description" content="Aurum Farm și Aurum Fish pentru Baerim: farm pe 2 clienți și pescuit automat. Licențe de 7, 30, 90 de zile sau pe viață.">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700;800&display=swap">
 <style>
 :root{
-  --bg:#080b16; --panel:#111a30; --panel2:#152037; --line:#243256; --line2:#33456f;
-  --ink:#eaeefb; --mut:#9aa6c8; --dim:#5f6c93;
-  --gold:#e7b954; --gold2:#f6d488; --goldd:#a9812c; --ok:#5fd39a; --bad:#e2685f;
+  --bg:#100b15;--panel:#1a1421;--panel2:#22192b;--line:#594764;--line-soft:#392d40;
+  --ink:#f7f4fb;--muted:#c0b6cc;--dim:#978aa1;--accent:#d46cff;--accent2:#e8a6ff;
+  --accentText:#1d1025;--gold:#e9bc62;--ok:#75d4a0;--bad:#e2767e;
+  color-scheme:dark;scroll-behavior:smooth
 }
 *{box-sizing:border-box}
-html,body{margin:0}
+html,body{margin:0;min-height:100%}
 body{
-  color:var(--ink); font-family:"Poppins",system-ui,sans-serif; line-height:1.6;
-  -webkit-font-smoothing:antialiased;
-  background:
-    radial-gradient(1200px 600px at 78% -10%, rgba(231,185,84,.10), transparent 60%),
-    radial-gradient(900px 500px at 8% 6%, rgba(90,120,255,.08), transparent 55%),
-    var(--bg);
+  color:var(--ink);font:400 15px/1.65 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  background-color:var(--bg);
+  background-image:linear-gradient(90deg,rgba(16,10,20,.98) 0%,rgba(17,10,21,.87) 52%,rgba(15,9,18,.62) 100%),linear-gradient(0deg,#100b15 0%,rgba(16,11,21,.62) 35%,rgba(16,11,21,.18) 100%),url("https://de-wiki.metin2.gameforge.com/images/2/2d/Wallpaper_1_PdH.jpg");
+  background-size:cover,cover,cover;background-position:center top;background-attachment:fixed,fixed,fixed;overflow-x:hidden
 }
-a{color:var(--gold2)}
-.wrap{max-width:1080px; margin:0 auto; padding:0 16px}
-header{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 0; flex-wrap:wrap}
-.logo{display:flex; align-items:center; gap:10px; font-family:"Cinzel",serif; font-weight:700; letter-spacing:.08em; color:var(--gold2); font-size:20px; text-decoration:none}
-.hdr-right{display:flex; align-items:center; gap:8px; flex-wrap:wrap}
-select{appearance:none; -webkit-appearance:none; background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239aa6c8' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;
-  color:var(--ink); border:1px solid var(--line2); border-radius:10px; padding:9px 30px 9px 12px; font:inherit; font-size:14px; cursor:pointer}
-select:focus{outline:2px solid var(--gold); outline-offset:1px}
-.btn{display:inline-block; padding:12px 22px; border-radius:10px; background:var(--gold); color:#1a1405;
-  font-weight:600; text-decoration:none; border:0; cursor:pointer; font:inherit; font-weight:600}
-.btn:hover{background:var(--gold2)}
-.btn.ghost{background:transparent; color:var(--ink); border:1px solid var(--line2)}
-.btn.ghost:hover{border-color:var(--gold)}
-.btn.sm{padding:9px 16px; font-size:14px}
-.hero{padding:56px 0 40px; text-align:center}
-.hero h1{font-family:"Cinzel",serif; font-size:clamp(32px,6vw,56px); line-height:1.15; margin:0 0 16px; color:var(--gold2)}
-.hero p{color:var(--mut); font-size:18px; max-width:640px; margin:0 auto 28px}
-.cta{display:flex; gap:12px; justify-content:center; flex-wrap:wrap}
-section{padding:48px 0}
-h2{font-family:"Cinzel",serif; font-size:28px; margin:0 0 8px; text-align:center}
-.lead{color:var(--mut); text-align:center; margin:0 auto 28px; max-width:640px}
-.grid{display:grid; gap:20px; grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
-.card{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:24px}
-.card h3{margin:0 0 4px; font-size:20px}
-.card .tag{color:var(--gold); font-size:13px; font-weight:600; letter-spacing:.06em; text-transform:uppercase}
-.card ul{padding-left:20px; margin:12px 0 0; color:var(--mut)}
-.card li{margin:6px 0}
-.card li b{color:var(--ink); font-weight:500}
-.video{display:block; width:100%; aspect-ratio:16/9; border-radius:12px; border:1px solid var(--line);
-  margin-top:16px; background:var(--panel2); object-fit:cover}
-.period{display:flex; justify-content:center; margin:0 auto 24px}
-.seg{display:inline-flex; flex-wrap:wrap; justify-content:center; background:var(--panel); border:1px solid var(--line2); border-radius:12px; padding:4px; gap:4px}
-.seg button{background:transparent; color:var(--mut); border:0; border-radius:9px; padding:8px 16px; font:inherit; font-size:14px; cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--gold); color:#1a1405; font-weight:600}
-.price{text-align:center}
-.price .amt{font-size:40px; font-weight:600; color:var(--ink); margin:12px 0 0; font-variant-numeric:tabular-nums}
-.price .per{color:var(--dim); font-size:14px; min-height:22px}
-.price ul{text-align:left}
-.price.best{border-color:var(--gold); box-shadow:0 0 0 1px var(--gold) inset}
-.badge{display:inline-block; background:var(--gold); color:#1a1405; font-size:12px; font-weight:600; padding:2px 10px; border-radius:99px}
-.price .btn{margin-top:20px; width:100%}
-.steps{counter-reset:s; display:grid; gap:16px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.step{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:20px}
-.step::before{counter-increment:s; content:counter(s); display:grid; place-items:center; width:32px; height:32px;
-  border-radius:50%; background:var(--gold); color:#1a1405; font-weight:700; margin-bottom:10px}
-.step p{margin:0; color:var(--mut)}
-.step p b{color:var(--ink); font-weight:500}
-.pay{display:grid; grid-template-columns:1fr auto; gap:28px; align-items:center; margin-top:20px}
-.pay p{margin:6px 0 0; color:var(--mut)}
-.pay p b{color:var(--gold2)}
-.amounts{width:100%; border-collapse:collapse; margin:16px 0 8px; font-variant-numeric:tabular-nums}
-.amounts th,.amounts td{padding:8px 10px; border-bottom:1px solid var(--line); text-align:left; font-size:15px}
-.amounts th{color:var(--dim); font-weight:500; font-size:13px}
-.amounts td.v{color:var(--ink); font-weight:600}
-.pay-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:14px}
-.qr{background:#fff; border-radius:16px; padding:12px; width:220px; text-align:center}
-.qr img{display:block; width:196px; height:196px}
-.qr span{display:block; color:#0b1020; font-size:13px; font-weight:600; margin-top:4px}
-.note{font-size:13px; color:var(--dim); margin-top:10px}
-details{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:14px 18px; margin:10px auto; max-width:760px}
-summary{cursor:pointer; font-weight:500}
-details p{color:var(--mut); margin:10px 0 0}
-.warn{max-width:760px; margin:24px auto 0; font-size:14px; color:var(--mut); border-left:3px solid var(--bad); padding:8px 14px}
-footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; border-top:1px solid var(--line); margin-top:32px}
-.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
-@media (max-width:640px){
-  .pay{grid-template-columns:1fr}
+a{color:var(--accent2)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 32px}
+header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:22px;min-height:88px;border-bottom:1px solid rgba(231,205,242,.12)}
+.logo{display:flex;align-items:center;gap:10px;width:max-content;color:var(--ink);text-decoration:none;font-size:18px;font-weight:800;letter-spacing:.12em}
+.logo svg{width:27px;height:27px}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{color:#e0d6e6;text-decoration:none;font-size:13px;transition:color .18s}
+.nav-links a:hover,.nav-links a:focus-visible{color:var(--accent2)}
+.hdr-right{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+select{appearance:none;-webkit-appearance:none;background:rgba(24,17,30,.88) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c0b6cc' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 11px center;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 29px 9px 11px;font:500 13px "DM Sans",sans-serif;cursor:pointer}
+select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 18px;border:1px solid var(--accent);border-radius:9px;background:var(--accent);color:var(--accentText);font:700 13px "DM Sans",sans-serif;text-decoration:none;cursor:pointer;transition:transform .18s,background .18s,border-color .18s}
+.btn:hover{background:var(--accent2);border-color:var(--accent2);transform:translateY(-1px)}
+.btn.ghost{background:rgba(20,14,24,.45);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--accent);background:rgba(212,108,255,.08)}
+.btn.sm{min-height:38px;padding:8px 15px;font-size:12px}
+.hero{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(350px,.92fr);gap:48px;align-items:center;padding:72px 28px 48px}
+.hero-copy{max-width:620px}
+.kicker,.tag{color:var(--accent);font:500 10px/1.5 "DM Mono",monospace;letter-spacing:.14em;text-transform:uppercase}
+.hero h1{max-width:660px;margin:19px 0 17px;font-size:clamp(44px,6vw,72px);font-weight:800;line-height:.99;letter-spacing:-.065em}
+.hero h1 em{color:var(--accent);font-style:normal}
+.hero p{max-width:570px;margin:0 0 22px;color:#d2c7d9;font-size:16px;line-height:1.75}
+.cta{display:flex;flex-wrap:wrap;gap:11px}
+.hero-fine{margin-top:16px;color:var(--muted);font-size:11px}
+.hero-art{position:relative;isolation:isolate;min-height:310px;overflow:hidden;border:1px solid #7a4c8b;border-radius:17px;background:#171019;box-shadow:0 24px 70px rgba(0,0,0,.34)}
+.hero-art>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:54% center;filter:saturate(1.12)}
+.hero-art::after{position:absolute;z-index:0;inset:0;content:"";background:linear-gradient(90deg,rgba(17,10,19,.46),transparent 74%),linear-gradient(0deg,rgba(15,9,18,.9),transparent 58%)}
+.art-caption{position:absolute;z-index:1;left:20px;bottom:20px;max-width:60%}
+.art-caption span{display:block;color:var(--accent2);font:500 10px "DM Mono",monospace;letter-spacing:.1em}
+.art-caption strong{display:block;margin-top:5px;font-size:19px;line-height:1.3}
+.glass{position:absolute;z-index:2;right:12px;bottom:28px;min-width:168px;padding:13px 15px;border:1px solid rgba(215,159,237,.5);border-radius:12px;background:rgba(27,17,35,.94);box-shadow:0 15px 35px rgba(0,0,0,.35)}
+.glass small,.glass em{display:block;font:500 9px/1.5 "DM Mono",monospace}
+.glass small{color:var(--muted);letter-spacing:.06em}
+.glass b{display:block;margin:5px 0 1px;color:var(--ink);font-size:20px}
+.glass em{color:var(--accent2);font-style:normal}
+.art-credit{position:absolute;z-index:2;right:12px;bottom:7px;color:#eee5f0;font:9px "DM Mono",monospace;text-shadow:0 1px 3px #000}
+.trust{display:grid;grid-template-columns:repeat(3,1fr);margin:0 28px;border-top:1px solid rgba(231,205,242,.24);border-bottom:1px solid rgba(231,205,242,.24)}
+.trust>div{display:flex;align-items:center;gap:10px;min-height:59px;padding:12px 17px;border-right:1px solid rgba(231,205,242,.2)}
+.trust>div:last-child{border-right:0}
+.trust b{font-size:18px;line-height:1.1}
+.trust span{color:#c7bacd;font-size:11px}
+section{padding:54px 0}
+h2{margin:0 0 7px;font-size:clamp(25px,3vw,32px);font-weight:700;line-height:1.2;letter-spacing:-.045em}
+.lead{max-width:720px;margin:0 0 24px;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:16px}
+.card{min-width:0;padding:23px;border:1px solid rgba(151,112,165,.56);border-radius:14px;background:rgba(25,18,31,.94);box-shadow:0 12px 35px rgba(0,0,0,.12)}
+.card h3{margin:8px 0 5px;font-size:20px;line-height:1.3}
+.card ul{padding-left:19px;margin:14px 0 0;color:#c5b9cd;font-size:13px}
+.card li{margin:7px 0}
+.card li::marker{color:var(--accent)}
+.card li b{color:var(--ink);font-weight:600}
+.showcase{padding-top:42px}
+.showcase-heading{margin-bottom:17px}
+.showcase-heading .lead{margin-bottom:0}
+.showcase-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.demo-card{min-width:0;padding:18px;border:1px solid rgba(151,112,165,.56);border-radius:14px;background:rgba(25,18,31,.94);box-shadow:0 12px 35px rgba(0,0,0,.14)}
+.demo-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.demo-card-head h3{margin:6px 0 0;font-size:19px;line-height:1.3}
+.demo-card p{min-height:24px;margin:9px 0 14px;color:var(--muted);font-size:13px}
+.demo-mark{color:rgba(232,166,255,.45);font:500 22px "DM Mono",monospace}
+.demo-video{display:block;width:100%;aspect-ratio:16/9;border:1px solid var(--line-soft);border-radius:10px;background:#21182a;object-fit:cover}
+.currency-picker{display:flex;justify-content:center;align-items:center;gap:10px;margin:0 auto 18px}
+.currency-picker label{color:var(--muted);font-size:12px}
+.period{display:flex;justify-content:center;margin:0 auto 22px}
+.seg{display:inline-flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:4px;border:1px solid var(--line);border-radius:12px;background:rgba(26,20,33,.92)}
+.seg button{border:0;border-radius:8px;background:transparent;color:var(--muted);padding:8px 14px;font:500 13px "DM Sans",sans-serif;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accentText);font-weight:700}
+.price{text-align:left}
+.price .amt{margin:12px 0 0;color:var(--ink);font-size:36px;font-weight:700;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.price .per{min-height:22px;color:var(--muted);font-size:12px}
+.price ul{min-height:84px;text-align:left}
+.price.best{border-color:var(--accent);box-shadow:0 0 0 1px rgba(212,108,255,.25) inset,0 15px 40px rgba(67,30,78,.22)}
+.badge{display:inline-block;padding:3px 10px;border-radius:99px;background:var(--accent);color:var(--accentText);font-size:11px;font-weight:700}
+.price .btn{width:100%;margin-top:12px}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}
+.step{padding:20px;border:1px solid var(--line-soft);border-radius:13px;background:rgba(25,18,31,.86)}
+.step::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:31px;height:31px;margin-bottom:11px;border-radius:50%;background:var(--accent);color:var(--accentText);font-weight:700}
+.step p{margin:0;color:var(--muted);font-size:13px}
+.step p b{color:var(--ink);font-weight:600}
+.pay{display:grid;grid-template-columns:minmax(0,1fr);max-width:760px;gap:20px;align-items:center;margin:20px auto 0}
+.pay p{margin:6px 0 0;color:var(--muted)}
+.pay p b{color:var(--accent2)}
+.pay-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+details{max-width:820px;margin:10px auto;padding:15px 18px;border:1px solid var(--line-soft);border-radius:12px;background:rgba(25,18,31,.88)}
+summary{cursor:pointer;font-weight:600}
+summary::marker{color:var(--accent)}
+details p{margin:10px 0 0;color:var(--muted);font-size:14px}
+.warn{max-width:820px;margin:23px auto 0;padding:9px 14px;border-left:3px solid var(--bad);color:var(--muted);font-size:13px}
+footer{margin-top:30px;padding:32px 0;border-top:1px solid rgba(231,205,242,.15);color:var(--dim);font-size:12px;text-align:center}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}
+@media(max-width:900px){
+  .wrap{padding:0 22px}
+  header{grid-template-columns:auto 1fr;gap:10px 20px;padding:14px 0}
+  .nav-links{grid-column:1/-1;grid-row:2;justify-content:center;gap:24px;padding:3px 0 9px}
+  .hdr-right{grid-column:2;grid-row:1}
+  .hero{grid-template-columns:1fr 1fr;gap:28px;padding:54px 10px 36px}
+  .hero-art{min-height:280px}
+  .trust{margin:0 10px}
+}
+@media(max-width:640px){
+  body{background-attachment:scroll,scroll,scroll;background-position:center top,center top,58% top}
+  .wrap{padding:0 16px}
+  header{grid-template-columns:1fr auto}
+  .logo{font-size:16px}
+  .logo svg{width:24px;height:24px}
+  .hdr-right{gap:7px}
+  #langSel{max-width:86px;padding-left:8px;font-size:11px}
+  .btn.sm{min-height:36px;padding:7px 11px}
+  .nav-links{gap:15px;justify-content:space-between;font-size:12px}
+  .nav-links a{font-size:12px}
+  .hero{grid-template-columns:1fr;gap:24px;padding:43px 2px 30px}
+  .hero h1{font-size:clamp(42px,12vw,60px)}
+  .hero p{font-size:15px}
+  .hero-art{min-height:255px}
+  .glass{right:9px;bottom:27px;min-width:145px;padding:10px 12px}
+  .glass b{font-size:17px}
+  .art-caption{left:14px;bottom:17px}
+  .art-caption strong{font-size:16px}
+  .trust{margin:0 2px}
+  .trust>div{display:block;min-height:68px;padding:11px 9px}
+  .trust b{display:block;margin-bottom:5px;font-size:16px}
+  .trust span{font-size:10px}
+  section{padding:42px 0}
+  .showcase{padding-top:36px}
+  .showcase-grid{grid-template-columns:1fr}
+  .demo-card{padding:15px}
+  .card{padding:19px}
+  .price ul{min-height:0}
+  .currency-picker{margin-bottom:15px}
+  .seg button{padding:8px 10px;font-size:12px}
+  .pay{grid-template-columns:1fr;gap:18px}
   .qr{margin:0 auto}
+  .amounts{display:block;overflow-x:auto;white-space:nowrap}
+}
+@media(prefers-reduced-motion:reduce){
+  :root{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
 }
 </style>
 </head>
@@ -106,6 +175,12 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
 <div class="wrap">
   <header>
     <a class="logo" href="/"><svg width="24" height="24" viewBox="0 0 34 34" aria-hidden="true"><polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/><polygon points="17,2 32,17 17,17" fill="#f6d488"/><polygon points="2,17 17,32 17,17" fill="#a9812c"/><polygon points="17,2 17,17 2,17" fill="#e7b954"/><polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>AURUM</a>
+    <nav class="nav-links" aria-label="Navigare">
+      <a href="#boti" data-u="nav_bots">Boți</a>
+      <a href="#servere" data-u="nav_servers">Servere</a>
+      <a href="#preturi" data-u="nav_prices">Prețuri</a>
+      <a href="#faq" data-u="nav_faq">Întrebări</a>
+    </nav>
     <div class="hdr-right">
       <label class="sr" for="langSel">Language</label>
       <select id="langSel">
@@ -117,27 +192,54 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
         <option value="fr">🇫🇷 Français</option>
         <option value="es">🇪🇸 Español</option>
       </select>
-      <label class="sr" for="curSel">Currency</label>
-      <select id="curSel">
-        <option value="EUR">€ EUR</option>
-        <option value="RON">lei RON</option>
-        <option value="USD">$ USD</option>
-        <option value="GBP">£ GBP</option>
-        <option value="PLN">zł PLN</option>
-        <option value="TRY">₺ TRY</option>
-      </select>
       <a class="btn ghost sm" href="/discord">Discord</a>
     </div>
   </header>
 
-  <div class="hero">
-    <h1 data-i="hero_h1"></h1>
-    <p data-i="hero_p"></p>
-    <div class="cta">
-      <a class="btn" href="/discord" data-i="cta_discord"></a>
-      <a class="btn ghost" href="#preturi" data-i="cta_prices"></a>
+  <div class="hero" id="top">
+    <div class="hero-copy">
+      <div class="kicker" data-u="hero_kicker">✦ AUTOMATIZARE PENTRU BAERIM</div>
+      <h1 data-i="hero_h1"></h1>
+      <p data-i="hero_p"></p>
+      <div class="cta">
+        <a class="btn" href="#preturi" data-i="cta_prices"></a>
+        <a class="btn ghost" href="/discord" data-i="cta_discord"></a>
+      </div>
+      <div class="hero-fine" data-u="hero_fine">2 boți · 6 limbi · fără injectare în joc</div>
+    </div>
+    <div class="hero-art">
+      <img src="https://de-wiki.metin2.gameforge.com/images/2/2d/Wallpaper_1_PdH.jpg" alt="Artwork fantasy Metin2 cu dragon" fetchpriority="high">
+      <div class="art-caption"><span data-u="art_product">BAERIM / AURUM FARM</span><strong data-u="art_line">Lasă rutina în urmă.</strong></div>
+      <div class="glass"><small data-u="hero_licence">LICENȚĂ BUNDLE</small><b data-price="bundle"></b><em data-per="bundle"></em></div>
+      <a class="art-credit" href="https://de-wiki.metin2.gameforge.com/index.php?title=Datei:Wallpaper_1_PdH.jpg" target="_blank" rel="noopener noreferrer" data-u="art_credit">Artwork: Metin2 Wiki</a>
     </div>
   </div>
+
+  <div class="trust" id="servere">
+    <div><b>02</b><span data-u="stat_clients">clienți simultan</span></div>
+    <div><b>06</b><span data-u="stat_languages">limbi disponibile</span></div>
+    <div><b>Baerim</b><span data-u="stat_server">server suportat</span></div>
+  </div>
+
+  <section id="demo" class="showcase">
+    <div class="showcase-heading">
+      <div class="kicker" data-u="video_kicker">AURUM / DEMO</div>
+      <h2 data-u="video_h2">Vezi boții în acțiune.</h2>
+      <p class="lead" data-u="video_lead">Două clipuri scurte, direct din joc.</p>
+    </div>
+    <div class="showcase-grid">
+      <article class="demo-card">
+        <div class="demo-card-head"><div><div class="tag" data-u="farm_video_badge">FARM / GAMEPLAY</div><h3>Aurum Farm</h3></div><span class="demo-mark">01</span></div>
+        <p data-u="farm_video_text">Vezi coada de până la 5 metine și automatizarea în joc.</p>
+        <video class="demo-video" src="/videos/aurum-farm.mp4" poster="/videos/aurum-farm.jpg" controls playsinline preload="metadata" aria-label="Aurum Farm gameplay"></video>
+      </article>
+      <article class="demo-card">
+        <div class="demo-card-head"><div><div class="tag" data-u="fish_video_badge">FISHING / GAMEPLAY</div><h3>Aurum Fish</h3></div><span class="demo-mark">02</span></div>
+        <p data-u="fish_video_text">Aurum Fish joacă minigame-ul de pescuit și urmărește captura.</p>
+        <video class="demo-video" src="/videos/aurum-fish.mp4" poster="/videos/aurum-fish.jpg" controls playsinline preload="metadata" aria-label="Aurum Fish gameplay"></video>
+      </article>
+    </div>
+  </section>
 
   <section id="boti">
     <h2 data-i="bots_h2"></h2>
@@ -150,7 +252,6 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
           <li data-i="farm_1"></li><li data-i="farm_2"></li><li data-i="farm_3"></li>
           <li data-i="farm_4"></li><li data-i="farm_5"></li><li data-i="farm_6"></li>
         </ul>
-        <video class="video" src="/videos/aurum-farm.mp4" poster="/videos/aurum-farm.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Aurum Farm demo"></video>
       </div>
       <div class="card">
         <div class="tag">Fishing</div>
@@ -159,7 +260,6 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
           <li data-i="fish_1"></li><li data-i="fish_2"></li><li data-i="fish_3"></li>
           <li data-i="fish_4"></li><li data-i="fish_5"></li><li data-i="fish_6"></li>
         </ul>
-        <video class="video" src="/videos/aurum-fish.mp4" poster="/videos/aurum-fish.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Aurum Fish demo"></video>
       </div>
     </div>
   </section>
@@ -167,6 +267,9 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
   <section id="preturi">
     <h2 data-i="prices_h2"></h2>
     <p class="lead" data-i="prices_lead"></p>
+    <div class="currency-picker"><label for="curSel" data-u="currency_label">Monedă</label><select id="curSel">
+      <option value="EUR">€ EUR</option><option value="RON">lei RON</option><option value="USD">$ USD</option><option value="GBP">£ GBP</option><option value="PLN">zł PLN</option><option value="TRY">₺ TRY</option>
+    </select></div>
     <div class="period">
       <div class="seg" role="group" aria-label="Period">
         <button type="button" data-period="0" aria-pressed="false" data-i="period_7"></button>
@@ -210,26 +313,11 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
     <div class="card pay" id="plata">
       <div>
         <div class="tag" data-i="pay_tag"></div>
-        <h3>Revolut · @aurumb</h3>
+        <h3 data-i="pay_title"></h3>
         <p data-i="pay_text"></p>
-        <table class="amounts" aria-live="polite">
-          <thead><tr><th data-i="col_period"></th><th>Farm</th><th>Fish</th><th>Bundle</th></tr></thead>
-          <tbody>
-            <tr><td data-i="period_7"></td><td class="v" data-amt="farm-0"></td><td class="v" data-amt="fish-0"></td><td class="v" data-amt="bundle-0"></td></tr>
-            <tr><td data-i="period_30"></td><td class="v" data-amt="farm-1"></td><td class="v" data-amt="fish-1"></td><td class="v" data-amt="bundle-1"></td></tr>
-            <tr><td data-i="period_90"></td><td class="v" data-amt="farm-2"></td><td class="v" data-amt="fish-2"></td><td class="v" data-amt="bundle-2"></td></tr>
-            <tr><td data-i="period_life"></td><td class="v" data-amt="farm-3"></td><td class="v" data-amt="fish-3"></td><td class="v" data-amt="bundle-3"></td></tr>
-          </tbody>
-        </table>
         <div class="pay-actions">
-          <a class="btn" href="https://revolut.me/aurumb" target="_blank" rel="noopener" data-i="pay_btn"></a>
-          <a class="btn ghost" href="/discord" data-i="pay_ticket"></a>
+          <a class="btn" href="/discord" data-i="pay_btn"></a>
         </div>
-        <p class="note" data-i="pay_note"></p>
-      </div>
-      <div class="qr">
-        <img src="/revolut-qr.svg" alt="QR revolut.me/aurumb" width="196" height="196">
-        <span data-i="pay_scan"></span>
       </div>
     </div>
   </section>
@@ -245,14 +333,14 @@ footer{padding:40px 0; text-align:center; color:var(--dim); font-size:13px; bord
     <div class="warn" data-i="warn"></div>
   </section>
 
-  <footer>Aurum · aurumbots.com · <a href="/termeni.html" data-i="terms"></a> · <a href="/discord" data-i="support_on"></a></footer>
+  <footer>Aurum · aurumbots.com · <a href="/termeni" data-i="terms"></a> · <a href="/discord" data-i="support_on"></a></footer>
 </div>
 
 <script>
 // ---- preturi: [7 zile, 30 zile, 90 zile, pe viata], pe moneda. Rotunjite manual. ----
 // Bundle e mereu mai ieftin decat Farm + Fish luate separat.
 const PRICES = {
-  EUR: { farm: [7.00, 24.99, 59.99, 99.99], fish: [4.99, 17.99, 42.99, 69.99], bundle: [9.99, 34.99, 84.99, 139.99] },
+  EUR: { farm: [6.99, 24.99, 59.99, 99.99], fish: [4.99, 17.99, 42.99, 69.99], bundle: [9.99, 34.99, 84.99, 139.99] },
   RON: { farm: [35, 125, 299, 499],         fish: [25, 89, 215, 349],          bundle: [49, 175, 425, 699] },
   USD: { farm: [7.99, 27.99, 66.99, 109.99], fish: [5.49, 19.99, 47.99, 77.99], bundle: [10.99, 38.99, 94.99, 154.99] },
   GBP: { farm: [5.99, 21.99, 51.99, 86.99], fish: [4.49, 15.49, 36.99, 59.99], bundle: [8.49, 29.99, 72.99, 119.99] },
@@ -269,10 +357,10 @@ const LANG_CUR = { ro: "RON", en: "EUR", de: "EUR", fr: "EUR", es: "EUR", pl: "P
 
 const T = {
 ro: {
-  hero_h1: "Farmezi și când dormi.",
-  hero_p: "Doi boți pentru Baerim, testați luni de zile în joc: farm de metine pe 2 clienți și pescuit automat. Abonament lunar, fără instalări complicate.",
+  hero_h1: "Farmul merge.<br><em>Tu alegi aventura.</em>",
+  hero_p: "Aurum Farm și Aurum Fish automatizează rutina pe ecranul tău. Două unelte făcute pentru Baerim, cu control simplu și suport pe Discord.",
   cta_discord: "Intră pe Discord", cta_prices: "Vezi prețurile",
-  bots_h2: "Boții", bots_lead: "Fiecare lucrează pe ecran, ca un jucător — nimic injectat în joc.",
+  bots_h2: "Două unelte. Un singur loc.", bots_lead: "Fiecare lucrează pe ecran, ca un jucător — nimic injectat în joc.",
   farm_1: "<b>2 clienți în paralel</b>, coadă de până la 5 metine",
   farm_2: "<b>Nu îți ia mouse-ul</b> — poți folosi PC-ul cât farmează",
   farm_3: "Se oprește singur dacă rămâi fără armă; repune mănușile",
@@ -285,15 +373,12 @@ ro: {
   period_7: "7 zile", period_30: "30 zile", period_90: "90 zile", period_life: "Pe viață",
   per_7: "/ 7 zile", per_30: "/ 30 zile", per_90: "/ 90 zile", per_life: "o singură plată", save: "economisești {v}",
   upd: "Update-uri incluse", support: "Suport pe Discord", prio_support: "Suport prioritar", best: "Cel mai ales", buy: "Cumpără",
-  how_h2: "Cum cumperi", how_lead: "Plata prin Revolut. Activare manuală, de obicei în mai puțin de o oră.",
+  how_h2: "Cum cumperi", how_lead: "Deschide un ticket pe Discord pentru instrucțiunile de plată. Activare manuală după confirmare.",
   step_1: "Descarci botul din Discord și îl pornești o dată — îți arată <b>ID-ul PC-ului</b>. Apasă „Copiază ID”.",
   step_2: "Deschizi un ticket pe Discord cu pachetul ales (Farm / Fish / Bundle), perioada și ID-ul.",
-  step_3: "Plătești prin <b>Revolut</b> și trimiți captura plății în ticket. Licența se activează pe PC-ul tău.",
-  pay_tag: "Plată", pay_text: "Trimite suma pachetului la <b>@aurumb</b> (link sau QR). <b>La mesajul plății scrie ID-ul PC-ului.</b>",
-  col_period: "Perioadă",
-  pay_btn: "Plătește cu Revolut", pay_ticket: "Deschide ticket",
-  pay_note: "Poți plăti și fără cont Revolut, cu cardul, din pagina de plată Revolut. Sumele sunt orientative pentru moneda aleasă; plătește suma afișată.",
-  pay_scan: "Scanează pentru plată",
+  step_3: "Urmează instrucțiunile primite în ticket. Licența se activează manual după confirmarea plății, de obicei în mai puțin de o oră.",
+  pay_tag: "Plată prin Discord", pay_title: "Deschide un ticket", pay_text: "Spune-ne produsul, perioada și ID-ul PC-ului. Primești în ticket instrucțiunile de plată.",
+  pay_btn: "Deschide Discord", pay_ticket: "Deschide ticket",
   faq_h2: "Întrebări",
   q1: "Pot folosi PC-ul cât merge Aurum Farm?", a1: "Da. Trimite clickurile direct în fereastra jocului, fără să-ți miște cursorul. Ține doar mouse-ul în afara ferestrelor de joc.",
   q2: "Trebuie să instalez ceva?", a2: "Nu. Primești un singur fișier .exe. Pornește ca Administrator, pentru că și jocul rulează așa.",
@@ -301,12 +386,12 @@ ro: {
   q4: "Ce se întâmplă când expiră?", a4: "Botul se oprește și îți spune că abonamentul a expirat. Prelungești oricând; zilele rămase se adună.",
   q5: "Pot lua ban?", a5: "Orice bot încalcă regulile serverului de joc, deci riscul există și îl asumi tu. Boții se comportă cât mai uman (pauze aleatoare, fără injectare), dar nimeni nu poate garanta zero risc.",
   q6: "Ce înseamnă licența pe viață?", a6: "Plătești o singură dată și botul merge fără expirare pe PC-ul tău, cu toate update-urile incluse, cât timp produsul există.",
-  warn: "Folosirea boților încalcă regulile serverului de joc. Folosești pe propriul risc; banul nu dă drept la rambursare. Rambursare doar în primele 24 h, dacă botul nu pornește pe PC-ul tău. Detalii în <a href=\"/termeni.html\">Termeni</a>.",
+  warn: "Folosirea boților încalcă regulile serverului de joc. Folosești pe propriul risc; banul nu dă drept la rambursare. Rambursare doar în primele 24 h, dacă botul nu pornește pe PC-ul tău. Detalii în <a href=\"/termeni\">Termeni</a>.",
   terms: "Termeni și confidențialitate", support_on: "Suport pe Discord",
 },
 en: {
-  hero_h1: "Farm while you sleep.",
-  hero_p: "Two bots for Baerim, tested in-game for months: metin stone farming on 2 clients and automatic fishing. Monthly subscription, no complicated setup.",
+  hero_h1: "Let farming run.<br><em>Choose your adventure.</em>",
+  hero_p: "Aurum Farm and Aurum Fish take care of the routine on your screen. Two tools built for Baerim, with simple controls and Discord support.",
   cta_discord: "Join our Discord", cta_prices: "See prices",
   bots_h2: "The bots", bots_lead: "Both work on screen, like a player — nothing is injected into the game.",
   farm_1: "<b>2 clients at once</b>, queue of up to 5 stones",
@@ -321,15 +406,12 @@ en: {
   period_7: "7 days", period_30: "30 days", period_90: "90 days", period_life: "Lifetime",
   per_7: "/ 7 days", per_30: "/ 30 days", per_90: "/ 90 days", per_life: "one-time payment", save: "you save {v}",
   upd: "Updates included", support: "Support on Discord", prio_support: "Priority support", best: "Most popular", buy: "Buy",
-  how_h2: "How to buy", how_lead: "Pay with Revolut. Manual activation, usually in under an hour.",
+  how_h2: "How to buy", how_lead: "Open a Discord ticket to get payment instructions. Manual activation after confirmation.",
   step_1: "Download the bot from Discord and start it once — it shows your <b>PC ID</b>. Click “Copy ID”.",
   step_2: "Open a ticket on Discord with the package (Farm / Fish / Bundle), the period and your ID.",
-  step_3: "Pay with <b>Revolut</b> and post the payment screenshot in the ticket. Your license is activated on your PC.",
-  pay_tag: "Payment", pay_text: "Send the package amount to <b>@aurumb</b> (link or QR). <b>Write your PC ID in the payment note.</b>",
-  col_period: "Period",
-  pay_btn: "Pay with Revolut", pay_ticket: "Open a ticket",
-  pay_note: "You can also pay without a Revolut account, by card, on the Revolut payment page. Amounts are shown in the selected currency; send the amount displayed.",
-  pay_scan: "Scan to pay",
+  step_3: "Follow the instructions in your ticket. Your license is activated manually after payment confirmation, usually in under an hour.",
+  pay_tag: "Payment via Discord", pay_title: "Open a ticket", pay_text: "Tell us the product, license period, and your PC ID. We’ll send payment instructions in the ticket.",
+  pay_btn: "Open Discord", pay_ticket: "Open a ticket",
   faq_h2: "FAQ",
   q1: "Can I use my PC while Aurum Farm runs?", a1: "Yes. It sends clicks straight to the game window without moving your cursor. Just keep the mouse outside the game windows.",
   q2: "Do I need to install anything?", a2: "No. You get a single .exe file. It runs as Administrator because the game does too.",
@@ -337,12 +419,12 @@ en: {
   q4: "What happens when it expires?", a4: "The bot stops and tells you the subscription has expired. Renew anytime; remaining days are added up.",
   q5: "Can I get banned?", a5: "Any bot breaks the game server's rules, so the risk exists and is yours. The bots behave as human-like as possible (random pauses, no injection), but nobody can guarantee zero risk.",
   q6: "What does the lifetime license mean?", a6: "You pay once and the bot works on your PC with no expiry date, all updates included, for as long as the product exists.",
-  warn: "Using bots breaks the game server's rules. Use at your own risk; bans are not refunded. Refunds only within 24h if the bot doesn't start on your PC. Details in the <a href=\"/termeni.html\">Terms</a>.",
+  warn: "Using bots breaks the game server's rules. Use at your own risk; bans are not refunded. Refunds only within 24h if the bot doesn't start on your PC. Details in the <a href=\"/termeni\">Terms</a>.",
   terms: "Terms & privacy", support_on: "Support on Discord",
 },
 de: {
-  hero_h1: "Farmen, während du schläfst.",
-  hero_p: "Zwei Bots für Baerim, monatelang im Spiel getestet: Metinsteine farmen mit 2 Clients und automatisches Angeln. Monatsabo, keine komplizierte Installation.",
+  hero_h1: "Lass farmen.<br><em>Du wählst das Abenteuer.</em>",
+  hero_p: "Aurum Farm und Aurum Fish übernehmen die Routine auf deinem Bildschirm. Zwei Tools für Baerim, einfach zu bedienen und mit Support auf Discord.",
   cta_discord: "Discord beitreten", cta_prices: "Preise ansehen",
   bots_h2: "Die Bots", bots_lead: "Beide arbeiten am Bildschirm wie ein Spieler — nichts wird ins Spiel injiziert.",
   farm_1: "<b>2 Clients gleichzeitig</b>, Warteschlange bis zu 5 Steinen",
@@ -357,15 +439,12 @@ de: {
   period_7: "7 Tage", period_30: "30 Tage", period_90: "90 Tage", period_life: "Lebenslang",
   per_7: "/ 7 Tage", per_30: "/ 30 Tage", per_90: "/ 90 Tage", per_life: "Einmalzahlung", save: "du sparst {v}",
   upd: "Updates inklusive", support: "Support auf Discord", prio_support: "Bevorzugter Support", best: "Am beliebtesten", buy: "Kaufen",
-  how_h2: "So kaufst du", how_lead: "Zahlung per Revolut. Manuelle Aktivierung, meist in unter einer Stunde.",
+  how_h2: "So kaufst du", how_lead: "Öffne ein Discord-Ticket für die Zahlungsanweisungen. Manuelle Aktivierung nach Bestätigung.",
   step_1: "Lade den Bot über Discord herunter und starte ihn einmal — er zeigt deine <b>PC-ID</b>. Klicke „ID kopieren“.",
   step_2: "Öffne ein Ticket auf Discord mit Paket (Farm / Fish / Bundle), Laufzeit und ID.",
-  step_3: "Zahle per <b>Revolut</b> und poste den Zahlungsbeleg im Ticket. Die Lizenz wird auf deinem PC aktiviert.",
-  pay_tag: "Zahlung", pay_text: "Sende den Paketbetrag an <b>@aurumb</b> (Link oder QR). <b>Schreib deine PC-ID in den Verwendungszweck.</b>",
-  col_period: "Zeitraum",
-  pay_btn: "Mit Revolut zahlen", pay_ticket: "Ticket öffnen",
-  pay_note: "Du kannst auch ohne Revolut-Konto per Karte auf der Revolut-Zahlungsseite zahlen. Die Beträge gelten für die gewählte Währung; überweise den angezeigten Betrag.",
-  pay_scan: "Zum Bezahlen scannen",
+  step_3: "Folge den Anweisungen im Ticket. Deine Lizenz wird nach Zahlungsbestätigung manuell aktiviert, meist in unter einer Stunde.",
+  pay_tag: "Zahlung über Discord", pay_title: "Ticket öffnen", pay_text: "Nenne uns Produkt, Laufzeit und deine PC-ID. Die Zahlungsanweisungen erhältst du im Ticket.",
+  pay_btn: "Discord öffnen", pay_ticket: "Ticket öffnen",
   faq_h2: "Fragen",
   q1: "Kann ich meinen PC nutzen, während Aurum Farm läuft?", a1: "Ja. Die Klicks gehen direkt ins Spielfenster, ohne deinen Mauszeiger zu bewegen. Halte die Maus nur außerhalb der Spielfenster.",
   q2: "Muss ich etwas installieren?", a2: "Nein. Du bekommst eine einzige .exe-Datei. Sie läuft als Administrator, weil das Spiel es auch tut.",
@@ -373,12 +452,12 @@ de: {
   q4: "Was passiert beim Ablauf?", a4: "Der Bot stoppt und meldet, dass das Abo abgelaufen ist. Verlängere jederzeit; Resttage werden addiert.",
   q5: "Kann ich gebannt werden?", a5: "Jeder Bot verstößt gegen die Regeln des Spielservers, das Risiko trägst du. Die Bots verhalten sich so menschlich wie möglich (zufällige Pausen, keine Injektion), aber niemand kann null Risiko garantieren.",
   q6: "Was bedeutet die lebenslange Lizenz?", a6: "Du zahlst einmal und der Bot läuft auf deinem PC ohne Ablaufdatum, alle Updates inklusive, solange es das Produkt gibt.",
-  warn: "Bots verstoßen gegen die Regeln des Spielservers. Nutzung auf eigenes Risiko; Banns werden nicht erstattet. Erstattung nur innerhalb von 24 h, wenn der Bot auf deinem PC nicht startet. Details in den <a href=\"/termeni.html\">Bedingungen</a>.",
+  warn: "Bots verstoßen gegen die Regeln des Spielservers. Nutzung auf eigenes Risiko; Banns werden nicht erstattet. Erstattung nur innerhalb von 24 h, wenn der Bot auf deinem PC nicht startet. Details in den <a href=\"/termeni\">Bedingungen</a>.",
   terms: "Bedingungen & Datenschutz", support_on: "Support auf Discord",
 },
 pl: {
-  hero_h1: "Farmuj, gdy śpisz.",
-  hero_p: "Dwa boty do Baerim, testowane w grze przez miesiące: farmienie metinów na 2 klientach i automatyczne łowienie. Miesięczna subskrypcja, bez skomplikowanej instalacji.",
+  hero_h1: "Farm działa.<br><em>Ty wybierasz przygodę.</em>",
+  hero_p: "Aurum Farm i Aurum Fish automatyzują rutynę na ekranie. Dwa narzędzia dla Baerim, z prostą obsługą i wsparciem na Discordzie.",
   cta_discord: "Dołącz do Discorda", cta_prices: "Zobacz ceny",
   bots_h2: "Boty", bots_lead: "Oba działają na ekranie jak gracz — nic nie jest wstrzykiwane do gry.",
   farm_1: "<b>2 klienty naraz</b>, kolejka do 5 metinów",
@@ -393,15 +472,12 @@ pl: {
   period_7: "7 dni", period_30: "30 dni", period_90: "90 dni", period_life: "Dożywotnio",
   per_7: "/ 7 dni", per_30: "/ 30 dni", per_90: "/ 90 dni", per_life: "jednorazowa płatność", save: "oszczędzasz {v}",
   upd: "Aktualizacje w cenie", support: "Wsparcie na Discordzie", prio_support: "Priorytetowe wsparcie", best: "Najczęściej wybierany", buy: "Kup",
-  how_h2: "Jak kupić", how_lead: "Płatność przez Revolut. Ręczna aktywacja, zwykle w mniej niż godzinę.",
+  how_h2: "Jak kupić", how_lead: "Otwórz ticket na Discordzie, aby otrzymać instrukcje płatności. Ręczna aktywacja po potwierdzeniu.",
   step_1: "Pobierz bota z Discorda i uruchom go raz — pokaże <b>ID komputera</b>. Kliknij „Kopiuj ID”.",
   step_2: "Otwórz ticket na Discordzie z pakietem (Farm / Fish / Bundle), okresem i ID.",
-  step_3: "Zapłać przez <b>Revolut</b> i wrzuć zrzut płatności do ticketu. Licencja zostanie aktywowana na twoim PC.",
-  pay_tag: "Płatność", pay_text: "Wyślij kwotę pakietu na <b>@aurumb</b> (link lub QR). <b>W tytule płatności wpisz ID komputera.</b>",
-  col_period: "Okres",
-  pay_btn: "Zapłać przez Revolut", pay_ticket: "Otwórz ticket",
-  pay_note: "Możesz też zapłacić kartą bez konta Revolut, na stronie płatności Revolut. Kwoty są w wybranej walucie; wyślij wyświetloną kwotę.",
-  pay_scan: "Zeskanuj, aby zapłacić",
+  step_3: "Postępuj zgodnie z instrukcjami w tickecie. Licencję aktywujemy ręcznie po potwierdzeniu płatności, zwykle w mniej niż godzinę.",
+  pay_tag: "Płatność przez Discord", pay_title: "Otwórz ticket", pay_text: "Podaj produkt, okres licencji i ID komputera. Instrukcje płatności otrzymasz w tickecie.",
+  pay_btn: "Otwórz Discord", pay_ticket: "Otwórz ticket",
   faq_h2: "Pytania",
   q1: "Czy mogę używać PC, gdy działa Aurum Farm?", a1: "Tak. Kliknięcia trafiają prosto do okna gry, bez ruszania kursorem. Trzymaj tylko myszkę poza oknami gry.",
   q2: "Czy muszę coś instalować?", a2: "Nie. Dostajesz jeden plik .exe. Uruchamia się jako Administrator, bo gra też tak działa.",
@@ -409,12 +485,12 @@ pl: {
   q4: "Co się dzieje po wygaśnięciu?", a4: "Bot się zatrzymuje i informuje o wygaśnięciu subskrypcji. Przedłużasz w każdej chwili; pozostałe dni się sumują.",
   q5: "Czy mogę dostać bana?", a5: "Każdy bot łamie zasady serwera gry, więc ryzyko istnieje i ponosisz je ty. Boty zachowują się jak najbardziej po ludzku (losowe przerwy, bez wstrzykiwania), ale nikt nie zagwarantuje zera ryzyka.",
   q6: "Co oznacza licencja dożywotnia?", a6: "Płacisz raz, a bot działa na twoim PC bez daty wygaśnięcia, ze wszystkimi aktualizacjami, dopóki produkt istnieje.",
-  warn: "Używanie botów łamie zasady serwera gry. Używasz na własne ryzyko; ban nie daje prawa do zwrotu. Zwrot tylko w ciągu 24 h, jeśli bot nie uruchamia się na twoim PC. Szczegóły w <a href=\"/termeni.html\">Regulaminie</a>.",
+  warn: "Używanie botów łamie zasady serwera gry. Używasz na własne ryzyko; ban nie daje prawa do zwrotu. Zwrot tylko w ciągu 24 h, jeśli bot nie uruchamia się na twoim PC. Szczegóły w <a href=\"/termeni\">Regulaminie</a>.",
   terms: "Regulamin i prywatność", support_on: "Wsparcie na Discordzie",
 },
 tr: {
-  hero_h1: "Sen uyurken farm yap.",
-  hero_p: "Baerim için aylarca oyunda test edilmiş iki bot: 2 istemcide metin taşı farmı ve otomatik balık tutma. Aylık abonelik, karmaşık kurulum yok.",
+  hero_h1: "Farm sürsün.<br><em>Maceranı sen seç.</em>",
+  hero_p: "Aurum Farm ve Aurum Fish, ekrandaki rutin işleri üstlenir. Baerim için hazırlanmış iki araç; kullanımı kolay, Discord desteği yanında.",
   cta_discord: "Discord'a katıl", cta_prices: "Fiyatları gör",
   bots_h2: "Botlar", bots_lead: "İkisi de ekranda bir oyuncu gibi çalışır — oyuna hiçbir şey enjekte edilmez.",
   farm_1: "<b>Aynı anda 2 istemci</b>, 5 taşa kadar sıra",
@@ -429,15 +505,12 @@ tr: {
   period_7: "7 gün", period_30: "30 gün", period_90: "90 gün", period_life: "Ömür boyu",
   per_7: "/ 7 gün", per_30: "/ 30 gün", per_90: "/ 90 gün", per_life: "tek seferlik ödeme", save: "{v} tasarruf",
   upd: "Güncellemeler dahil", support: "Discord'da destek", prio_support: "Öncelikli destek", best: "En çok tercih edilen", buy: "Satın al",
-  how_h2: "Nasıl satın alınır", how_lead: "Revolut ile ödeme. Manuel aktivasyon, genellikle bir saatten kısa sürede.",
+  how_h2: "Nasıl satın alınır", how_lead: "Ödeme talimatları için Discord'da bir ticket aç. Ödeme doğrulandıktan sonra manuel etkinleştirme yapılır.",
   step_1: "Botu Discord'dan indir ve bir kez başlat — <b>PC kimliğini</b> gösterir. “Kimliği kopyala”ya tıkla.",
   step_2: "Discord'da paket (Farm / Fish / Bundle), süre ve kimlik ile bir ticket aç.",
-  step_3: "<b>Revolut</b> ile öde ve ödeme ekran görüntüsünü ticket'a gönder. Lisansın PC'nde etkinleştirilir.",
-  pay_tag: "Ödeme", pay_text: "Paket tutarını <b>@aurumb</b> adresine gönder (link veya QR). <b>Ödeme açıklamasına PC kimliğini yaz.</b>",
-  col_period: "Süre",
-  pay_btn: "Revolut ile öde", pay_ticket: "Ticket aç",
-  pay_note: "Revolut hesabın olmadan da Revolut ödeme sayfasında kartla ödeyebilirsin. Tutarlar seçilen para birimindedir; gösterilen tutarı gönder.",
-  pay_scan: "Ödemek için tara",
+  step_3: "Ticket'taki talimatları izle. Ödeme doğrulandıktan sonra lisansın genellikle bir saatten kısa sürede manuel olarak etkinleştirilir.",
+  pay_tag: "Discord üzerinden ödeme", pay_title: "Ticket aç", pay_text: "Ürünü, lisans süresini ve PC kimliğini yaz. Ödeme talimatları ticket üzerinden gönderilir.",
+  pay_btn: "Discord'u aç", pay_ticket: "Ticket aç",
   faq_h2: "Sorular",
   q1: "Aurum Farm çalışırken PC'mi kullanabilir miyim?", a1: "Evet. Tıklamaları imleci hareket ettirmeden doğrudan oyun penceresine gönderir. Fareyi oyun pencerelerinin dışında tut yeter.",
   q2: "Bir şey kurmam gerekiyor mu?", a2: "Hayır. Tek bir .exe dosyası alırsın. Oyun da öyle çalıştığı için Yönetici olarak çalışır.",
@@ -445,12 +518,12 @@ tr: {
   q4: "Süresi dolunca ne olur?", a4: "Bot durur ve aboneliğin bittiğini söyler. İstediğin zaman uzatabilirsin; kalan günler eklenir.",
   q5: "Ban yiyebilir miyim?", a5: "Her bot oyun sunucusunun kurallarını çiğner, yani risk vardır ve sana aittir. Botlar olabildiğince insan gibi davranır (rastgele molalar, enjeksiyon yok), ama kimse sıfır risk garanti edemez.",
   q6: "Ömür boyu lisans ne demek?", a6: "Bir kez ödersin ve bot, ürün var olduğu sürece tüm güncellemeler dahil, süresiz olarak PC'nde çalışır.",
-  warn: "Bot kullanmak oyun sunucusunun kurallarını çiğner. Riski sana ait; banlar iade edilmez. İade yalnızca 24 saat içinde, bot PC'nde başlamazsa. Ayrıntılar <a href=\"/termeni.html\">Şartlar</a>'da.",
+  warn: "Bot kullanmak oyun sunucusunun kurallarını çiğner. Riski sana ait; banlar iade edilmez. İade yalnızca 24 saat içinde, bot PC'nde başlamazsa. Ayrıntılar <a href=\"/termeni\">Şartlar</a>'da.",
   terms: "Şartlar ve gizlilik", support_on: "Discord'da destek",
 },
 fr: {
-  hero_h1: "Farmez pendant que vous dormez.",
-  hero_p: "Deux bots pour Baerim, testés en jeu pendant des mois : farm de pierres metin sur 2 clients et pêche automatique. Abonnement mensuel, sans installation compliquée.",
+  hero_h1: "Le farm tourne.<br><em>Choisissez l’aventure.</em>",
+  hero_p: "Aurum Farm et Aurum Fish automatisent les tâches répétitives à l’écran. Deux outils conçus pour Baerim, simples à utiliser avec une assistance sur Discord.",
   cta_discord: "Rejoindre le Discord", cta_prices: "Voir les prix",
   bots_h2: "Les bots", bots_lead: "Les deux travaillent à l'écran, comme un joueur — rien n'est injecté dans le jeu.",
   farm_1: "<b>2 clients en même temps</b>, file d'attente jusqu'à 5 pierres",
@@ -465,15 +538,12 @@ fr: {
   period_7: "7 jours", period_30: "30 jours", period_90: "90 jours", period_life: "À vie",
   per_7: "/ 7 jours", per_30: "/ 30 jours", per_90: "/ 90 jours", per_life: "paiement unique", save: "vous économisez {v}",
   upd: "Mises à jour incluses", support: "Support sur Discord", prio_support: "Support prioritaire", best: "Le plus choisi", buy: "Acheter",
-  how_h2: "Comment acheter", how_lead: "Paiement par Revolut. Activation manuelle, en général en moins d'une heure.",
+  how_h2: "Comment acheter", how_lead: "Ouvrez un ticket Discord pour recevoir les instructions de paiement. Activation manuelle après confirmation.",
   step_1: "Téléchargez le bot sur Discord et lancez-le une fois — il affiche <b>l'ID du PC</b>. Cliquez sur « Copier l'ID ».",
   step_2: "Ouvrez un ticket sur Discord avec le pack (Farm / Fish / Bundle), la durée et l'ID.",
-  step_3: "Payez par <b>Revolut</b> et envoyez la capture du paiement dans le ticket. La licence est activée sur votre PC.",
-  pay_tag: "Paiement", pay_text: "Envoyez le montant du pack à <b>@aurumb</b> (lien ou QR). <b>Indiquez l'ID du PC dans le message du paiement.</b>",
-  col_period: "Durée",
-  pay_btn: "Payer avec Revolut", pay_ticket: "Ouvrir un ticket",
-  pay_note: "Vous pouvez aussi payer par carte sans compte Revolut, sur la page de paiement Revolut. Les montants sont dans la devise choisie ; envoyez le montant affiché.",
-  pay_scan: "Scannez pour payer",
+  step_3: "Suivez les instructions du ticket. La licence est activée manuellement après confirmation du paiement, généralement en moins d'une heure.",
+  pay_tag: "Paiement via Discord", pay_title: "Ouvrir un ticket", pay_text: "Indiquez le produit, la durée de licence et l'ID du PC. Les instructions de paiement seront envoyées dans le ticket.",
+  pay_btn: "Ouvrir Discord", pay_ticket: "Ouvrir un ticket",
   faq_h2: "Questions",
   q1: "Puis-je utiliser mon PC pendant qu'Aurum Farm tourne ?", a1: "Oui. Les clics vont directement dans la fenêtre du jeu sans bouger votre curseur. Gardez juste la souris hors des fenêtres du jeu.",
   q2: "Dois-je installer quelque chose ?", a2: "Non. Vous recevez un seul fichier .exe. Il s'exécute en Administrateur, comme le jeu.",
@@ -481,12 +551,12 @@ fr: {
   q4: "Que se passe-t-il à l'expiration ?", a4: "Le bot s'arrête et indique que l'abonnement a expiré. Renouvelez quand vous voulez ; les jours restants s'additionnent.",
   q5: "Puis-je être banni ?", a5: "Tout bot enfreint les règles du serveur de jeu, le risque existe et il est à vous. Les bots se comportent le plus humainement possible (pauses aléatoires, aucune injection), mais personne ne peut garantir un risque nul.",
   q6: "Que signifie la licence à vie ?", a6: "Vous payez une fois et le bot fonctionne sur votre PC sans date d'expiration, mises à jour incluses, tant que le produit existe.",
-  warn: "Utiliser des bots enfreint les règles du serveur de jeu. À vos risques ; un bannissement n'est pas remboursé. Remboursement uniquement sous 24 h si le bot ne démarre pas sur votre PC. Détails dans les <a href=\"/termeni.html\">Conditions</a>.",
+  warn: "Utiliser des bots enfreint les règles du serveur de jeu. À vos risques ; un bannissement n'est pas remboursé. Remboursement uniquement sous 24 h si le bot ne démarre pas sur votre PC. Détails dans les <a href=\"/termeni\">Conditions</a>.",
   terms: "Conditions et confidentialité", support_on: "Support sur Discord",
 },
 es: {
-  hero_h1: "Farmea mientras duermes.",
-  hero_p: "Dos bots para Baerim, probados en el juego durante meses: farmeo de piedras metin en 2 clientes y pesca automática. Suscripción mensual, sin instalaciones complicadas.",
+  hero_h1: "El farm sigue.<br><em>Tú eliges la aventura.</em>",
+  hero_p: "Aurum Farm y Aurum Fish automatizan la rutina en tu pantalla. Dos herramientas para Baerim, fáciles de usar y con soporte en Discord.",
   cta_discord: "Únete al Discord", cta_prices: "Ver precios",
   bots_h2: "Los bots", bots_lead: "Ambos trabajan en pantalla, como un jugador — no se inyecta nada en el juego.",
   farm_1: "<b>2 clientes a la vez</b>, cola de hasta 5 piedras",
@@ -501,15 +571,12 @@ es: {
   period_7: "7 días", period_30: "30 días", period_90: "90 días", period_life: "De por vida",
   per_7: "/ 7 días", per_30: "/ 30 días", per_90: "/ 90 días", per_life: "pago único", save: "ahorras {v}",
   upd: "Actualizaciones incluidas", support: "Soporte en Discord", prio_support: "Soporte prioritario", best: "El más elegido", buy: "Comprar",
-  how_h2: "Cómo comprar", how_lead: "Pago con Revolut. Activación manual, normalmente en menos de una hora.",
+  how_h2: "Cómo comprar", how_lead: "Abre un ticket en Discord para recibir las instrucciones de pago. Activación manual tras la confirmación.",
   step_1: "Descarga el bot desde Discord y ábrelo una vez — muestra el <b>ID del PC</b>. Pulsa «Copiar ID».",
   step_2: "Abre un ticket en Discord con el paquete (Farm / Fish / Bundle), el periodo y el ID.",
-  step_3: "Paga con <b>Revolut</b> y envía la captura del pago al ticket. La licencia se activa en tu PC.",
-  pay_tag: "Pago", pay_text: "Envía el importe del paquete a <b>@aurumb</b> (enlace o QR). <b>Escribe el ID del PC en el concepto del pago.</b>",
-  col_period: "Periodo",
-  pay_btn: "Pagar con Revolut", pay_ticket: "Abrir ticket",
-  pay_note: "También puedes pagar con tarjeta sin cuenta Revolut, en la página de pago de Revolut. Los importes están en la moneda elegida; envía el importe mostrado.",
-  pay_scan: "Escanea para pagar",
+  step_3: "Sigue las instrucciones del ticket. La licencia se activa manualmente tras confirmar el pago, normalmente en menos de una hora.",
+  pay_tag: "Pago por Discord", pay_title: "Abre un ticket", pay_text: "Indica el producto, el periodo de licencia y el ID del PC. Recibirás las instrucciones de pago en el ticket.",
+  pay_btn: "Abrir Discord", pay_ticket: "Abrir ticket",
   faq_h2: "Preguntas",
   q1: "¿Puedo usar el PC mientras Aurum Farm funciona?", a1: "Sí. Envía los clics directamente a la ventana del juego sin mover tu cursor. Solo mantén el ratón fuera de las ventanas del juego.",
   q2: "¿Tengo que instalar algo?", a2: "No. Recibes un único archivo .exe. Se ejecuta como Administrador porque el juego también.",
@@ -517,9 +584,29 @@ es: {
   q4: "¿Qué pasa cuando caduca?", a4: "El bot se detiene y te avisa de que la suscripción caducó. Renueva cuando quieras; los días restantes se suman.",
   q5: "¿Me pueden banear?", a5: "Cualquier bot infringe las reglas del servidor del juego, así que el riesgo existe y es tuyo. Los bots se comportan de la forma más humana posible (pausas aleatorias, sin inyección), pero nadie puede garantizar riesgo cero.",
   q6: "¿Qué significa la licencia de por vida?", a6: "Pagas una vez y el bot funciona en tu PC sin fecha de caducidad, con todas las actualizaciones, mientras exista el producto.",
-  warn: "Usar bots infringe las reglas del servidor del juego. Bajo tu propio riesgo; los baneos no se reembolsan. Reembolso solo en las primeras 24 h si el bot no arranca en tu PC. Detalles en los <a href=\"/termeni.html\">Términos</a>.",
+  warn: "Usar bots infringe las reglas del servidor del juego. Bajo tu propio riesgo; los baneos no se reembolsan. Reembolso solo en las primeras 24 h si el bot no arranca en tu PC. Detalles en los <a href=\"/termeni\">Términos</a>.",
   terms: "Términos y privacidad", support_on: "Soporte en Discord",
 },
+};
+
+const UI = {
+ro: { nav_bots:"Boți", nav_servers:"Servere", nav_prices:"Prețuri", nav_faq:"Întrebări", hero_kicker:"✦ AUTOMATIZARE PENTRU BAERIM", hero_fine:"2 boți · 6 limbi · fără injectare în joc", art_product:"BAERIM / AURUM FARM", art_line:"Lasă rutina în urmă.", hero_licence:"LICENȚĂ BUNDLE", art_credit:"Artwork: Metin2 Wiki", stat_clients:"clienți simultan", stat_languages:"limbi disponibile", stat_server:"server suportat", currency_label:"Monedă" },
+en: { nav_bots:"Bots", nav_servers:"Servers", nav_prices:"Pricing", nav_faq:"FAQ", hero_kicker:"✦ AUTOMATION FOR BAERIM", hero_fine:"2 bots · 6 languages · no game injection", art_product:"BAERIM / AURUM FARM", art_line:"Leave the routine behind.", hero_licence:"BUNDLE LICENSE", art_credit:"Artwork: Metin2 Wiki", stat_clients:"clients at once", stat_languages:"languages available", stat_server:"supported server", currency_label:"Currency" },
+de: { nav_bots:"Bots", nav_servers:"Server", nav_prices:"Preise", nav_faq:"Fragen", hero_kicker:"✦ AUTOMATISIERUNG FÜR BAERIM", hero_fine:"2 Bots · 6 Sprachen · keine Injektion ins Spiel", art_product:"BAERIM / AURUM FARM", art_line:"Lass die Routine hinter dir.", hero_licence:"BUNDLE-LIZENZ", art_credit:"Artwork: Metin2 Wiki", stat_clients:"Clients gleichzeitig", stat_languages:"verfügbare Sprachen", stat_server:"unterstützter Server", currency_label:"Währung" },
+pl: { nav_bots:"Boty", nav_servers:"Serwery", nav_prices:"Ceny", nav_faq:"Pytania", hero_kicker:"✦ AUTOMATYZACJA DLA BAERIM", hero_fine:"2 boty · 6 języków · bez ingerencji w grę", art_product:"BAERIM / AURUM FARM", art_line:"Zostaw rutynę za sobą.", hero_licence:"LICENCJA BUNDLE", art_credit:"Grafika: Metin2 Wiki", stat_clients:"klienty jednocześnie", stat_languages:"dostępne języki", stat_server:"wspierany serwer", currency_label:"Waluta" },
+tr: { nav_bots:"Botlar", nav_servers:"Sunucular", nav_prices:"Fiyatlar", nav_faq:"Sorular", hero_kicker:"✦ BAERIM İÇİN OTOMASYON", hero_fine:"2 bot · 6 dil · oyuna enjeksiyon yok", art_product:"BAERIM / AURUM FARM", art_line:"Rutini geride bırak.", hero_licence:"BUNDLE LİSANSI", art_credit:"Görsel: Metin2 Wiki", stat_clients:"istemci aynı anda", stat_languages:"kullanılabilir dil", stat_server:"desteklenen sunucu", currency_label:"Para birimi" },
+fr: { nav_bots:"Bots", nav_servers:"Serveurs", nav_prices:"Prix", nav_faq:"Questions", hero_kicker:"✦ AUTOMATISATION POUR BAERIM", hero_fine:"2 bots · 6 langues · aucune injection dans le jeu", art_product:"BAERIM / AURUM FARM", art_line:"Laissez la routine derrière vous.", hero_licence:"LICENCE BUNDLE", art_credit:"Illustration : Metin2 Wiki", stat_clients:"clients simultanés", stat_languages:"langues disponibles", stat_server:"serveur pris en charge", currency_label:"Devise" },
+es: { nav_bots:"Bots", nav_servers:"Servidores", nav_prices:"Precios", nav_faq:"Preguntas", hero_kicker:"✦ AUTOMATIZACIÓN PARA BAERIM", hero_fine:"2 bots · 6 idiomas · sin inyección en el juego", art_product:"BAERIM / AURUM FARM", art_line:"Deja atrás la rutina.", hero_licence:"LICENCIA BUNDLE", art_credit:"Arte: Metin2 Wiki", stat_clients:"clientes a la vez", stat_languages:"idiomas disponibles", stat_server:"servidor compatible", currency_label:"Moneda" },
+};
+
+const DEMO_UI = {
+ro: { video_kicker:"AURUM / DEMO", video_h2:"Vezi boții în acțiune.", video_lead:"Două clipuri scurte, direct din joc.", farm_video_badge:"FARM / GAMEPLAY", farm_video_text:"Vezi coada de până la 5 metine și automatizarea în joc.", fish_video_badge:"FISHING / GAMEPLAY", fish_video_text:"Aurum Fish joacă minigame-ul de pescuit și urmărește captura." },
+en: { video_kicker:"AURUM / DEMO", video_h2:"See the bots in action.", video_lead:"Two short clips, straight from the game.", farm_video_badge:"FARM / GAMEPLAY", farm_video_text:"See the queue handle up to five metin stones in-game.", fish_video_badge:"FISHING / GAMEPLAY", fish_video_text:"Aurum Fish plays the fishing minigame and tracks the catch." },
+de: { video_kicker:"AURUM / DEMO", video_h2:"Sieh die Bots in Aktion.", video_lead:"Zwei kurze Clips direkt aus dem Spiel.", farm_video_badge:"FARM / GAMEPLAY", farm_video_text:"Sieh, wie die Warteschlange bis zu fünf Metinsteine verwaltet.", fish_video_badge:"FISHING / GAMEPLAY", fish_video_text:"Aurum Fish spielt das Angel-Minispiel und verfolgt den Fang." },
+pl: { video_kicker:"AURUM / DEMO", video_h2:"Zobacz boty w akcji.", video_lead:"Dwa krótkie nagrania prosto z gry.", farm_video_badge:"FARM / GAMEPLAY", farm_video_text:"Zobacz kolejkę obsługującą do pięciu metinów.", fish_video_badge:"FISHING / GAMEPLAY", fish_video_text:"Aurum Fish gra w minigrę łowienia i śledzi połów." },
+tr: { video_kicker:"AURUM / DEMO", video_h2:"Botları çalışırken gör.", video_lead:"Oyunun içinden iki kısa video.", farm_video_badge:"FARM / OYUN İÇİ", farm_video_text:"Sırada beş metin taşına kadar nasıl ilerlediğini gör.", fish_video_badge:"FISHING / OYUN İÇİ", fish_video_text:"Aurum Fish balık tutma mini oyununu oynar ve yakalananları takip eder." },
+fr: { video_kicker:"AURUM / DÉMO", video_h2:"Découvrez les bots en action.", video_lead:"Deux courtes vidéos directement dans le jeu.", farm_video_badge:"FARM / GAMEPLAY", farm_video_text:"Découvrez la file d’attente jusqu’à cinq pierres Metin.", fish_video_badge:"FISHING / GAMEPLAY", fish_video_text:"Aurum Fish joue au mini-jeu de pêche et suit les prises." },
+es: { video_kicker:"AURUM / DEMO", video_h2:"Mira los bots en acción.", video_lead:"Dos clips cortos, directamente del juego.", farm_video_badge:"FARM / GAMEPLAY", farm_video_text:"Mira la cola gestionar hasta cinco piedras metin.", fish_video_badge:"FISHING / GAMEPLAY", fish_video_text:"Aurum Fish juega al minijuego de pesca y registra las capturas." },
 };
 
 // ---- stare (limba, moneda, perioada), tinuta si intre vizite daca browserul permite ----
@@ -536,10 +623,15 @@ let period = 1;                                   // 0 = 7 zile, 1 = 30, 2 = 90,
 
 function render() {
   const t = T[lang];
+  const labels = Object.assign({}, UI[lang], DEMO_UI[lang]);
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-i]").forEach(el => {
     const v = t[el.dataset.i];
     if (v !== undefined) el.innerHTML = v;
+  });
+  document.querySelectorAll("[data-u]").forEach(el => {
+    const v = labels[el.dataset.u];
+    if (v !== undefined) el.textContent = v;
   });
   const p = PRICES[cur], f = FMT[cur], i = period;
   document.querySelectorAll("[data-price]").forEach(el => { el.textContent = f(p[el.dataset.price][i]); });

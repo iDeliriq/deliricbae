@@ -6,64 +6,106 @@
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<meta name="description" content="Aurum — terms of use, subscription, refunds and stored data for Aurum Farm and Aurum Fish.">
+<meta name="description" content="Aurum — termeni de utilizare, licențe, rambursări și date pentru Aurum Farm și Aurum Fish.">
+<meta name="theme-color" content="#100b15">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Poppins:wght@400;500;600&display=swap">
 <style>
 :root{
-  --bg:#080b16; --panel:#111a30; --line:#243256; --line2:#33456f;
-  --ink:#eaeefb; --mut:#9aa6c8; --dim:#5f6c93; --gold:#e7b954; --gold2:#f6d488; --bad:#e2685f;
+  --bg:#100b15;--panel:#1a1421;--panel2:#22192b;--line:#594764;--line-soft:#392d40;
+  --ink:#f7f4fb;--muted:#c0b6cc;--dim:#978aa1;--accent:#d46cff;--accent2:#e8a6ff;
+  --accentText:#1d1025;--gold:#e9bc62;--bad:#e2767e;color-scheme:dark;scroll-behavior:smooth
 }
 *{box-sizing:border-box}
-html,body{margin:0}
+html,body{margin:0;min-height:100%}
 body{
-  color:var(--ink); font-family:"Poppins",system-ui,sans-serif; line-height:1.7;
-  -webkit-font-smoothing:antialiased;
-  background:radial-gradient(1200px 600px at 78% -10%, rgba(231,185,84,.10), transparent 60%), var(--bg);
+  color:var(--ink);font:400 15px/1.7 "DM Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
+  background-color:var(--bg);
+  background-image:linear-gradient(90deg,rgba(16,10,20,.98) 0%,rgba(17,10,21,.87) 52%,rgba(15,9,18,.62) 100%),linear-gradient(0deg,#100b15 0%,rgba(16,11,21,.62) 35%,rgba(16,11,21,.18) 100%),url("https://de-wiki.metin2.gameforge.com/images/2/2d/Wallpaper_1_PdH.jpg");
+  background-size:cover,cover,cover;background-position:center top;background-attachment:fixed,fixed,fixed;overflow-x:hidden
 }
-a{color:var(--gold2)}
-.wrap{max-width:760px; margin:0 auto; padding:0 16px}
-header{display:flex; align-items:center; justify-content:space-between; gap:12px; padding:20px 0; flex-wrap:wrap}
-.logo{display:flex; align-items:center; gap:10px; font-family:"Cinzel",serif; font-weight:700; letter-spacing:.08em;
-  color:var(--gold2); font-size:20px; text-decoration:none}
-select{appearance:none; -webkit-appearance:none; background:var(--panel) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%239aa6c8' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 10px center;
-  color:var(--ink); border:1px solid var(--line2); border-radius:10px; padding:9px 30px 9px 12px; font:inherit; font-size:14px; cursor:pointer}
-select:focus{outline:2px solid var(--gold); outline-offset:1px}
-h1{font-family:"Cinzel",serif; font-size:clamp(28px,5vw,40px); color:var(--gold2); margin:32px 0 4px}
-.upd{color:var(--dim); font-size:14px; margin:0 0 32px}
-h2{font-size:18px; margin:32px 0 8px; color:var(--ink)}
-p, li{color:var(--mut)}
-ul{padding-left:22px}
-li{margin:6px 0}
-b{color:var(--ink); font-weight:500}
-.warn{border-left:3px solid var(--bad); padding:10px 16px; background:var(--panel); border-radius:0 10px 10px 0}
-.warn p{margin:0}
-footer{padding:40px 0; margin-top:40px; text-align:center; color:var(--dim); font-size:13px; border-top:1px solid var(--line)}
-.sr{position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0)}
+a{color:var(--accent2)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;min-height:84px;border-bottom:1px solid rgba(231,205,242,.12)}
+.logo{display:flex;align-items:center;gap:10px;width:max-content;color:var(--ink);font-size:18px;font-weight:800;letter-spacing:.12em;text-decoration:none}
+.logo svg{width:27px;height:27px}
+.hdr-right{display:flex;align-items:center;gap:9px}
+select{appearance:none;-webkit-appearance:none;background:rgba(24,17,30,.88) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23c0b6cc' fill='none' stroke-width='1.5'/%3E%3C/svg%3E") no-repeat right 11px center;color:var(--ink);border:1px solid var(--line);border-radius:9px;padding:9px 29px 9px 11px;font:500 13px "DM Sans",sans-serif;cursor:pointer}
+select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 15px;border:1px solid var(--accent);border-radius:9px;background:var(--accent);color:var(--accentText);font:700 12px "DM Sans",sans-serif;text-decoration:none;transition:transform .18s,background .18s}
+.btn:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn.ghost{background:rgba(20,14,24,.45);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--accent);background:rgba(212,108,255,.08)}
+.btn.sm{min-height:38px;padding:8px 13px}
+.legal{max-width:920px;margin:0 auto;padding:58px 0 20px}
+.kicker{color:var(--accent);font:500 10px/1.5 "DM Mono",monospace;letter-spacing:.14em}
+h1{margin:14px 0 5px;font-size:clamp(34px,5vw,54px);font-weight:800;line-height:1.06;letter-spacing:-.055em}
+.upd{margin:0 0 23px;color:var(--muted);font-size:12px}
+.warn{margin:0 0 18px;padding:17px 20px;border:1px solid rgba(151,112,165,.56);border-left:3px solid var(--accent);border-radius:12px;background:rgba(25,18,31,.94);box-shadow:0 12px 35px rgba(0,0,0,.12)}
+.warn p{margin:0;color:#d4c9dc;font-size:14px}
+#body{display:grid;gap:12px}
+.term-card{padding:21px 23px;border:1px solid rgba(151,112,165,.48);border-radius:13px;background:rgba(25,18,31,.91)}
+.term-card h2{margin:0 0 11px;color:var(--ink);font-size:18px;font-weight:700;line-height:1.35;letter-spacing:-.02em}
+.term-card p,.term-card li{color:var(--muted);font-size:13px}
+.term-card p{margin:0}
+.term-card ul{padding-left:20px;margin:0}
+.term-card li{margin:7px 0}
+.term-card li::marker{color:var(--accent)}
+.term-card b,.warn b{color:var(--ink);font-weight:600}
+footer{margin-top:26px;padding:28px 0;border-top:1px solid rgba(231,205,242,.15);color:var(--dim);font-size:12px;text-align:center}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+a:focus-visible,select:focus-visible{outline:2px solid var(--accent2);outline-offset:3px}
+@media(max-width:1000px){.legal{max-width:100%;padding-top:44px}}
+@media(max-width:640px){
+  body{background-attachment:scroll,scroll,scroll;background-position:center top,center top,58% top}
+  .wrap{padding:0 16px}
+  header{min-height:72px;gap:9px}
+  .logo{font-size:16px}
+  .logo svg{width:24px;height:24px}
+  .hdr-right{gap:6px}
+  #back-top{display:none}
+  #langSel{max-width:92px;padding-left:8px;font-size:11px}
+  .btn.sm{min-height:36px;padding:7px 10px}
+  .legal{padding:38px 0 12px}
+  h1{font-size:clamp(32px,10vw,44px)}
+  .term-card{padding:17px}
+  .term-card p,.term-card li{font-size:13px}
+}
+@media(prefers-reduced-motion:reduce){
+  :root{scroll-behavior:auto}
+  *,*::before,*::after{transition:none!important;animation:none!important}
+}
 </style>
 </head>
 <body>
 <div class="wrap">
   <header>
     <a class="logo" href="/"><svg width="24" height="24" viewBox="0 0 34 34" aria-hidden="true"><polygon points="17,2 32,17 17,32 2,17" fill="#171f38"/><polygon points="17,2 32,17 17,17" fill="#f6d488"/><polygon points="2,17 17,32 17,17" fill="#a9812c"/><polygon points="17,2 17,17 2,17" fill="#e7b954"/><polygon points="17,17 32,17 17,32" fill="#c99a3a"/></svg>AURUM</a>
-    <label class="sr" for="langSel">Language</label>
-    <select id="langSel">
-      <option value="ro">🇷🇴 Română</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="de">🇩🇪 Deutsch</option>
-      <option value="pl">🇵🇱 Polski</option>
-      <option value="tr">🇹🇷 Türkçe</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="es">🇪🇸 Español</option>
-    </select>
+    <div class="hdr-right">
+      <a class="btn ghost sm" href="/" id="back-top"></a>
+      <label class="sr" for="langSel">Language</label>
+      <select id="langSel">
+        <option value="ro">🇷🇴 Română</option>
+        <option value="en">🇬🇧 English</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="pl">🇵🇱 Polski</option>
+        <option value="tr">🇹🇷 Türkçe</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="es">🇪🇸 Español</option>
+      </select>
+      <a class="btn sm" href="/discord">Discord</a>
+    </div>
   </header>
 
-  <h1 id="title"></h1>
-  <p class="upd" id="upd"></p>
-  <div class="warn"><p id="sum"></p></div>
-  <div id="body"></div>
+  <main class="legal">
+    <div class="kicker">AURUM / POLICIES</div>
+    <h1 id="title"></h1>
+    <p class="upd" id="upd"></p>
+    <div class="warn"><p id="sum"></p></div>
+    <div id="body"></div>
+  </main>
 
   <footer>Aurum · aurumbots.com · <a href="/" id="back"></a></footer>
 </div>
@@ -90,9 +132,9 @@ ro: {
       "Fără internet, botul mai merge cel mult 3 zile după ultima verificare reușită, dar nu după data de expirare.",
       "Licența pe viață merge fără dată de expirare, cu update-urile incluse, cât timp produsul există. Nu există perioadă de probă gratuită."]],
     ["3. Plata", [
-      "Plata se face prin Revolut (@aurumb), în avans, pentru perioada aleasă, în moneda afișată pe site.",
-      "La mesajul plății scrii ID-ul PC-ului, ca plata să poată fi legată de licența ta.",
-      "Licența se activează manual după ce primim plata, de obicei în mai puțin de o oră.",
+      "Plata se gestionează prin funcția de ticket de pe Discord. Deschide un ticket pentru instrucțiunile de plată ale produsului și perioadei alese.",
+      "Include în ticket ID-ul PC-ului și pachetul dorit, pentru asocierea plății cu licența.",
+      "Licența se activează manual după confirmarea plății, de obicei în mai puțin de o oră.",
       "Prețurile pot fi schimbate pentru perioadele viitoare; perioada deja plătită nu se modifică."]],
     ["4. Riscuri", [
       "Boții automatizează acțiuni în joc. Asta <b>încalcă regulile serverului de joc</b>, care poate suspenda sau bana contul.",
@@ -107,7 +149,7 @@ ro: {
       "<b>ID-ul PC-ului</b> — un cod calculat din identificatorul Windows; nu conține numele, fișierele sau datele tale.",
       "<b>Numele</b> pe care ni-l dai pentru licență (poate fi un pseudonim) și o notă internă.",
       "<b>Data expirării</b> și <b>data ultimei verificări</b> a licenței.",
-      "Pentru plată vedem doar ce afișează Revolut (numele plătitorului, suma și mesajul).",
+      "Detaliile de plată pe care le primim depind de metoda folosită și de informațiile partajate în ticket.",
       "Nu vindem și nu dăm datele altcuiva, cu excepția cazurilor cerute de lege. Poți cere ștergerea lor oricând, prin ticket."]],
     ["7. Contact", [
       "Suportul, plata și resetările se fac pe <a href=\"{discord}\">serverul nostru de Discord</a>, prin ticket."]],
@@ -130,9 +172,9 @@ en: {
       "Without internet, the bot keeps working for at most 3 days after the last successful check, but never past the expiry date.",
       "A lifetime license has no expiry date and includes updates for as long as the product exists. There is no free trial."]],
     ["3. Payment", [
-      "Payment is made via Revolut (@aurumb), in advance, for the chosen period, in the currency shown on the site.",
-      "Write your PC ID in the payment note, so the payment can be linked to your license.",
-      "The license is activated manually after we receive the payment, usually in under an hour.",
+      "Payment is arranged through the Discord ticket feature. Open a ticket to get payment instructions for your selected product and period.",
+      "Include your PC ID and chosen package in the ticket so the payment can be matched to your license.",
+      "The license is activated manually after payment confirmation, usually in under an hour.",
       "Prices may change for future periods; a period already paid does not change."]],
     ["4. Risks", [
       "The bots automate in-game actions. This <b>breaks the game server's rules</b>, and the server may suspend or ban the account.",
@@ -147,7 +189,7 @@ en: {
       "<b>Your PC ID</b> — a code computed from the Windows identifier; it does not contain your name, files or personal data.",
       "<b>The name</b> you give us for the license (it can be a nickname) and an internal note.",
       "<b>The expiry date</b> and <b>the date of the last license check</b>.",
-      "For payments we only see what Revolut shows (payer name, amount and note).",
+      "Payment details we receive depend on the method used and the information shared in the ticket.",
       "We do not sell or share the data, except where the law requires it. You can ask for deletion anytime, via a ticket."]],
     ["7. Contact", [
       "Support, payments and resets are handled on <a href=\"{discord}\">our Discord server</a>, via tickets."]],
@@ -170,9 +212,9 @@ de: {
       "Ohne Internet läuft der Bot höchstens 3 Tage nach der letzten erfolgreichen Prüfung, aber nie über das Ablaufdatum hinaus.",
       "Eine lebenslange Lizenz hat kein Ablaufdatum und enthält Updates, solange es das Produkt gibt. Es gibt keine kostenlose Testphase."]],
     ["3. Zahlung", [
-      "Die Zahlung erfolgt per Revolut (@aurumb), im Voraus, für den gewählten Zeitraum, in der auf der Website angezeigten Währung.",
-      "Schreib deine PC-ID in den Verwendungszweck, damit die Zahlung deiner Lizenz zugeordnet werden kann.",
-      "Die Lizenz wird nach Zahlungseingang manuell aktiviert, meist in unter einer Stunde.",
+      "Die Zahlung wird über die Ticket-Funktion auf Discord abgewickelt. Öffne ein Ticket, um Zahlungsanweisungen für das gewählte Produkt und den Zeitraum zu erhalten.",
+      "Nenne im Ticket deine PC-ID und das gewählte Paket, damit die Zahlung deiner Lizenz zugeordnet werden kann.",
+      "Die Lizenz wird nach Bestätigung der Zahlung manuell aktiviert, meist in unter einer Stunde.",
       "Preise können sich für künftige Zeiträume ändern; ein bereits bezahlter Zeitraum ändert sich nicht."]],
     ["4. Risiken", [
       "Die Bots automatisieren Aktionen im Spiel. Das <b>verstößt gegen die Regeln des Spielservers</b>, der das Konto sperren oder bannen kann.",
@@ -187,7 +229,7 @@ de: {
       "<b>Deine PC-ID</b> — ein aus der Windows-Kennung berechneter Code; er enthält weder Namen, Dateien noch persönliche Daten.",
       "<b>Der Name</b>, den du uns für die Lizenz nennst (kann ein Spitzname sein), und eine interne Notiz.",
       "<b>Das Ablaufdatum</b> und <b>das Datum der letzten Lizenzprüfung</b>.",
-      "Bei Zahlungen sehen wir nur, was Revolut anzeigt (Name des Zahlers, Betrag und Verwendungszweck).",
+      "Welche Zahlungsdetails wir erhalten, hängt von der verwendeten Methode und den im Ticket geteilten Angaben ab.",
       "Wir verkaufen oder teilen keine Daten, außer wenn das Gesetz es verlangt. Du kannst jederzeit per Ticket die Löschung verlangen."]],
     ["7. Kontakt", [
       "Support, Zahlungen und Resets laufen über <a href=\"{discord}\">unseren Discord-Server</a>, per Ticket."]],
@@ -210,9 +252,9 @@ pl: {
       "Bez internetu bot działa najwyżej 3 dni od ostatniej udanej weryfikacji, ale nigdy po dacie wygaśnięcia.",
       "Licencja dożywotnia nie ma daty wygaśnięcia i obejmuje aktualizacje, dopóki produkt istnieje. Nie ma darmowego okresu próbnego."]],
     ["3. Płatność", [
-      "Płatność przez Revolut (@aurumb), z góry, za wybrany okres, w walucie pokazanej na stronie.",
-      "W tytule płatności wpisz ID komputera, aby można było powiązać płatność z twoją licencją.",
-      "Licencja jest aktywowana ręcznie po otrzymaniu płatności, zwykle w mniej niż godzinę.",
+      "Płatność odbywa się przez funkcję ticketów na Discordzie. Otwórz ticket, aby otrzymać instrukcje płatności za wybrany produkt i okres.",
+      "Podaj w tickecie ID komputera i wybrany pakiet, aby można było powiązać płatność z licencją.",
+      "Licencja jest aktywowana ręcznie po potwierdzeniu płatności, zwykle w mniej niż godzinę.",
       "Ceny mogą się zmienić dla przyszłych okresów; już opłacony okres się nie zmienia."]],
     ["4. Ryzyko", [
       "Boty automatyzują działania w grze. To <b>łamie zasady serwera gry</b>, który może zawiesić lub zbanować konto.",
@@ -227,7 +269,7 @@ pl: {
       "<b>ID komputera</b> — kod obliczony z identyfikatora Windows; nie zawiera twojego imienia, plików ani danych osobowych.",
       "<b>Nazwa</b>, którą podajesz do licencji (może być pseudonim), i notatka wewnętrzna.",
       "<b>Data wygaśnięcia</b> i <b>data ostatniej weryfikacji</b> licencji.",
-      "Przy płatnościach widzimy tylko to, co pokazuje Revolut (nazwa płacącego, kwota i tytuł).",
+      "Otrzymywane przez nas dane płatności zależą od użytej metody i informacji przekazanych w tickecie.",
       "Nie sprzedajemy ani nie udostępniamy danych, chyba że wymaga tego prawo. Możesz w każdej chwili poprosić o ich usunięcie przez ticket."]],
     ["7. Kontakt", [
       "Wsparcie, płatności i resety odbywają się na <a href=\"{discord}\">naszym serwerze Discord</a>, przez tickety."]],
@@ -250,9 +292,9 @@ tr: {
       "İnternet olmadan bot, son başarılı kontrolden sonra en fazla 3 gün çalışır, ama asla bitiş tarihinden sonra çalışmaz.",
       "Ömür boyu lisansın bitiş tarihi yoktur ve ürün var olduğu sürece güncellemeleri içerir. Ücretsiz deneme yoktur."]],
     ["3. Ödeme", [
-      "Ödeme Revolut (@aurumb) ile, seçilen süre için peşin olarak, sitede gösterilen para biriminde yapılır.",
-      "Ödemenin lisansınla eşleştirilebilmesi için ödeme açıklamasına PC kimliğini yaz.",
-      "Lisans, ödeme alındıktan sonra manuel olarak etkinleştirilir, genellikle bir saatten kısa sürede.",
+      "Ödeme, Discord'daki ticket özelliği üzerinden düzenlenir. Seçtiğin ürün ve süre için ödeme talimatlarını almak üzere ticket aç.",
+      "Ödemenin lisansınla eşleştirilebilmesi için ticket'a PC kimliğini ve seçtiğin paketi yaz.",
+      "Lisans, ödeme doğrulandıktan sonra genellikle bir saatten kısa sürede manuel olarak etkinleştirilir.",
       "Fiyatlar gelecek dönemler için değişebilir; önceden ödenmiş bir dönem değişmez."]],
     ["4. Riskler", [
       "Botlar oyun içi eylemleri otomatikleştirir. Bu <b>oyun sunucusunun kurallarını çiğner</b>; sunucu hesabı askıya alabilir veya banlayabilir.",
@@ -267,7 +309,7 @@ tr: {
       "<b>PC kimliğin</b> — Windows tanımlayıcısından hesaplanan bir kod; adını, dosyalarını veya kişisel verilerini içermez.",
       "Lisans için bize verdiğin <b>isim</b> (takma ad olabilir) ve dahili bir not.",
       "<b>Bitiş tarihi</b> ve <b>son lisans kontrolünün tarihi</b>.",
-      "Ödemelerde yalnızca Revolut'un gösterdiğini görürüz (ödeyenin adı, tutar ve açıklama).",
+      "Aldığımız ödeme bilgileri, kullanılan yönteme ve ticket'ta paylaşılan bilgilere bağlıdır.",
       "Verileri satmayız veya paylaşmayız, yasanın gerektirdiği durumlar hariç. İstediğin zaman ticket ile silinmelerini isteyebilirsin."]],
     ["7. İletişim", [
       "Destek, ödemeler ve sıfırlamalar <a href=\"{discord}\">Discord sunucumuzda</a>, ticket ile yapılır."]],
@@ -290,9 +332,9 @@ fr: {
       "Sans internet, le bot fonctionne au maximum 3 jours après la dernière vérification réussie, mais jamais après la date d'expiration.",
       "Une licence à vie n'a pas de date d'expiration et inclut les mises à jour tant que le produit existe. Il n'y a pas d'essai gratuit."]],
     ["3. Paiement", [
-      "Le paiement se fait par Revolut (@aurumb), à l'avance, pour la période choisie, dans la devise affichée sur le site.",
-      "Indiquez l'ID de votre PC dans le message du paiement, pour qu'il puisse être lié à votre licence.",
-      "La licence est activée manuellement après réception du paiement, en général en moins d'une heure.",
+      "Le paiement est organisé via la fonction de ticket sur Discord. Ouvrez un ticket pour recevoir les instructions de paiement du produit et de la durée choisis.",
+      "Indiquez l'ID de votre PC et le pack choisi dans le ticket afin de relier le paiement à votre licence.",
+      "La licence est activée manuellement après confirmation du paiement, généralement en moins d'une heure.",
       "Les prix peuvent changer pour les périodes futures ; une période déjà payée ne change pas."]],
     ["4. Risques", [
       "Les bots automatisent des actions en jeu. Cela <b>enfreint les règles du serveur de jeu</b>, qui peut suspendre ou bannir le compte.",
@@ -307,7 +349,7 @@ fr: {
       "<b>L'ID de votre PC</b> — un code calculé à partir de l'identifiant Windows ; il ne contient ni votre nom, ni vos fichiers, ni vos données personnelles.",
       "<b>Le nom</b> que vous nous donnez pour la licence (un pseudo convient) et une note interne.",
       "<b>La date d'expiration</b> et <b>la date de la dernière vérification</b> de la licence.",
-      "Pour les paiements, nous voyons seulement ce qu'affiche Revolut (nom du payeur, montant et message).",
+      "Les détails de paiement que nous recevons dépendent de la méthode utilisée et des informations partagées dans le ticket.",
       "Nous ne vendons ni ne partageons les données, sauf obligation légale. Vous pouvez demander leur suppression à tout moment, via un ticket."]],
     ["7. Contact", [
       "Le support, les paiements et les réinitialisations se font sur <a href=\"{discord}\">notre serveur Discord</a>, par ticket."]],
@@ -330,9 +372,9 @@ es: {
       "Sin internet, el bot funciona como máximo 3 días después de la última verificación correcta, pero nunca después de la fecha de caducidad.",
       "Una licencia de por vida no tiene fecha de caducidad e incluye actualizaciones mientras exista el producto. No hay prueba gratuita."]],
     ["3. Pago", [
-      "El pago se hace por Revolut (@aurumb), por adelantado, para el periodo elegido, en la moneda mostrada en el sitio.",
-      "Escribe el ID de tu PC en el concepto del pago, para poder vincularlo a tu licencia.",
-      "La licencia se activa manualmente tras recibir el pago, normalmente en menos de una hora.",
+      "El pago se gestiona mediante la función de tickets de Discord. Abre un ticket para recibir instrucciones de pago del producto y el periodo elegidos.",
+      "Incluye en el ticket el ID de tu PC y el paquete elegido para vincular el pago a tu licencia.",
+      "La licencia se activa manualmente tras confirmar el pago, normalmente en menos de una hora.",
       "Los precios pueden cambiar para periodos futuros; un periodo ya pagado no cambia."]],
     ["4. Riesgos", [
       "Los bots automatizan acciones en el juego. Esto <b>infringe las reglas del servidor del juego</b>, que puede suspender o banear la cuenta.",
@@ -347,7 +389,7 @@ es: {
       "<b>El ID de tu PC</b> — un código calculado a partir del identificador de Windows; no contiene tu nombre, archivos ni datos personales.",
       "<b>El nombre</b> que nos das para la licencia (puede ser un apodo) y una nota interna.",
       "<b>La fecha de caducidad</b> y <b>la fecha de la última verificación</b> de la licencia.",
-      "En los pagos solo vemos lo que muestra Revolut (nombre del pagador, importe y concepto).",
+      "Los datos de pago que recibimos dependen del método utilizado y de la información compartida en el ticket.",
       "No vendemos ni compartimos los datos, salvo cuando la ley lo exige. Puedes pedir su eliminación en cualquier momento, mediante un ticket."]],
     ["7. Contacto", [
       "El soporte, los pagos y los reinicios se gestionan en <a href=\"{discord}\">nuestro servidor de Discord</a>, mediante tickets."]],
@@ -371,10 +413,11 @@ function render() {
   document.getElementById("upd").textContent = t.upd;
   document.getElementById("sum").innerHTML = t.sum;
   document.getElementById("back").textContent = t.back;
+  document.getElementById("back-top").textContent = t.back;
   document.getElementById("body").innerHTML = t.s.map(([h, items]) =>
-    "<h2>" + h + "</h2>" + (items.length === 1 && h.indexOf("7.") === 0
+    "<section class=\"term-card\"><h2>" + h + "</h2>" + (items.length === 1 && h.indexOf("7.") === 0
       ? "<p>" + items[0].replace("{discord}", DISCORD) + "</p>"
-      : "<ul>" + items.map(i => "<li>" + i.replace("{discord}", DISCORD) + "</li>").join("") + "</ul>")
+      : "<ul>" + items.map(i => "<li>" + i.replace("{discord}", DISCORD) + "</li>").join("") + "</ul>") + "</section>"
   ).join("");
   document.getElementById("langSel").value = lang;
 }
